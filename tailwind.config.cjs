@@ -14,7 +14,7 @@ module.exports = {
           foreground: "#6b7280",
         },
         primary: {
-          DEFAULT: "#6366f1",
+          DEFAULT: "#3d8f03",
           foreground: "#f9fafb",
         },
         secondary: {
@@ -22,7 +22,7 @@ module.exports = {
           foreground: "#e5e7eb",
         },
         accent: {
-          DEFAULT: "#22c55e",
+          DEFAULT: "#4c9141",
           foreground: "#022c22",
         },
         border: "#1f2937",

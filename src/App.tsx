@@ -67,17 +67,16 @@ export const App: React.FC = () => {
           <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:py-28">
             <div className="flex-1 space-y-7">
               <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
-                DIGITAL EXPERIENCE STUDIO
+                DIGITAL EXPERIENCE 
               </p>
               <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
-                A clean, modern shell for your{" "}
+              Building Smart Software for a{" "}
                 <span className="bg-gradient-to-r from-primary via-sky-400 to-accent bg-clip-text text-transparent">
-                  future website
+                Digital Future
                 </span>
               </h1>
               <p className="max-w-xl text-base text-muted-foreground md:text-lg">
-                This layout is designed as a starting point. Keep the structure,
-                update the words, swap the visuals, and you&apos;re ready to go.
+              Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.
               </p>
               <div className="flex flex-wrap gap-3">
                 <Button size="lg">Primary action</Button>
@@ -86,27 +85,59 @@ export const App: React.FC = () => {
                 </Button>
               </div>
             </div>
-            <div className="flex-1">
-              <div className="relative mx-auto max-w-lg rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/70 via-slate-900/40 to-slate-950/80 p-8 shadow-soft-xl">
-                <div className="mb-5 flex items-center justify-between text-sm text-muted-foreground">
-                  <span>Preview layout</span>
-                  <span className="inline-flex items-center gap-1 rounded-full bg-secondary/80 px-3 py-1.5 text-xs uppercase tracking-[0.18em]">
-                    Shadcn-inspired
-                  </span>
-                </div>
-                <div className="space-y-4">
-                  <div className="h-3 w-32 rounded-full bg-primary/60" />
-                  <div className="flex gap-3">
-                    <div className="h-32 flex-1 rounded-2xl bg-slate-900/70" />
-                    <div className="flex w-32 flex-col gap-3">
-                      <div className="h-7 rounded-xl bg-slate-900/70" />
-                      <div className="h-7 rounded-xl bg-slate-900/70" />
-                      <div className="h-7 rounded-xl bg-slate-900/70" />
-                    </div>
+            <div className="relative flex-1">
+              {/* Main hero visual – digital experience theme */}
+              <div className="relative mx-auto max-w-lg">
+                <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950 shadow-soft-xl">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(121,199,44,0.12),transparent_50%)]" />
+                  <div className="relative aspect-[4/3] p-6">
+                    <svg
+                      viewBox="0 0 400 300"
+                      className="h-full w-full"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      {/* Soft grid */}
+                      <defs>
+                        <pattern id="hero-grid" width="20" height="20" patternUnits="userSpaceOnUse">
+                          <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(148,163,184,0.08)" strokeWidth="0.5" />
+                        </pattern>
+                        <linearGradient id="hero-accent" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#79C72C" stopOpacity="0.9" />
+                          <stop offset="100%" stopColor="#4c9141" stopOpacity="0.7" />
+                        </linearGradient>
+                        <linearGradient id="hero-sky" x1="0%" y1="100%" x2="100%" y2="0%">
+                          <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" />
+                          <stop offset="100%" stopColor="#79C72C" stopOpacity="0.2" />
+                        </linearGradient>
+                      </defs>
+                      <rect width="400" height="300" fill="url(#hero-grid)" />
+                      {/* Abstract nodes and connections */}
+                      <circle cx="120" cy="100" r="40" fill="url(#hero-accent)" opacity="0.5" />
+                      <circle cx="280" cy="120" r="28" fill="url(#hero-sky)" opacity="0.6" />
+                      <circle cx="200" cy="200" r="24" fill="rgba(121,199,44,0.25)" />
+                      <path d="M 120 100 Q 200 80 280 120" stroke="rgba(121,199,44,0.35)" strokeWidth="2" fill="none" />
+                      <path d="M 120 100 Q 160 180 200 200" stroke="rgba(148,163,184,0.2)" strokeWidth="1.5" fill="none" />
+                      <path d="M 280 120 Q 240 160 200 200" stroke="rgba(56,189,248,0.25)" strokeWidth="1.5" fill="none" />
+                      {/* Window/dashboard hint */}
+                      <rect x="40" y="220" width="320" height="50" rx="8" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.12)" strokeWidth="1" />
+                      <rect x="55" y="232" width="60" height="8" rx="4" fill="rgba(121,199,44,0.4)" />
+                      <rect x="130" y="232" width="80" height="8" rx="4" fill="rgba(148,163,184,0.15)" />
+                    </svg>
                   </div>
-                  <div className="flex gap-3">
-                    <div className="h-3 flex-1 rounded-full bg-slate-800" />
-                    <div className="h-3 w-24 rounded-full bg-slate-800" />
+                </div>
+                {/* Second image – complementary themed card */}
+                <div className="absolute -bottom-4 -right-2 w-[45%] max-w-[220px] overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-slate-800/95 to-slate-950 shadow-soft-xl">
+                  <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_30%_30%,rgba(121,199,44,0.08),transparent)]" />
+                  <div className="relative aspect-[3/2] p-4">
+                    <svg viewBox="0 0 120 80" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <rect x="10" y="10" width="50" height="35" rx="4" fill="rgba(15,23,42,0.9)" stroke="rgba(121,199,44,0.2)" strokeWidth="1" />
+                      <rect x="16" y="16" width="20" height="4" rx="2" fill="rgba(121,199,44,0.5)" />
+                      <rect x="16" y="24" width="30" height="3" rx="1.5" fill="rgba(148,163,184,0.15)" />
+                      <rect x="16" y="30" width="25" height="3" rx="1.5" fill="rgba(148,163,184,0.1)" />
+                      <path d="M 70 25 L 95 25 L 95 55 L 70 55 Z" fill="none" stroke="rgba(56,189,248,0.25)" strokeWidth="1.5" strokeDasharray="4 2" />
+                      <circle cx="82" cy="40" r="8" fill="rgba(121,199,44,0.2)" />
+                    </svg>
                   </div>
                 </div>
               </div>
@@ -226,7 +257,18 @@ export const App: React.FC = () => {
           </div>
         </Section>
 
-        <Section id="clients" label="Clients" kicker="Who you work with">
+        <Section
+          id="clients"
+          label="Clients"
+          kicker="Who we work with"
+          description={
+            <p className="text-base text-muted-foreground md:text-lg">
+              We partner with businesses and financial organizations to create
+              powerful digital solutions that improve efficiency, security, and
+              performance.
+            </p>
+          }
+        >
           <div className="grid gap-6 text-sm text-muted-foreground md:grid-cols-3">
             {Array.from({ length: 6 }).map((_, index) => (
               <div
@@ -245,13 +287,7 @@ export const App: React.FC = () => {
           kicker="Who are we"
           description={
             <p className="text-base text-muted-foreground md:text-lg">
-              At Sherwood Technologies, our people are the heart of everything we
-              create. Led by experienced visionaries like our Lead Partner and
-              Executive Director, we&apos;re a team of passionate innovators
-              dedicated to transforming bold ideas into powerful digital
-              realities. Together, we don&apos;t just build websites — we build
-              lasting partnerships, one breakthrough at a time.
-            </p>
+Great digital experiences start with great people. Meet the team behind Sherwood Technologies.            </p>
           }
         >
           <div className="mt-10 space-y-10">

@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "../ui/button";
+import logoImg from "../../../images/logo.png";
 
 const sections = [
   { id: "home", label: "Home" },
@@ -19,7 +20,7 @@ export const Header: React.FC = () => {
         const el = document.getElementById(section.id);
         if (!el) continue;
         const rect = el.getBoundingClientRect();
-        if (rect.top <= 120 && rect.bottom >= 120) {
+        if (rect.top <= 140 && rect.bottom >= 140) {
           current = section.id;
           break;
         }
@@ -35,17 +36,19 @@ export const Header: React.FC = () => {
   const handleNavClick = (id: string) => {
     const el = document.getElementById(id);
     if (!el) return;
-    const y = el.getBoundingClientRect().top + window.scrollY - 96;
+    const y = el.getBoundingClientRect().top + window.scrollY - 100;
     window.scrollTo({ top: y, behavior: "smooth" });
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-2xl bg-gradient-to-br from-primary to-accent text-sm font-semibold shadow-soft-xl">
-            ST
-          </div>
+    <header className="sticky top-0 z-40 h-20 shrink-0 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 py-1">
+        <div className="flex h-full min-h-0 items-center gap-4">
+          <img
+            src={logoImg}
+            alt="Company logo"
+            className="h-full max-h-full w-auto max-w-[360px] shrink-0 object-contain object-left"
+          />
           <div className="flex flex-col leading-tight">
             <span className="text-sm font-medium tracking-wide text-muted-foreground">
               Sherwood Technologies
@@ -76,7 +79,7 @@ export const Header: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm">
-            Sign in
+            
           </Button>
           <Button size="sm">Get in touch</Button>
         </div>

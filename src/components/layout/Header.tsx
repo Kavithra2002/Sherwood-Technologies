@@ -10,9 +10,10 @@ const sections = [
   { id: "about", label: "About us" },
 ];
 
-export const Header: React.FC<{ onGetInTouch?: () => void }> = ({
-  onGetInTouch,
-}) => {
+export const Header: React.FC<{
+  onGetInTouch?: () => void;
+  onNavigateSection?: (id: string) => void;
+}> = ({ onGetInTouch, onNavigateSection }) => {
   const [active, setActive] = React.useState<string>("home");
 
   React.useEffect(() => {
@@ -36,6 +37,11 @@ export const Header: React.FC<{ onGetInTouch?: () => void }> = ({
   }, []);
 
   const handleNavClick = (id: string) => {
+    if (onNavigateSection) {
+      onNavigateSection(id);
+      return;
+    }
+
     const el = document.getElementById(id);
     if (!el) return;
     const y = el.getBoundingClientRect().top + window.scrollY - 100;
@@ -58,7 +64,7 @@ export const Header: React.FC<{ onGetInTouch?: () => void }> = ({
           </div>
         </div>
 
-        <nav className="hidden items-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-2 py-1 text-xs font-medium text-muted-foreground shadow-soft-xl md:flex">
+        <nav className="hidden items-center gap-2 rounded-full border border-border/70 bg-secondary/60 px-2 py-1 text-xs font-medium text-muted-foreground md:flex">
           {sections.map((item) => (
             <button
               key={item.id}

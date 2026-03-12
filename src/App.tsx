@@ -568,9 +568,30 @@ export const App: React.FC = () => {
     );
   };
 
+  const handleNavigateSection = (id: string) => {
+    if (view !== "home") {
+      setView("home");
+      setTimeout(() => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const y = el.getBoundingClientRect().top + window.scrollY - 100;
+        window.scrollTo({ top: y, behavior: "smooth" });
+      }, 100);
+      return;
+    }
+
+    const el = document.getElementById(id);
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - 100;
+    window.scrollTo({ top: y, behavior: "smooth" });
+  };
+
   return (
     <div className="min-h-screen bg-white text-slate-900">
-      <Header onGetInTouch={() => setView("contact")} />
+      <Header
+        onGetInTouch={() => setView("contact")}
+        onNavigateSection={handleNavigateSection}
+      />
       <main className="bg-white">
         {view === "home" && renderHome()}
         {view === "primary" && renderPrimaryPage()}
@@ -581,10 +602,11 @@ export const App: React.FC = () => {
       <footer className="border-t border-border/60 bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 text-xs text-muted-foreground">
           <span>© {new Date().getFullYear()} Sherwood Technologies</span>
-          <span>Built with React, TypeScript & Tailwind</span>
+          <span></span>
         </div>
       </footer>
     </div>
   );
 };
+
 

@@ -10,7 +10,9 @@ const sections = [
   { id: "about", label: "About us" },
 ];
 
-export const Header: React.FC = () => {
+export const Header: React.FC<{ onGetInTouch?: () => void }> = ({
+  onGetInTouch,
+}) => {
   const [active, setActive] = React.useState<string>("home");
 
   React.useEffect(() => {
@@ -41,20 +43,17 @@ export const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 h-20 shrink-0 border-b border-border/60 bg-background/80 backdrop-blur-xl">
-      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 py-1">
+<header className="sticky top-0 z-40 h-[3.7rem] shrink-0 border-b border-border/60 bg-background/80 backdrop-blur-xl">      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 py-1">
         <div className="flex h-full min-h-0 items-center gap-4">
           <img
             src={logoImg}
             alt="Company logo"
-            className="h-full max-h-full w-auto max-w-[360px] shrink-0 object-contain object-left"
+            className="h-8 w-auto max-w-[120px] shrink-0 object-contain object-left"
           />
           <div className="flex flex-col leading-tight">
-            <span className="text-sm font-medium tracking-wide text-muted-foreground">
-              Sherwood Technologies
+            <span className="text-base font-semibold tracking-wide text-white">
             </span>
-            <span className="text-xs text-muted-foreground">
-              Modern digital experiences
+            <span className="text-sm text-white/90">
             </span>
           </div>
         </div>
@@ -79,9 +78,10 @@ export const Header: React.FC = () => {
 
         <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm">
-            
           </Button>
-          <Button size="sm">Get in touch</Button>
+          <Button size="sm" onClick={onGetInTouch}>
+            Get in touch
+          </Button>
         </div>
       </div>
     </header>

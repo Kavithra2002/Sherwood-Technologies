@@ -1,21 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Header } from "./components/layout/Header";
 import "./global.css";
 import { Button } from "./components/ui/button";
+import { AnimatedOnScroll } from "./components/ui/AnimatedOnScroll";
 
 const Section: React.FC<{
   id: string;
   label: string;
   kicker?: string;
   description?: React.ReactNode;
+  variant?: "default" | "white";
   children?: React.ReactNode;
-}> = ({ id, label, kicker, description, children }) => {
+}> = ({ id, label, kicker, description, variant = "default", children }) => {
   return (
     <section
       id={id}
-      className="scroll-mt-32 border-b border-border/40 bg-gradient-to-b from-background via-background/95 to-background/90"
+      className={
+        "scroll-mt-32 border-b border-border/40 bg-white" +
+        (variant === "white" ? "" : "")
+      }
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-32">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32">
         <div className="max-w-2xl space-y-3">
           {kicker && (
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
@@ -42,40 +47,74 @@ const Section: React.FC<{
   );
 };
 
-const EmployeeCard: React.FC<{
+type ProductSlug =
+  | "wealth-management"
+  | "equity-management"
+  | "treasury-management"
+  | "mobile-app";
+
+const PRODUCTS: Array<{
+  slug: ProductSlug;
   name: string;
-  role: string;
-}> = ({ name, role }) => {
-  return (
-    <div className="flex min-h-[230px] flex-col items-center gap-4 rounded-2xl border border-border/60 bg-secondary/60 p-7 text-center text-sm text-muted-foreground shadow-soft-xl">
-      <div className="mb-3 h-16 w-16 rounded-full bg-primary/20" />
-      <p className="text-base font-semibold text-foreground">{name}</p>
-      <p className="text-xs text-muted-foreground">{role}</p>
-    </div>
-  );
-};
+  description: string;
+}> = [
+  {
+    slug: "wealth-management",
+    name: "Wealth Management System",
+    description:
+      "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. The system provides real-time insights, portfolio tracking, and reporting tools to support better wealth management and investment decisions.",
+  },
+  {
+    slug: "equity-management",
+    name: "Equity Management System",
+    description:
+      "A powerful solution for managing equity portfolios, tracking stock market transactions, and monitoring investment performance. It enables investment firms and financial professionals to analyze market data, manage trading activities, and maintain detailed records of equity investments.",
+  },
+  {
+    slug: "treasury-management",
+    name: "Internal Treasury Management System",
+    description:
+      "An advanced system designed to help organizations manage internal treasury operations, including cash flow monitoring, liquidity management, and financial risk analysis. It provides centralized visibility into financial resources and supports effective treasury decision-making.",
+  },
+  {
+    slug: "mobile-app",
+    name: "Wealth Management Mobile App (Ongoing Product)",
+    description:
+      "A mobile application currently under development that will allow users to access wealth management services directly from their smartphones. The app will provide real-time portfolio updates, investment tracking, and secure access to financial information anytime, anywhere.",
+  },
+];
 
 export const App: React.FC = () => {
-  const [view, setView] = useState<"home" | "primary" | "secondary">("home");
+  const [view, setView] = useState<
+    "home" | "primary" | "secondary" | "contact" | "product-detail"
+  >("home");
+  const [productSlug, setProductSlug] = useState<ProductSlug | null>(null);
+
+  useEffect(() => {
+    const scrollToTopViews = ["product-detail", "contact", "primary", "secondary"];
+    if (scrollToTopViews.includes(view)) {
+      window.scrollTo(0, 0);
+    }
+  }, [view, productSlug]);
 
   const renderHome = () => (
     <>
       <section
         id="home"
-        className="scroll-mt-32 border-b border-border/40 bg-gradient-to-b from-slate-950 via-slate-950/95 to-background"
+        className="scroll-mt-32 border-b border-border/40 bg-white"
       >
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:py-28">
           <div className="flex-1 space-y-7">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
               DIGITAL EXPERIENCE 
             </p>
-            <h1 className="text-4xl font-semibold tracking-tight md:text-6xl">
+            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-6xl">
               Building Smart Software for a{" "}
               <span className="bg-gradient-to-r from-primary via-sky-400 to-accent bg-clip-text text-transparent">
                 Digital Future
               </span>
             </h1>
-            <p className="max-w-xl text-base text-muted-foreground md:text-lg">
+            <p className="max-w-xl text-base text-slate-700 md:text-lg">
               Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.
             </p>
             <div className="flex flex-wrap gap-3">
@@ -94,7 +133,7 @@ export const App: React.FC = () => {
           <div className="relative flex-1">
             {/* Main hero visual – digital experience theme */}
             <div className="relative mx-auto max-w-lg">
-              <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950 shadow-soft-xl">
+              <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950 shadow-md">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(121,199,44,0.12),transparent_50%)]" />
                 <div className="relative aspect-[4/3] p-6">
                   <svg
@@ -133,7 +172,7 @@ export const App: React.FC = () => {
                 </div>
               </div>
               {/* Second image – complementary themed card */}
-              <div className="absolute -bottom-4 -right-2 w-[45%] max-w-[220px] overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-slate-800/95 to-slate-950 shadow-soft-xl">
+              <div className="absolute -bottom-4 -right-2 w-[45%] max-w-[220px] overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-slate-800/95 to-slate-950 shadow-md">
                 <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_30%_30%,rgba(121,199,44,0.08),transparent)]" />
                 <div className="relative aspect-[3/2] p-4">
                   <svg viewBox="0 0 120 80" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -186,17 +225,18 @@ export const App: React.FC = () => {
               description:
                 "We provide Microsoft software solutions, including Microsoft Office and Microsoft 365 packages, to support business productivity and collaboration. Our services include licensing consultation, setup, and support to ensure organizations get the most value from their Microsoft tools.",
             },
-          ].map((service) => (
-            <div
-              key={service.name}
-              className="rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl"
-            >
-              <div className="mb-4 h-10 w-10 rounded-2xl bg-primary/20" />
-              <h3 className="mb-3 text-base font-semibold">{service.name}</h3>
-              <p className="text-sm text-muted-foreground">
-                {service.description}
-              </p>
-            </div>
+          ].map((service, index) => (
+            <AnimatedOnScroll key={service.name} staggerIndex={index}>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                <div className="mb-4 h-10 w-10 rounded-2xl bg-primary/20" />
+                <h3 className="mb-3 text-base font-semibold text-slate-900">
+                  {service.name}
+                </h3>
+                <p className="text-sm text-slate-600">
+                  {service.description}
+                </p>
+              </div>
+            </AnimatedOnScroll>
           ))}
         </div>
       </Section>
@@ -205,10 +245,11 @@ export const App: React.FC = () => {
         id="products"
         label="Products"
         kicker="What we build"
+        variant="white"
         description={
           <>
             
-            <p className="mt-4 text-base text-muted-foreground md:text-lg">
+            <p className="mt-4 text-base text-slate-700 md:text-lg">
               In addition to our services, we also build products that help financial institutions,
                 investment firms, and treasury departments manage financial
                 operations efficiently, securely, and intelligently. Each
@@ -219,46 +260,31 @@ export const App: React.FC = () => {
         }
       >
         <div className="grid gap-8 md:grid-cols-2">
-          {[
-            {
-              name: "Wealth Management System",
-              description:
-                "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. The system provides real-time insights, portfolio tracking, and reporting tools to support better wealth management and investment decisions.",
-            },
-            {
-              name: "Equity Management System",
-              description:
-                "A powerful solution for managing equity portfolios, tracking stock market transactions, and monitoring investment performance. It enables investment firms and financial professionals to analyze market data, manage trading activities, and maintain detailed records of equity investments.",
-            },
-            {
-              name: "Internal Treasury Management System",
-              description:
-                "An advanced system designed to help organizations manage internal treasury operations, including cash flow monitoring, liquidity management, and financial risk analysis. It provides centralized visibility into financial resources and supports effective treasury decision-making.",
-            },
-            {
-              name: "Wealth Management Mobile App (Ongoing Product)",
-              description:
-                "A mobile application currently under development that will allow users to access wealth management services directly from their smartphones. The app will provide real-time portfolio updates, investment tracking, and secure access to financial information anytime, anywhere.",
-            },
-          ].map((product) => (
-            <div
-              key={product.name}
-              className="flex flex-col justify-between gap-6 rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl md:flex-row"
-            >
-              <div>
-                <h3 className="mb-3 text-base font-semibold">
-                  {product.name}
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  {product.description}
-                </p>
+          {PRODUCTS.map((product, index) => (
+            <AnimatedOnScroll key={product.slug} staggerIndex={index}>
+              <div className="flex flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md md:flex-row">
+                <div>
+                  <h3 className="mb-3 text-base font-semibold text-slate-900">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-slate-600">
+                    {product.description}
+                  </p>
+                </div>
+                <div className="flex items-end">
+                  <Button
+                    variant="product"
+                    size="lg"
+                    onClick={() => {
+                      setProductSlug(product.slug);
+                      setView("product-detail");
+                    }}
+                  >
+                    Learn more
+                  </Button>
+                </div>
               </div>
-              <div className="flex items-end">
-                <Button variant="outline" size="lg">
-                  Learn more
-                </Button>
-              </div>
-            </div>
+            </AnimatedOnScroll>
           ))}
         </div>
       </Section>
@@ -275,11 +301,11 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid gap-6 text-sm text-muted-foreground md:grid-cols-3">
+        <div className="grid gap-6 text-sm text-slate-600 md:grid-cols-3">
           {Array.from({ length: 6 }).map((_, index) => (
             <div
               key={index}
-              className="flex items-center justify-center rounded-3xl border border-dashed border-border/60 bg-secondary/40 px-6 py-8"
+              className="flex items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-8 text-slate-700"
             >
               Client logo / name
             </div>
@@ -291,14 +317,15 @@ export const App: React.FC = () => {
         id="about"
         label="About us"
         kicker="Who are we"
+        variant="white"
         description={
-          <p className="text-base text-muted-foreground md:text-lg">
+          <p className="text-base text-slate-700 md:text-lg">
             Great digital experiences start with great people. Meet the team
             behind Sherwood Technologies.
           </p>
         }
       >
-        <div className="mt-10 flex min-h-[400px] items-center justify-center rounded-3xl border border-dashed border-border/60 bg-secondary/40 px-6 text-center text-sm text-muted-foreground">
+        <div className="mt-10 flex min-h-[400px] items-center justify-center rounded-3xl border border-dashed border-border/60 bg-slate-50 px-6 text-center text-sm text-slate-700">
           Content for this About us section will be added here later.
         </div>
       </Section>
@@ -306,7 +333,7 @@ export const App: React.FC = () => {
   );
 
   const renderPrimaryPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-gradient-to-b from-slate-950 via-slate-950/95 to-background min-h-[200vh]">
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
@@ -323,7 +350,7 @@ export const App: React.FC = () => {
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Primary action details
           </h1>
-          <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
+          <p className="max-w-2xl text-base text-slate-700 md:text-lg">
             This page can be used to describe the main call to action from
             your hero section—such as getting in touch, starting a project, or
             exploring a flagship service. You can replace this copy with
@@ -332,33 +359,37 @@ export const App: React.FC = () => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">
-          <div className="rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl">
-            <h3 className="mb-3 text-base font-semibold">
-              How we can engage
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Add more structured content here – for example, steps in your
-              onboarding process, what information you need from clients, or
-              a breakdown of your core value proposition.
-            </p>
-          </div>
-          <div className="rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl">
-            <h3 className="mb-3 text-base font-semibold">
-              Next steps
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              You can also surface links, documents, or forms here—anything
-              that helps visitors complete the primary action you want them to
-              take.
-            </p>
-          </div>
+          <AnimatedOnScroll staggerIndex={0}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                How we can engage
+              </h3>
+              <p className="text-sm text-slate-600">
+                Add more structured content here – for example, steps in your
+                onboarding process, what information you need from clients, or
+                a breakdown of your core value proposition.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+          <AnimatedOnScroll staggerIndex={1}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                Next steps
+              </h3>
+              <p className="text-sm text-slate-600">
+                You can also surface links, documents, or forms here—anything
+                that helps visitors complete the primary action you want them to
+                take.
+              </p>
+            </div>
+          </AnimatedOnScroll>
         </div>
       </div>
     </section>
   );
 
   const renderSecondaryPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-gradient-to-b from-slate-950 via-slate-950/95 to-background min-h-[200vh]">
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
@@ -375,7 +406,7 @@ export const App: React.FC = () => {
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
             Secondary action details
           </h1>
-          <p className="max-w-2xl text-base text-muted-foreground md:text-lg">
+          <p className="max-w-2xl text-base text-slate-700 md:text-lg">
             Use this page for an alternate path, such as learning more about
             your company, downloading resources, or exploring additional
             offerings that support the main journey.
@@ -383,38 +414,169 @@ export const App: React.FC = () => {
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">
-          <div className="rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl">
-            <h3 className="mb-3 text-base font-semibold">
-              Supporting information
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              Highlight complementary services, FAQs, or educational content
-              here to help visitors understand the broader context of what you
-              provide.
-            </p>
-          </div>
-          <div className="rounded-3xl border border-border/60 bg-secondary/70 p-7 shadow-soft-xl">
-            <h3 className="mb-3 text-base font-semibold">
-              Optional follow-ups
-            </h3>
-            <p className="text-sm text-muted-foreground">
-              This area can be used for second-tier actions like subscribing
-              to updates, exploring case studies, or reading more about your
-              expertise.
-            </p>
-          </div>
+          <AnimatedOnScroll staggerIndex={0}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                Supporting information
+              </h3>
+              <p className="text-sm text-slate-600">
+                Highlight complementary services, FAQs, or educational content
+                here to help visitors understand the broader context of what you
+                provide.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+          <AnimatedOnScroll staggerIndex={1}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                Optional follow-ups
+              </h3>
+              <p className="text-sm text-slate-600">
+                This area can be used for second-tier actions like subscribing
+                to updates, exploring case studies, or reading more about your
+                expertise.
+              </p>
+            </div>
+          </AnimatedOnScroll>
         </div>
       </div>
     </section>
   );
 
+  const renderContactPage = () => (
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
+        <div className="space-y-4">
+          <Button
+            variant="outline"
+            size="sm"
+            className="mb-4"
+            onClick={() => setView("home")}
+          >
+            ← Back to main page
+          </Button>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
+            Get in touch
+          </p>
+          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            Let’s talk about your next project
+          </h1>
+          <p className="max-w-2xl text-base text-slate-700 md:text-lg">
+            Use this page to collect inquiries, discuss engagement details, or
+            provide direct contact information for Sherwood Technologies. You
+            can replace this content later with a full contact form or
+            integrated CRM workflow.
+          </p>
+        </div>
+
+        <div className="grid gap-8 md:grid-cols-2">
+          <AnimatedOnScroll staggerIndex={0}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                Contact details
+              </h3>
+              <p className="text-sm text-slate-600">
+                Add your preferred contact channels here – such as email
+                addresses, phone numbers, or office locations – so potential
+                clients can reach the right team quickly.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+          <AnimatedOnScroll staggerIndex={1}>
+            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <h3 className="mb-3 text-base font-semibold text-slate-900">
+                Project information
+              </h3>
+              <p className="text-sm text-slate-600">
+                Outline the information you typically need to evaluate a new
+                engagement, such as project scope, timelines, budget ranges, and
+                any existing systems or tools.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+        </div>
+      </div>
+    </section>
+  );
+
+  const handleBackToProducts = () => {
+    setView("home");
+    setProductSlug(null);
+    setTimeout(
+      () => document.getElementById("products")?.scrollIntoView({ behavior: "smooth" }),
+      100
+    );
+  };
+
+  const renderProductDetailPage = () => {
+    const product = productSlug
+      ? PRODUCTS.find((p) => p.slug === productSlug)
+      : null;
+    if (!product) return null;
+    return (
+      <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
+          <div className="space-y-4">
+            <Button
+              variant="outline"
+              size="sm"
+              className="mb-4"
+              onClick={handleBackToProducts}
+            >
+              ← Back to Products
+            </Button>
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Product
+            </p>
+            <h1 className="text-3xl font-semibold tracking-tight text-slate-900 md:text-4xl">
+              {product.name}
+            </h1>
+            <p className="max-w-2xl text-base text-slate-700 md:text-lg">
+              {product.description}
+            </p>
+          </div>
+
+          <div className="grid gap-8 md:grid-cols-2">
+            <AnimatedOnScroll staggerIndex={0}>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                <h3 className="mb-3 text-base font-semibold text-slate-900">
+                  Key features
+                </h3>
+                <p className="text-sm text-slate-600">
+                  This product is designed to deliver scalable, secure, and
+                  real-time capabilities tailored for financial institutions and
+                  treasury operations. Expand this section with specific features
+                  and benefits.
+                </p>
+              </div>
+            </AnimatedOnScroll>
+            <AnimatedOnScroll staggerIndex={1}>
+              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                <h3 className="mb-3 text-base font-semibold text-slate-900">
+                  Get started
+                </h3>
+                <p className="text-sm text-slate-600">
+                  Contact us to learn how this solution can support your
+                  organization. We can provide a demo, discuss requirements, and
+                  outline implementation options.
+                </p>
+              </div>
+            </AnimatedOnScroll>
+          </div>
+        </div>
+      </section>
+    );
+  };
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header />
-      <main className="bg-gradient-to-b from-slate-950 via-slate-950/95 to-slate-950">
+    <div className="min-h-screen bg-white text-slate-900">
+      <Header onGetInTouch={() => setView("contact")} />
+      <main className="bg-white">
         {view === "home" && renderHome()}
         {view === "primary" && renderPrimaryPage()}
         {view === "secondary" && renderSecondaryPage()}
+        {view === "contact" && renderContactPage()}
+        {view === "product-detail" && renderProductDetailPage()}
       </main>
       <footer className="border-t border-border/60 bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 text-xs text-muted-foreground">

@@ -89,6 +89,9 @@ export const App: React.FC = () => {
     "home" | "primary" | "secondary" | "contact" | "product-detail"
   >("home");
   const [productSlug, setProductSlug] = useState<ProductSlug | null>(null);
+  const [backendStatus, setBackendStatus] = useState<
+    "unknown" | "connected" | "not_connected"
+  >("unknown");
 
   useEffect(() => {
     const scrollToTopViews = ["product-detail", "contact", "primary", "secondary"];
@@ -96,6 +99,32 @@ export const App: React.FC = () => {
       window.scrollTo(0, 0);
     }
   }, [view, productSlug]);
+
+  useEffect(() => {
+    const checkBackend = async () => {
+      try {
+        const res = await fetch("http://localhost:4000/api/health");
+        if (!res.ok) {
+          console.log("The backend is not connected");
+          setBackendStatus("not_connected");
+          return;
+        }
+        const data = await res.json();
+        if (data && data.status === "ok") {
+          console.log("The backend is connected");
+          setBackendStatus("connected");
+        } else {
+          console.log("The backend is not connected");
+          setBackendStatus("not_connected");
+        }
+      } catch (error) {
+        console.log("The backend is not connected");
+        setBackendStatus("not_connected");
+      }
+    };
+
+    checkBackend();
+  }, []);
 
   const renderHome = () => (
     <>
@@ -602,7 +631,11 @@ export const App: React.FC = () => {
       <footer className="border-t border-border/60 bg-background/95">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 text-xs text-muted-foreground">
           <span>© {new Date().getFullYear()} Sherwood Technologies</span>
-          <span></span>
+          <span>
+            {backendStatus === "connected" && "The backend is connected"}
+            {backendStatus === "not_connected" && "The backend is not connected"}
+            {backendStatus === "unknown" && ""}
+          </span>
         </div>
       </footer>
     </div>

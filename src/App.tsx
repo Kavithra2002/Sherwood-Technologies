@@ -3,6 +3,15 @@ import { Header } from "./components/layout/Header";
 import "./global.css";
 import { Button } from "./components/ui/button";
 import { AnimatedOnScroll } from "./components/ui/AnimatedOnScroll";
+import homeHeroBg from "../images/erika-lowe-DIiHTRTchvs-unsplash.jpg";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./components/ui/dialog";
 
 const Section: React.FC<{
   id: string;
@@ -92,6 +101,18 @@ export const App: React.FC = () => {
   const [backendStatus, setBackendStatus] = useState<
     "unknown" | "connected" | "not_connected"
   >("unknown");
+  const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
+    useState(false);
+  const [consultationForm, setConsultationForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    contactNumber: "",
+  });
+  const [consultationSubmitting, setConsultationSubmitting] = useState(false);
+  const [consultationResult, setConsultationResult] = useState<
+    "none" | "success" | "invalid" | "duplicate"
+  >("none");
 
   useEffect(() => {
     const scrollToTopViews = ["product-detail", "contact", "primary", "secondary"];
@@ -130,9 +151,14 @@ export const App: React.FC = () => {
     <>
       <section
         id="home"
-        className="scroll-mt-32 border-b border-border/40 bg-white"
+        className="home-hero scroll-mt-32 border-b border-border/40"
+        style={
+          {
+            ["--home-hero-bg" as never]: `url(${homeHeroBg})`,
+          } as React.CSSProperties
+        }
       >
-        <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:py-28">
+        <div className="home-hero__content mx-auto flex max-w-6xl flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:py-28">
           <div className="flex-1 space-y-7">
             <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
               DIGITAL EXPERIENCE 
@@ -163,7 +189,7 @@ export const App: React.FC = () => {
             {/* Main hero visual – digital experience theme */}
             <div className="relative mx-auto max-w-lg">
               <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950 shadow-md">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_0%,rgba(121,199,44,0.12),transparent_50%)]" />
+                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_90%_0%,rgba(121,199,44,0.12),transparent_90%)]" />
                 <div className="relative aspect-[4/3] p-6">
                   <svg
                     viewBox="0 0 400 300"
@@ -472,6 +498,72 @@ export const App: React.FC = () => {
     </section>
   );
 
+  const handleConsultationChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const { name, value } = e.target;
+    setConsultationResult("none");
+    setConsultationForm((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleConsultationSubmit = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
+    e.preventDefault();
+    setConsultationResult("none");
+
+    if (
+      !consultationForm.firstName.trim() ||
+      !consultationForm.lastName.trim() ||
+      !consultationForm.email.trim() ||
+      !consultationForm.contactNumber.trim()
+    ) {
+      setConsultationResult("invalid");
+      return;
+    }
+
+    setConsultationSubmitting(true);
+    try {
+      const res = await fetch("http://localhost:4000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          firstName: consultationForm.firstName.trim(),
+          lastName: consultationForm.lastName.trim(),
+          email: consultationForm.email.trim(),
+          contactNumber: consultationForm.contactNumber.trim(),
+        }),
+      });
+
+      if (res.ok) {
+        setConsultationResult("success");
+        setConsultationForm({
+          firstName: "",
+          lastName: "",
+          email: "",
+          contactNumber: "",
+        });
+        return;
+      }
+
+      if (res.status === 409) {
+        setConsultationResult("duplicate");
+        return;
+      }
+
+      setConsultationResult("invalid");
+    } catch {
+      setConsultationResult("invalid");
+    } finally {
+      setConsultationSubmitting(false);
+    }
+  };
+
   const renderContactPage = () => (
     <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
@@ -496,6 +588,154 @@ export const App: React.FC = () => {
             can replace this content later with a full contact form or
             integrated CRM workflow.
           </p>
+          <div className="mt-6 max-w-2xl space-y-3 rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-5">
+            <p className="text-base font-semibold text-slate-900">
+              To book a free consultation session
+            </p>
+            <p className="text-sm text-slate-700">
+              Share a few basic details so we can prepare for our discussion and
+              connect you with the right team member.
+            </p>
+            <Dialog
+              open={isConsultationDialogOpen}
+              onOpenChange={(open) => {
+                setIsConsultationDialogOpen(open);
+                if (!open) {
+                  setConsultationResult("none");
+                }
+              }}
+            >
+              <DialogTrigger asChild>
+                <Button size="lg" className="mt-2 w-fit">
+                  Sign in to book a consultation
+                </Button>
+              </DialogTrigger>
+              <DialogContent>
+                <DialogHeader>
+                  <DialogTitle>Book a free consultation</DialogTitle>
+                  <DialogDescription>
+                    Please provide your contact details and we will reach out to
+                    confirm a convenient time for your session.
+                  </DialogDescription>
+                  {consultationResult === "success" && (
+                    <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                      Thank you. Your details have been saved and we will contact
+                      you shortly to schedule your consultation.
+                    </div>
+                  )}
+                  {consultationResult === "invalid" && (
+                    <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                      Please check that all fields are filled in correctly and
+                      try again.
+                    </div>
+                  )}
+                  {consultationResult === "duplicate" && (
+                    <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-700">
+                      These details are already registered. If you need to update
+                      your information, please contact us directly.
+                    </div>
+                  )}
+                </DialogHeader>
+                <form
+                  className="mt-4 space-y-4"
+                  onSubmit={handleConsultationSubmit}
+                >
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-1">
+                      <label
+                        htmlFor="consultation-first-name"
+                        className="text-sm font-medium text-slate-800"
+                      >
+                        First name
+                      </label>
+                      <input
+                        id="consultation-first-name"
+                        name="firstName"
+                        type="text"
+                        value={consultationForm.firstName}
+                        onChange={handleConsultationChange}
+                        className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        placeholder="Enter your first name"
+                      />
+                    </div>
+                    <div className="space-y-1">
+                      <label
+                        htmlFor="consultation-last-name"
+                        className="text-sm font-medium text-slate-800"
+                      >
+                        Last name
+                      </label>
+                      <input
+                        id="consultation-last-name"
+                        name="lastName"
+                        type="text"
+                        value={consultationForm.lastName}
+                        onChange={handleConsultationChange}
+                        className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                        placeholder="Enter your last name"
+                      />
+                    </div>
+                  </div>
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="consultation-email"
+                      className="text-sm font-medium text-slate-800"
+                    >
+                      Email address
+                    </label>
+                    <input
+                      id="consultation-email"
+                      name="email"
+                      type="email"
+                      value={consultationForm.email}
+                      onChange={handleConsultationChange}
+                      className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      placeholder="name@example.com"
+                    />
+                  </div>
+                  <div className="space-y-1">
+                    <label
+                      htmlFor="consultation-contact-number"
+                      className="text-sm font-medium text-slate-800"
+                    >
+                      Contact number
+                    </label>
+                    <input
+                      id="consultation-contact-number"
+                      name="contactNumber"
+                      type="tel"
+                      value={consultationForm.contactNumber}
+                      onChange={handleConsultationChange}
+                      className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                      placeholder="Include country code if applicable"
+                    />
+                  </div>
+                  <div className="mt-2 flex justify-end gap-3">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      onClick={() => {
+                        setIsConsultationDialogOpen(false);
+                        setConsultationResult("none");
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                    <Button
+                      type="submit"
+                      size="sm"
+                      disabled={consultationSubmitting}
+                    >
+                      {consultationSubmitting
+                        ? "Submitting..."
+                        : "Confirm booking"}
+                    </Button>
+                  </div>
+                </form>
+              </DialogContent>
+            </Dialog>
+          </div>
         </div>
 
         <div className="grid gap-8 md:grid-cols-2">

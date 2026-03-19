@@ -3,7 +3,7 @@ import { Header } from "./components/layout/Header";
 import "./global.css";
 import { Button } from "./components/ui/button";
 import { AnimatedOnScroll } from "./components/ui/AnimatedOnScroll";
-import homeHeroBg from "../images/erika-lowe-DIiHTRTchvs-unsplash.jpg";
+import homeHeroBg from "../images/background-lowpoly-rotated-180.jpg";
 import {
   Dialog,
   DialogContent,
@@ -19,17 +19,45 @@ const Section: React.FC<{
   kicker?: string;
   description?: React.ReactNode;
   variant?: "default" | "white";
+  backgroundImageSrc?: string;
   children?: React.ReactNode;
-}> = ({ id, label, kicker, description, variant = "default", children }) => {
+}> = ({
+  id,
+  label,
+  kicker,
+  description,
+  variant = "default",
+  backgroundImageSrc,
+  children,
+}) => {
   return (
     <section
       id={id}
       className={
-        "scroll-mt-32 border-b border-border/40 bg-white" +
+        "scroll-mt-32 border-b border-border/40" +
+        (backgroundImageSrc ? " relative overflow-hidden bg-transparent" : " bg-white") +
         (variant === "white" ? "" : "")
       }
     >
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32">
+      {backgroundImageSrc && (
+        <>
+          <img
+            src={backgroundImageSrc}
+            alt=""
+            aria-hidden="true"
+            className="absolute inset-0 h-full w-full object-cover opacity-30"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0"
+            style={{
+              background:
+                "linear-gradient(to bottom, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08))",
+            }}
+          />
+        </>
+      )}
+      <div className="mx-auto relative z-[1] flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32">
         <div className="max-w-2xl space-y-3">
           {kicker && (
             <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
@@ -185,63 +213,6 @@ export const App: React.FC = () => {
               </Button>
             </div>
           </div>
-          <div className="relative flex-1">
-            {/* Main hero visual – digital experience theme */}
-            <div className="relative mx-auto max-w-lg">
-              <div className="relative overflow-hidden rounded-3xl border border-border/70 bg-gradient-to-br from-slate-900/90 via-slate-900/60 to-slate-950 shadow-md">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_90%_0%,rgba(121,199,44,0.12),transparent_90%)]" />
-                <div className="relative aspect-[4/3] p-6">
-                  <svg
-                    viewBox="0 0 400 300"
-                    className="h-full w-full"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    {/* Soft grid */}
-                    <defs>
-                      <pattern id="hero-grid" width="20" height="20" patternUnits="userSpaceOnUse">
-                        <path d="M 20 0 L 0 0 0 20" fill="none" stroke="rgba(148,163,184,0.08)" strokeWidth="0.5" />
-                      </pattern>
-                      <linearGradient id="hero-accent" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stopColor="#79C72C" stopOpacity="0.9" />
-                        <stop offset="100%" stopColor="#4c9141" stopOpacity="0.7" />
-                      </linearGradient>
-                      <linearGradient id="hero-sky" x1="0%" y1="100%" x2="100%" y2="0%">
-                        <stop offset="0%" stopColor="#38bdf8" stopOpacity="0.4" />
-                        <stop offset="100%" stopColor="#79C72C" stopOpacity="0.2" />
-                      </linearGradient>
-                    </defs>
-                    <rect width="400" height="300" fill="url(#hero-grid)" />
-                    {/* Abstract nodes and connections */}
-                    <circle cx="120" cy="100" r="40" fill="url(#hero-accent)" opacity="0.5" />
-                    <circle cx="280" cy="120" r="28" fill="url(#hero-sky)" opacity="0.6" />
-                    <circle cx="200" cy="200" r="24" fill="rgba(121,199,44,0.25)" />
-                    <path d="M 120 100 Q 200 80 280 120" stroke="rgba(121,199,44,0.35)" strokeWidth="2" fill="none" />
-                    <path d="M 120 100 Q 160 180 200 200" stroke="rgba(148,163,184,0.2)" strokeWidth="1.5" fill="none" />
-                    <path d="M 280 120 Q 240 160 200 200" stroke="rgba(56,189,248,0.25)" strokeWidth="1.5" fill="none" />
-                    {/* Window/dashboard hint */}
-                    <rect x="40" y="220" width="320" height="50" rx="8" fill="rgba(15,23,42,0.8)" stroke="rgba(148,163,184,0.12)" strokeWidth="1" />
-                    <rect x="55" y="232" width="60" height="8" rx="4" fill="rgba(121,199,44,0.4)" />
-                    <rect x="130" y="232" width="80" height="8" rx="4" fill="rgba(148,163,184,0.15)" />
-                  </svg>
-                </div>
-              </div>
-              {/* Second image – complementary themed card */}
-              <div className="absolute -bottom-4 -right-2 w-[45%] max-w-[220px] overflow-hidden rounded-2xl border border-border/60 bg-gradient-to-br from-slate-800/95 to-slate-950 shadow-md">
-                <div className="absolute inset-0 bg-[radial-gradient(ellipse_70%_70%_at_30%_30%,rgba(121,199,44,0.08),transparent)]" />
-                <div className="relative aspect-[3/2] p-4">
-                  <svg viewBox="0 0 120 80" className="h-full w-full" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <rect x="10" y="10" width="50" height="35" rx="4" fill="rgba(15,23,42,0.9)" stroke="rgba(121,199,44,0.2)" strokeWidth="1" />
-                    <rect x="16" y="16" width="20" height="4" rx="2" fill="rgba(121,199,44,0.5)" />
-                    <rect x="16" y="24" width="30" height="3" rx="1.5" fill="rgba(148,163,184,0.15)" />
-                    <rect x="16" y="30" width="25" height="3" rx="1.5" fill="rgba(148,163,184,0.1)" />
-                    <path d="M 70 25 L 95 25 L 95 55 L 70 55 Z" fill="none" stroke="rgba(56,189,248,0.25)" strokeWidth="1.5" strokeDasharray="4 2" />
-                    <circle cx="82" cy="40" r="8" fill="rgba(121,199,44,0.2)" />
-                  </svg>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -373,15 +344,109 @@ export const App: React.FC = () => {
         label="About us"
         kicker="Who are we"
         variant="white"
+        backgroundImageSrc={homeHeroBg}
         description={
-          <p className="text-base text-slate-700 md:text-lg">
-            Great digital experiences start with great people. Meet the team
-            behind Sherwood Technologies.
+          <p className="text-base text-muted-foreground md:text-lg">
+            At Sherwood Technologies, our people are the heart of everything we
+            create. Led by experienced visionaries like our Lead Partner and
+            Executive Director, we&apos;re a team of passionate innovators
+            dedicated to transforming bold ideas into powerful digital realities.
+            Together, we don&apos;t just build websites — we build lasting
+            partnerships, one breakthrough at a time.
           </p>
         }
       >
-        <div className="mt-10 flex min-h-[400px] items-center justify-center rounded-3xl border border-dashed border-border/60 bg-slate-50 px-6 text-center text-sm text-slate-700">
-          Content for this About us section will be added here later.
+        <div className="grid gap-6 md:grid-cols-3">
+          <AnimatedOnScroll staggerIndex={0}>
+            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
+              <div
+                aria-hidden="true"
+                className="absolute -right-14 -top-14 h-44 w-44 rounded-full bg-emerald-400/25 blur-2xl transition-opacity group-hover:opacity-80"
+              />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
+                  <h3 className="text-base font-semibold text-emerald-950">
+                    Contact us
+                  </h3>
+                </div>
+                <p className="text-sm text-emerald-950/80">
+                  Reach out for consultations, project inquiries, or product
+                  demos. We’ll connect you with the right team quickly.
+                </p>
+                <div className="mt-6">
+                  <Button size="sm" onClick={() => setView("contact")}>
+                    Get in touch
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={1}>
+            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
+              <div
+                aria-hidden="true"
+                className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-emerald-500/20 blur-2xl transition-opacity group-hover:opacity-80"
+              />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
+                  <h3 className="text-base font-semibold text-emerald-950">
+                    Location
+                  </h3>
+                </div>
+                <p className="text-sm text-emerald-950/80">
+                  Visit our office or schedule a meeting. We also support remote
+                  engagements across regions.
+                </p>
+                <div className="mt-5 rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3 text-sm text-emerald-950/80">
+                  <p className="font-medium text-emerald-950">Head office</p>
+                  <p className="mt-1">
+                    Add your address here (street, city, country)
+                  </p>
+                </div>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={2}>
+            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
+              <div
+                aria-hidden="true"
+                className="absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-emerald-300/25 blur-2xl transition-opacity group-hover:opacity-80"
+              />
+              <div className="relative">
+                <div className="mb-4 flex items-center gap-3">
+                  <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
+                  <h3 className="text-base font-semibold text-emerald-950">
+                    Team members
+                  </h3>
+                </div>
+                <p className="text-sm text-emerald-950/80">
+                  A cross-functional group of engineers and finance specialists
+                  building secure, scalable digital products.
+                </p>
+                <div className="mt-5 grid gap-3">
+                  {[
+                    { name: "Lead Partner", role: "Executive Director" },
+                    { name: "Engineering", role: "Platform & Mobile" },
+                    { name: "Advisory", role: "Finance & Treasury" },
+                  ].map((person) => (
+                    <div
+                      key={person.name}
+                      className="flex items-center justify-between rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3 text-sm"
+                    >
+                      <span className="font-medium text-emerald-950">
+                        {person.name}
+                      </span>
+                      <span className="text-emerald-950/70">{person.role}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </AnimatedOnScroll>
         </div>
       </Section>
     </>
@@ -858,7 +923,7 @@ export const App: React.FC = () => {
   return (
     <div className="min-h-screen bg-white text-slate-900">
       <Header
-        onGetInTouch={() => setView("contact")}
+        onBookConsultation={() => setView("contact")}
         onNavigateSection={handleNavigateSection}
       />
       <main className="bg-white">

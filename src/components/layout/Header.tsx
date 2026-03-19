@@ -11,9 +11,9 @@ const sections = [
 ];
 
 export const Header: React.FC<{
-  onGetInTouch?: () => void;
   onNavigateSection?: (id: string) => void;
-}> = ({ onGetInTouch, onNavigateSection }) => {
+  onBookConsultation?: () => void;
+}> = ({ onNavigateSection, onBookConsultation }) => {
   const [active, setActive] = React.useState<string>("home");
 
   React.useEffect(() => {
@@ -49,7 +49,8 @@ export const Header: React.FC<{
   };
 
   return (
-<header className="sticky top-0 z-40 h-[3.7rem] shrink-0 border-b border-border/60 bg-background/80 backdrop-blur-xl">      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 py-1">
+    <header className="sticky top-0 z-40 h-[3.7rem] shrink-0 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+      <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-6 py-1">
         <div className="flex h-full min-h-0 items-center gap-4">
           <img
             src={logoImg}
@@ -83,11 +84,15 @@ export const Header: React.FC<{
         </nav>
 
         <div className="flex items-center gap-3">
-          <Button variant="ghost" size="sm">
-          </Button>
-          <Button size="sm" onClick={onGetInTouch}>
-            Get in touch
-          </Button>
+          {onBookConsultation && (
+            <Button
+              type="button"
+              onClick={onBookConsultation}
+              className="h-9 rounded-full px-4"
+            >
+              Book consultation
+            </Button>
+          )}
         </div>
       </div>
     </header>

@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { Header } from "./components/layout/Header";
 import "./global.css";
 import { Button } from "./components/ui/button";
 import { AnimatedOnScroll } from "./components/ui/AnimatedOnScroll";
-import homeHeroBg from "../images/background-lowpoly-rotated-180.jpg";
+import { TechRail } from "./components/TechRail";
+import { HomeHeroThreeBackground } from "./components/HomeHeroThreeBackground";
 import {
   Dialog,
   DialogContent,
@@ -60,22 +61,30 @@ const Section: React.FC<{
       <div className="mx-auto relative z-[1] flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32">
         <div className="max-w-2xl space-y-3">
           {kicker && (
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              {kicker}
-            </p>
+            <AnimatedOnScroll staggerIndex={0}>
+              <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+                {kicker}
+              </p>
+            </AnimatedOnScroll>
           )}
-          <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            {label}
-          </h2>
+          <AnimatedOnScroll staggerIndex={kicker ? 1 : 0}>
+            <h2 className="text-3xl font-semibold tracking-tight md:text-4xl">
+              {label}
+            </h2>
+          </AnimatedOnScroll>
           {description ? (
-            description
+            <AnimatedOnScroll staggerIndex={kicker ? 2 : 1}>
+              {description}
+            </AnimatedOnScroll>
           ) : (
-            <p className="text-base text-muted-foreground md:text-lg">
-              {/* Placeholder text to be replaced later */}
-              This is placeholder copy for the {label.toLowerCase()} section.
-              You can replace this with your own content, visuals, and calls to
-              action.
-            </p>
+            <AnimatedOnScroll staggerIndex={kicker ? 2 : 1}>
+              <p className="text-base text-muted-foreground md:text-lg">
+                {/* Placeholder text to be replaced later */}
+                This is placeholder copy for the {label.toLowerCase()} section.
+                You can replace this with your own content, visuals, and calls to
+                action.
+              </p>
+            </AnimatedOnScroll>
           )}
         </div>
         {children}
@@ -121,6 +130,41 @@ const PRODUCTS: Array<{
   },
 ];
 
+const CLIENTS: Array<{
+  name: string;
+  tagline: string;
+  description: string;
+}> = [
+  {
+    name: "Summit Financial Group",
+    tagline: "Wealth & treasury operations",
+    description:
+      "We support their portfolio and treasury workflows with tailored platforms, automation, and ongoing optimisation for regional teams.",
+  },
+  {
+    name: "Meridian Capital Partners",
+    tagline: "Investment & advisory",
+    description:
+      "Partnership focused on secure data flows, reporting, and tools that help advisors and analysts stay aligned.",
+  },
+  {
+    name: "Harbor Trust Bank",
+    tagline: "Retail & corporate banking",
+    description:
+      "Digital channels and internal systems that improve efficiency, compliance visibility, and customer experience.",
+  },
+  {
+    name: "Northwind Asset Management",
+    tagline: "Equity & portfolio oversight",
+    description:
+      "Solutions for tracking positions, performance, and risk with clear dashboards for decision-makers.",
+  },
+];
+
+/** Green gradient back nav — matches Book Consultation CTA on light subpages */
+const backNavGreenButtonClassName =
+  "mb-4 border-0 bg-gradient-to-r from-[#79C72C] to-[#4c9141] text-white shadow-[0_3px_14px_rgba(121,199,44,0.35)] transition-[filter,transform,box-shadow] hover:brightness-105 hover:bg-gradient-to-r hover:from-[#79C72C] hover:to-[#4c9141] hover:shadow-[0_6px_20px_rgba(121,199,44,0.4)] focus-visible:ring-primary/50 active:scale-[0.98] md:h-9";
+
 export const App: React.FC = () => {
   const [view, setView] = useState<
     "home" | "primary" | "secondary" | "contact" | "product-detail"
@@ -141,6 +185,31 @@ export const App: React.FC = () => {
   const [consultationResult, setConsultationResult] = useState<
     "none" | "success" | "invalid" | "duplicate"
   >("none");
+
+  const lastScrollY = useRef(0);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+
+  const SCROLL_TOP_REVEAL_AFTER = 240;
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      const prev = lastScrollY.current;
+      lastScrollY.current = y;
+      if (y < SCROLL_TOP_REVEAL_AFTER) {
+        setShowScrollTop(false);
+        return;
+      }
+      if (y < prev) {
+        setShowScrollTop(true);
+      } else if (y > prev) {
+        setShowScrollTop(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const scrollToTopViews = ["product-detail", "contact", "primary", "secondary"];
@@ -179,39 +248,44 @@ export const App: React.FC = () => {
     <>
       <section
         id="home"
-        className="home-hero scroll-mt-32 border-b border-border/40"
-        style={
-          {
-            ["--home-hero-bg" as never]: `url(${homeHeroBg})`,
-          } as React.CSSProperties
-        }
+        className="home-hero scroll-mt-32 flex min-h-screen flex-col border-b border-border/40 pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]"
       >
-        <div className="home-hero__content mx-auto flex max-w-6xl flex-col gap-10 px-6 py-20 md:flex-row md:items-center md:py-28">
-          <div className="flex-1 space-y-7">
-            <p className="text-sm font-semibold uppercase tracking-[0.3em] text-primary">
-              DIGITAL EXPERIENCE 
-            </p>
-            <h1 className="text-4xl font-semibold tracking-tight text-slate-900 md:text-6xl">
-              Building Smart Software for a{" "}
-              <span className="bg-gradient-to-r from-primary via-sky-400 to-accent bg-clip-text text-transparent">
-                Digital Future
-              </span>
-            </h1>
-            <p className="max-w-xl text-base text-slate-700 md:text-lg">
-              Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.
-            </p>
-            <div className="flex flex-wrap gap-3">
-              <Button size="lg" onClick={() => setView("primary")}>
-                Primary action
-              </Button>
-              <Button
-                variant="outline"
-                size="lg"
-                onClick={() => setView("secondary")}
-              >
-                Secondary action
-              </Button>
-            </div>
+        <HomeHeroThreeBackground />
+        <div className="home-hero__content mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-10 px-6 py-16 md:flex-row md:items-center md:py-20">
+          <div className="flex-1 space-y-7 text-center md:text-left">
+            <AnimatedOnScroll staggerIndex={0}>
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300/95">
+                Digital experience
+              </p>
+            </AnimatedOnScroll>
+            <AnimatedOnScroll staggerIndex={1}>
+              <h1 className="text-4xl font-semibold tracking-tight text-white drop-shadow-sm md:text-6xl md:leading-[1.08]">
+                Building Smart Software for a{" "}
+                <span className="bg-gradient-to-r from-emerald-200 via-primary to-lime-200 bg-clip-text text-transparent">
+                  Digital Future
+                </span>
+              </h1>
+            </AnimatedOnScroll>
+            <AnimatedOnScroll staggerIndex={2}>
+              <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-300/95 md:mx-0 md:text-lg">
+                Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.
+              </p>
+            </AnimatedOnScroll>
+            <AnimatedOnScroll staggerIndex={3}>
+              <div className="flex flex-wrap justify-center gap-3 md:justify-start">
+                <Button size="lg" onClick={() => setView("primary")}>
+                  Primary action
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="border-white/30 bg-white/10 text-white shadow-none backdrop-blur-sm hover:border-white/45 hover:bg-white/15 hover:text-white"
+                  onClick={() => setView("secondary")}
+                >
+                  Secondary action
+                </Button>
+              </div>
+            </AnimatedOnScroll>
           </div>
         </div>
       </section>
@@ -253,8 +327,8 @@ export const App: React.FC = () => {
             },
           ].map((service, index) => (
             <AnimatedOnScroll key={service.name} staggerIndex={index}>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-                <div className="mb-4 h-10 w-10 rounded-2xl bg-primary/20" />
+              <div className="card-interactive group cursor-default rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                <div className="mb-4 h-10 w-10 rounded-2xl bg-primary/20 transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30" />
                 <h3 className="mb-3 text-base font-semibold text-slate-900">
                   {service.name}
                 </h3>
@@ -288,7 +362,7 @@ export const App: React.FC = () => {
         <div className="grid gap-8 md:grid-cols-2">
           {PRODUCTS.map((product, index) => (
             <AnimatedOnScroll key={product.slug} staggerIndex={index}>
-              <div className="flex flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md md:flex-row">
+              <div className="group flex cursor-default flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-md transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:hover:translate-y-0 md:flex-row">
                 <div>
                   <h3 className="mb-3 text-base font-semibold text-slate-900">
                     {product.name}
@@ -315,6 +389,8 @@ export const App: React.FC = () => {
         </div>
       </Section>
 
+      <TechRail />
+
       <Section
         id="clients"
         label="Clients"
@@ -327,14 +403,31 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid gap-6 text-sm text-slate-600 md:grid-cols-3">
-          {Array.from({ length: 6 }).map((_, index) => (
-            <div
-              key={index}
-              className="flex items-center justify-center rounded-3xl border border-dashed border-slate-200 bg-slate-50 px-6 py-8 text-slate-700"
-            >
-              Client logo / name
-            </div>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          {CLIENTS.map((client, index) => (
+            <AnimatedOnScroll key={client.name} staggerIndex={index}>
+              <div
+                className="group client-flip-card h-full"
+                tabIndex={0}
+                role="group"
+                aria-label={`${client.name}. ${client.tagline}. Hover or focus to read more.`}
+              >
+                <div className="client-flip-card-inner">
+                  <div className="client-flip-front rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                    <div className="mb-4 h-10 w-10 shrink-0 rounded-2xl bg-primary/20 transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30" />
+                    <h3 className="mb-2 text-base font-semibold text-slate-900">
+                      {client.name}
+                    </h3>
+                    <p className="text-sm text-slate-600">{client.tagline}</p>
+                  </div>
+                  <div className="client-flip-back">
+                    <p className="text-center text-sm leading-relaxed text-slate-200">
+                      {client.description}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </AnimatedOnScroll>
           ))}
         </div>
       </Section>
@@ -344,7 +437,6 @@ export const App: React.FC = () => {
         label="About us"
         kicker="Who are we"
         variant="white"
-        backgroundImageSrc={homeHeroBg}
         description={
           <p className="text-base text-muted-foreground md:text-lg">
             At Sherwood Technologies, our people are the heart of everything we
@@ -374,8 +466,12 @@ export const App: React.FC = () => {
                   Reach out for consultations, project inquiries, or product
                   demos. We’ll connect you with the right team quickly.
                 </p>
-                <div className="mt-6">
-                  <Button size="sm" onClick={() => setView("contact")}>
+                <div className="mt-5 rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3">
+                  <Button
+                    size="sm"
+                    className="w-full"
+                    onClick={() => setView("contact")}
+                  >
                     Get in touch
                   </Button>
                 </div>
@@ -453,13 +549,13 @@ export const App: React.FC = () => {
   );
 
   const renderPrimaryPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
-            className="mb-4"
+            className={backNavGreenButtonClassName}
             onClick={() => setView("home")}
           >
             ← Back to main page
@@ -480,7 +576,7 @@ export const App: React.FC = () => {
 
         <div className="grid gap-8 md:grid-cols-2">
           <AnimatedOnScroll staggerIndex={0}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 How we can engage
               </h3>
@@ -492,7 +588,7 @@ export const App: React.FC = () => {
             </div>
           </AnimatedOnScroll>
           <AnimatedOnScroll staggerIndex={1}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 Next steps
               </h3>
@@ -509,13 +605,13 @@ export const App: React.FC = () => {
   );
 
   const renderSecondaryPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
-            className="mb-4"
+            className={backNavGreenButtonClassName}
             onClick={() => setView("home")}
           >
             ← Back to main page
@@ -535,7 +631,7 @@ export const App: React.FC = () => {
 
         <div className="grid gap-8 md:grid-cols-2">
           <AnimatedOnScroll staggerIndex={0}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 Supporting information
               </h3>
@@ -547,7 +643,7 @@ export const App: React.FC = () => {
             </div>
           </AnimatedOnScroll>
           <AnimatedOnScroll staggerIndex={1}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 Optional follow-ups
               </h3>
@@ -630,13 +726,13 @@ export const App: React.FC = () => {
   };
 
   const renderContactPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
       <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
-            className="mb-4"
+            className={backNavGreenButtonClassName}
             onClick={() => setView("home")}
           >
             ← Back to main page
@@ -805,7 +901,7 @@ export const App: React.FC = () => {
 
         <div className="grid gap-8 md:grid-cols-2">
           <AnimatedOnScroll staggerIndex={0}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 Contact details
               </h3>
@@ -817,7 +913,7 @@ export const App: React.FC = () => {
             </div>
           </AnimatedOnScroll>
           <AnimatedOnScroll staggerIndex={1}>
-            <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
               <h3 className="mb-3 text-base font-semibold text-slate-900">
                 Project information
               </h3>
@@ -848,13 +944,13 @@ export const App: React.FC = () => {
       : null;
     if (!product) return null;
     return (
-      <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh]">
+      <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
           <div className="space-y-4">
             <Button
-              variant="outline"
+              variant="default"
               size="sm"
-              className="mb-4"
+              className={backNavGreenButtonClassName}
               onClick={handleBackToProducts}
             >
               ← Back to Products
@@ -872,7 +968,7 @@ export const App: React.FC = () => {
 
           <div className="grid gap-8 md:grid-cols-2">
             <AnimatedOnScroll staggerIndex={0}>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
                 <h3 className="mb-3 text-base font-semibold text-slate-900">
                   Key features
                 </h3>
@@ -885,7 +981,7 @@ export const App: React.FC = () => {
               </div>
             </AnimatedOnScroll>
             <AnimatedOnScroll staggerIndex={1}>
-              <div className="rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+              <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
                 <h3 className="mb-3 text-base font-semibold text-slate-900">
                   Get started
                 </h3>
@@ -921,12 +1017,13 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-background text-slate-900">
       <Header
+        variant={view === "home" ? "default" : "light"}
         onBookConsultation={() => setView("contact")}
         onNavigateSection={handleNavigateSection}
       />
-      <main className="bg-white">
+      <main className="relative">
         {view === "home" && renderHome()}
         {view === "primary" && renderPrimaryPage()}
         {view === "secondary" && renderSecondaryPage()}
@@ -943,6 +1040,42 @@ export const App: React.FC = () => {
           </span>
         </div>
       </footer>
+
+      <div
+        className={
+          "fixed bottom-6 right-6 z-50 md:bottom-8 md:right-8 " +
+          "transition-all duration-300 ease-out motion-reduce:transition-none " +
+          (showScrollTop
+            ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
+            : "pointer-events-none translate-y-4 scale-95 opacity-0")
+        }
+        aria-hidden={!showScrollTop}
+      >
+        <Button
+          type="button"
+          variant="default"
+          className="h-12 w-12 min-w-[3rem] rounded-full p-0 shadow-lg shadow-primary/25 ring-2 ring-primary/20 transition-transform hover:scale-105 active:scale-95"
+          aria-label="Scroll to top"
+          tabIndex={showScrollTop ? 0 : -1}
+          onClick={() => {
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="white"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="h-5 w-5 shrink-0"
+            aria-hidden
+          >
+            <path d="M12 19V5M5 12l7-7 7 7" />
+          </svg>
+        </Button>
+      </div>
     </div>
   );
 };

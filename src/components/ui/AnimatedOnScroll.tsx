@@ -1,4 +1,11 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useLayoutEffect } from "react";
+
+function elementIntersectsViewport(el: HTMLElement): boolean {
+  const rect = el.getBoundingClientRect();
+  const vh = window.innerHeight || document.documentElement.clientHeight;
+  const vw = window.innerWidth || document.documentElement.clientWidth;
+  return rect.bottom > 0 && rect.right > 0 && rect.top < vh && rect.left < vw;
+}
 
 type AnimatedOnScrollProps = {
   children: React.ReactNode;
@@ -17,13 +24,22 @@ export const AnimatedOnScroll: React.FC<AnimatedOnScrollProps> = ({
   children,
   staggerIndex = 0,
   staggerMs = 80,
-  rootMargin = "0px 0px -40px 0px",
+  /** Matches reffer code useScrollRevealBidirectional defaults. */
+  rootMargin = "0px 0px -80px 0px",
   threshold = 0.15,
   className = "",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
+
+  /** Above-the-fold: reveal before first paint so content never stays blank. */
+  useLayoutEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (elementIntersectsViewport(el)) {
+      setIsVisible(true);
+    }
+  }, []);
 
   useEffect(() => {
     const el = ref.current;
@@ -32,13 +48,10 @@ export const AnimatedOnScroll: React.FC<AnimatedOnScrollProps> = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && !hasAnimated) {
-            // Defer by one frame so initial hidden state paints first (fixes nav-to-page case)
-            requestAnimationFrame(() => {
-              setIsVisible(true);
-              setHasAnimated(true);
-            });
-          }
+          // Bidirectional: replay entrance whenever the element re-enters the viewport
+          requestAnimationFrame(() => {
+            setIsVisible(entry.isIntersecting);
+          });
         });
       },
       { rootMargin, threshold }
@@ -46,18 +59,18 @@ export const AnimatedOnScroll: React.FC<AnimatedOnScrollProps> = ({
 
     observer.observe(el);
     return () => observer.disconnect();
-  }, [rootMargin, threshold, hasAnimated]);
+  }, [rootMargin, threshold]);
 
   const delayMs = staggerIndex * staggerMs;
-  const style: React.CSSProperties = isVisible
-    ? { animationDelay: `${delayMs}ms` }
-    : {};
+  const style: React.CSSProperties = {
+    transitionDelay: isVisible ? `${delayMs}ms` : "0ms",
+  };
 
   return (
     <div
       ref={ref}
       className={`animate-in-scroll ${isVisible ? "animate-in-scroll-visible" : ""} ${className}`.trim()}
-      style={Object.keys(style).length ? style : undefined}
+      style={style}
     >
       {children}
     </div>

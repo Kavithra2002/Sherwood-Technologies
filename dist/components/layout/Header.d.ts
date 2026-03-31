@@ -3,5 +3,7 @@ import React from "react";
 export declare const Header: React.FC<{
     onNavigateSection?: (id: string) => void;
     onBookConsultation?: () => void;
+    /** "light" = always use white bar + dark nav (e.g. product detail on white background). Default uses dark bar over hero until scroll. */
+    variant?: "default" | "light";
 }>;
 //# sourceMappingURL=Header.d.ts.map

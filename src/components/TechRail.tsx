@@ -1,15 +1,36 @@
 import React, { useEffect, useRef } from "react";
 import { AnimatedOnScroll } from "./ui/AnimatedOnScroll";
 
-const TECH_ITEMS = [
-  "React",
-  "TypeScript",
-  "Node.js",
-  "Tailwind CSS",
-  "Vite",
-  "PostgreSQL",
-  "REST APIs",
-  "Secure APIs",
+import dockerIcon from "../../images/icon/2c54f65a03c35ac90f5c73b92da39779-removebg-preview.png";
+import awsIcon from "../../images/icon/4a417d1f8cab870d4e93498ae1ae2d21-removebg-preview.png";
+import reactIcon from "../../images/icon/8dfe0a99a74efbec4af0d8e440c00282-removebg-preview.png";
+import githubIcon from "../../images/icon/23b6a54bb91af033768b372cb7591b41-removebg-preview.png";
+import tailwindIcon from "../../images/icon/35f4a6a73282c5da5c44d14127f08cc3-removebg-preview.png";
+import nextIcon from "../../images/icon/329ad85f4ab2047cae13d582274f9270-removebg-preview.png";
+import flutterIcon from "../../images/icon/560c4353b21b4948e5f0e9508ea07597-removebg-preview.png";
+import nodeIcon from "../../images/icon/c3ab7c376b4406efed269d8fa914822d-removebg-preview.png";
+import openaiIcon from "../../images/icon/c54e7facca8edc97b11051071f9d235f-removebg-preview.png";
+import cursorIcon from "../../images/icon/ce5b1916c72bf055d9cf9c391f9b7237-removebg-preview.png";
+import mysqlIcon from "../../images/icon/f8ee696f018c1a4ad6b9972b85fc6b2e-removebg-preview.png";
+
+type TechItem = {
+  id: string;
+  label: string;
+  src: string;
+};
+
+const TECH_ITEMS: TechItem[] = [
+  { id: "docker", label: "Docker", src: dockerIcon },
+  { id: "aws", label: "AWS", src: awsIcon },
+  { id: "react", label: "React", src: reactIcon },
+  { id: "github", label: "GitHub", src: githubIcon },
+  { id: "tailwind", label: "Tailwind CSS", src: tailwindIcon },
+  { id: "next", label: "Next.js", src: nextIcon },
+  { id: "flutter", label: "Flutter", src: flutterIcon },
+  { id: "node", label: "Node.js", src: nodeIcon },
+  { id: "openai", label: "OpenAI", src: openaiIcon },
+  { id: "cursor", label: "Cursor", src: cursorIcon },
+  { id: "mysql", label: "MySQL", src: mysqlIcon },
 ];
 
 export const TechRail: React.FC = () => {
@@ -44,11 +65,14 @@ export const TechRail: React.FC = () => {
       </div>
       <div ref={railRef} className="tech-rail-track">
         {[...TECH_ITEMS, ...TECH_ITEMS].map((t, i) => (
-          <div key={`${t}-${i}`} className="tech-item">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden>
-              <circle cx="8" cy="8" r="3" className="tech-item-dot" />
-            </svg>
-            <span className="tech-label">{t}</span>
+          <div key={`${t.id}-${i}`} className="tech-item">
+            <img
+              src={t.src}
+              alt={t.label}
+              className="tech-icon"
+              loading="lazy"
+              decoding="async"
+            />
           </div>
         ))}
       </div>

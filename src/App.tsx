@@ -13,6 +13,25 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "./components/ui/dialog";
+import ambeonHoldingsLogo from "../images/Ambeon_Holdings_logo.png";
+import colomboCityHoldingsLogo from "../images/colombo city holding.png";
+import productSampleScreenshot from "../images/Screenshot 2026-03-31 091132.png";
+import itmsScreenshot1 from "../images/itms1.png";
+import itmsScreenshot2 from "../images/itms2.png";
+import itmsScreenshot3 from "../images/itms3.png";
+import itmsScreenshot4 from "../images/itms4.png";
+import mobileScreenshot1 from "../images/mobile1.png";
+import mobileScreenshot2 from "../images/mobile2.png";
+import mobileScreenshot3 from "../images/mobile3.png";
+
+const CLIENT_LOGOS: Array<{ src: string; alt: string; logoClassName?: string }> = [
+  { src: ambeonHoldingsLogo, alt: "Ambeon Holdings PLC" },
+  {
+    src: colomboCityHoldingsLogo,
+    alt: "Colombo City Holdings PLC",
+    logoClassName: "scale-[1.4]",
+  },
+];
 
 const Section: React.FC<{
   id: string;
@@ -106,9 +125,9 @@ const PRODUCTS: Array<{
 }> = [
   {
     slug: "wealth-management",
-    name: "Wealth Management System",
+    name: "Wealth Management System and Mobile App",
     description:
-      "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. The system provides real-time insights, portfolio tracking, and reporting tools to support better wealth management and investment decisions.",
+      "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. It provides real-time insights, portfolio tracking, and reporting tools, while the integrated mobile app enables secure access to portfolio updates and investment information anytime, anywhere.",
   },
   {
     slug: "equity-management",
@@ -118,46 +137,16 @@ const PRODUCTS: Array<{
   },
   {
     slug: "treasury-management",
-    name: "Internal Treasury Management System",
+    name: "Integrated Treasury Management System",
     description:
       "An advanced system designed to help organizations manage internal treasury operations, including cash flow monitoring, liquidity management, and financial risk analysis. It provides centralized visibility into financial resources and supports effective treasury decision-making.",
   },
   {
     slug: "mobile-app",
-    name: "Wealth Management Mobile App (Ongoing Product)",
+    name:
+      "Financial Report Generating System (Profit and Loss Statement Generating and Other Reports)",
     description:
-      "A mobile application currently under development that will allow users to access wealth management services directly from their smartphones. The app will provide real-time portfolio updates, investment tracking, and secure access to financial information anytime, anywhere.",
-  },
-];
-
-const CLIENTS: Array<{
-  name: string;
-  tagline: string;
-  description: string;
-}> = [
-  {
-    name: "Summit Financial Group",
-    tagline: "Wealth & treasury operations",
-    description:
-      "We support their portfolio and treasury workflows with tailored platforms, automation, and ongoing optimisation for regional teams.",
-  },
-  {
-    name: "Meridian Capital Partners",
-    tagline: "Investment & advisory",
-    description:
-      "Partnership focused on secure data flows, reporting, and tools that help advisors and analysts stay aligned.",
-  },
-  {
-    name: "Harbor Trust Bank",
-    tagline: "Retail & corporate banking",
-    description:
-      "Digital channels and internal systems that improve efficiency, compliance visibility, and customer experience.",
-  },
-  {
-    name: "Northwind Asset Management",
-    tagline: "Equity & portfolio oversight",
-    description:
-      "Solutions for tracking positions, performance, and risk with clear dashboards for decision-makers.",
+      "A reporting solution that automates financial report generation, including profit and loss statements and other key financial reports. It helps organizations produce accurate reports faster, improve visibility into performance, and support better financial decision-making.",
   },
 ];
 
@@ -185,6 +174,8 @@ export const App: React.FC = () => {
   const [consultationResult, setConsultationResult] = useState<
     "none" | "success" | "invalid" | "duplicate"
   >("none");
+
+  const [activeScreenshotIndex, setActiveScreenshotIndex] = useState(0);
 
   const lastScrollY = useRef(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -359,10 +350,10 @@ export const App: React.FC = () => {
           </>
         }
       >
-        <div className="grid gap-8 md:grid-cols-2">
+        <div className="grid gap-6 md:grid-cols-2">
           {PRODUCTS.map((product, index) => (
             <AnimatedOnScroll key={product.slug} staggerIndex={index}>
-              <div className="group flex cursor-default flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-md transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:hover:translate-y-0 md:flex-row">
+              <div className="group flex h-full cursor-default flex-col justify-between gap-6 rounded-3xl border border-slate-200 bg-white p-7 shadow-md transition-[box-shadow,transform] duration-300 hover:-translate-y-1 hover:shadow-lg motion-reduce:hover:translate-y-0 md:flex-row">
                 <div>
                   <h3 className="mb-3 text-base font-semibold text-slate-900">
                     {product.name}
@@ -403,29 +394,20 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
-          {CLIENTS.map((client, index) => (
-            <AnimatedOnScroll key={client.name} staggerIndex={index}>
-              <div
-                className="group client-flip-card h-full"
-                tabIndex={0}
-                role="group"
-                aria-label={`${client.name}. ${client.tagline}. Hover or focus to read more.`}
-              >
-                <div className="client-flip-card-inner">
-                  <div className="client-flip-front rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-                    <div className="mb-4 h-10 w-10 shrink-0 rounded-2xl bg-primary/20 transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30" />
-                    <h3 className="mb-2 text-base font-semibold text-slate-900">
-                      {client.name}
-                    </h3>
-                    <p className="text-sm text-slate-600">{client.tagline}</p>
-                  </div>
-                  <div className="client-flip-back">
-                    <p className="text-center text-sm leading-relaxed text-slate-200">
-                      {client.description}
-                    </p>
-                  </div>
-                </div>
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4">
+          {CLIENT_LOGOS.map((logo, index) => (
+            <AnimatedOnScroll key={index} staggerIndex={index}>
+              <div className="flex h-28 items-center justify-center rounded-2xl bg-slate-50/80 px-4 py-6 shadow-sm md:h-32">
+                <img
+                  src={logo.src}
+                  alt={logo.alt}
+                  className={
+                    "max-h-12 w-full max-w-[220px] object-contain md:max-h-14 " +
+                    (logo.logoClassName ?? "")
+                  }
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
             </AnimatedOnScroll>
           ))}
@@ -454,7 +436,7 @@ export const App: React.FC = () => {
               <div
                 aria-hidden="true"
                 className="absolute -right-14 -top-14 h-44 w-44 rounded-full bg-emerald-400/25 blur-2xl transition-opacity group-hover:opacity-80"
-              />
+              />    
               <div className="relative">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
@@ -943,6 +925,17 @@ export const App: React.FC = () => {
       ? PRODUCTS.find((p) => p.slug === productSlug)
       : null;
     if (!product) return null;
+    const screenshots =
+      product.slug === "treasury-management"
+        ? [itmsScreenshot1, itmsScreenshot2, itmsScreenshot3, itmsScreenshot4]
+        : product.slug === "wealth-management"
+        ? [mobileScreenshot1, mobileScreenshot2, mobileScreenshot3]
+        : [
+            productSampleScreenshot,
+            productSampleScreenshot,
+            productSampleScreenshot,
+            productSampleScreenshot,
+          ];
     return (
       <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
@@ -992,6 +985,96 @@ export const App: React.FC = () => {
                 </p>
               </div>
             </AnimatedOnScroll>
+          </div>
+
+          <div className="mt-4 space-y-4">
+            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+              Screenshots
+            </p>
+            <p className="max-w-2xl text-sm text-slate-600 md:text-base">
+              Swipe through a preview of the {product.name} interface. These can be
+              replaced later with real captures from your deployment.
+            </p>
+            <div className="relative mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-md slider-shell">
+              <div key={activeScreenshotIndex} className="slider-shell-bar" />
+              <div
+                className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                style={{ transform: `translateX(-${activeScreenshotIndex * 100}%)` }}
+              >
+                {screenshots.map((src, index) => (
+                  <div key={index} className="min-w-full h-full">
+                    <img
+                      src={src}
+                      alt={`${product.name} interface screenshot ${index + 1}`}
+                      className="h-full w-full object-contain"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ))}
+              </div>
+              <button
+                type="button"
+                className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/80 text-white shadow-md transition hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                onClick={() =>
+                  setActiveScreenshotIndex((prev) =>
+                    prev === 0 ? screenshots.length - 1 : prev - 1
+                  )
+                }
+              >
+                <span className="sr-only">Previous screenshot</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+              <button
+                type="button"
+                className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/80 text-white shadow-md transition hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                onClick={() =>
+                  setActiveScreenshotIndex((prev) =>
+                    prev === screenshots.length - 1 ? 0 : prev + 1
+                  )
+                }
+              >
+                <span className="sr-only">Next screenshot</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+              <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center gap-2">
+                {screenshots.map((_, index) => (
+                  <span
+                    key={index}
+                    className={
+                      "h-1.5 w-1.5 rounded-full transition-colors " +
+                      (index === activeScreenshotIndex
+                        ? "bg-primary"
+                        : "bg-slate-400/60")
+                    }
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

@@ -234,12 +234,14 @@ body {
 
 /* Tech rail — infinite horizontal scroll, edge fades, pill items (site theme) */
 .tech-rail {
-  --tech-rail-bg: #020817;
+  --tech-rail-bg: #ffffff;
   --tech-rail-accent: #79c72c;
   padding: 4.5rem 0;
   background: var(--tech-rail-bg);
   overflow: hidden;
   position: relative;
+  border-top: 1px solid #020617;
+  border-bottom: 1px solid #020617;
 }
 
 .tech-rail__container {
@@ -261,8 +263,8 @@ body {
   font-weight: 600;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  background: rgba(121, 199, 44, 0.12);
-  color: var(--tech-rail-accent);
+  background: rgba(15, 23, 42, 0.04);
+  color: #15803d;
 }
 
 .tech-rail-title {
@@ -270,7 +272,7 @@ body {
   font-size: clamp(1.7rem, 3.4vw, 2.2rem);
   font-weight: 700;
   letter-spacing: -0.02em;
-  color: #f9fafb;
+  color: #0f172a;
 }
 
 .tech-rail::before,
@@ -298,7 +300,7 @@ body {
   display: flex;
   gap: 1rem;
   width: fit-content;
-  animation: techScroll 180s linear infinite;
+  animation: techScroll 50s linear infinite;
 }
 
 @keyframes techScroll {
@@ -313,10 +315,10 @@ body {
 .tech-item {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 0.65rem 1.3rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  justify-content: center;
+  padding: 0.7rem 1.4rem;
+  background: rgba(15, 23, 42, 0.03);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 100px;
   white-space: nowrap;
   flex-shrink: 0;
@@ -324,8 +326,8 @@ body {
 }
 
 .tech-item:hover {
-  border-color: rgba(121, 199, 44, 0.4);
-  background: rgba(121, 199, 44, 0.08);
+  border-color: rgba(21, 128, 61, 0.45);
+  background: rgba(21, 128, 61, 0.06);
 }
 
 .tech-item-dot {
@@ -333,9 +335,45 @@ body {
   opacity: 0.75;
 }
 
+.tech-icon {
+  width: 170px;
+  height: 90px;
+}
+
 .tech-label {
   font-size: 0.85rem;
   font-weight: 500;
-  color: #9ca3af;
+  color: #4b5563;
 }
+
+/* Product detail screenshot slider — reuses green top bar language from cards */
+.slider-shell {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+}
+
+.slider-shell-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #79c72c 0%, #4c9141 100%);
+  border-radius: 1.5rem 1.5rem 0 0;
+  pointer-events: none;
+  transform-origin: left;
+  animation: sliderBarGrow 0.45s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes sliderBarGrow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
 

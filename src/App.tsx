@@ -15,15 +15,6 @@ import {
 } from "./components/ui/dialog";
 import ambeonHoldingsLogo from "../images/Ambeon_Holdings_logo.png";
 import colomboCityHoldingsLogo from "../images/colombo city holding.png";
-import productSampleScreenshot from "../images/Screenshot 2026-03-31 091132.png";
-import productSampleScreenshot2 from "../images/Screenshot_2026-03-09_163155-removebg-preview.png";
-import itmsScreenshot1 from "../images/itms1.png";
-import itmsScreenshot2 from "../images/itms2.png";
-import itmsScreenshot3 from "../images/itms3.png";
-import itmsScreenshot4 from "../images/itms4.png";
-import mobileScreenshot1 from "../images/mobile1.png";
-import mobileScreenshot2 from "../images/mobile2.png";
-import mobileScreenshot3 from "../images/mobile3.png";
 
 const CLIENT_LOGOS: Array<{ src: string; alt: string; logoClassName?: string }> = [
   { src: ambeonHoldingsLogo, alt: "Ambeon Holdings PLC" },
@@ -177,6 +168,7 @@ export const App: React.FC = () => {
   >("none");
 
   const [activeScreenshotIndex, setActiveScreenshotIndex] = useState(0);
+  const [activeMobileScreenshotIndex, setActiveMobileScreenshotIndex] = useState(0);
 
   const lastScrollY = useRef(0);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -213,6 +205,7 @@ export const App: React.FC = () => {
   // When switching between products, start the screenshot carousel from the first image.
   useEffect(() => {
     setActiveScreenshotIndex(0);
+    setActiveMobileScreenshotIndex(0);
   }, [productSlug]);
 
   useEffect(() => {
@@ -923,16 +916,19 @@ export const App: React.FC = () => {
       ? PRODUCTS.find((p) => p.slug === productSlug)
       : null;
     if (!product) return null;
-    const slideCount = 4;
-    const slideLabels = [
-      "Screenshot 1",
-      "Screenshot 2",
-      "Screenshot 3",
-      "Screenshot 4",
-    ];
 
     const renderScreenshotsLayout = () => {
-      // Apply the same screenshot layout to every product page (laptop mockup frame).
+      const slideLabels = [
+        "Screenshot 1",
+        "Screenshot 2",
+        "Screenshot 3",
+        "Screenshot 4",
+      ];
+
+      const desktopSlideCount = slideLabels.length;
+      const mobileSlideCount = slideLabels.length;
+      const showMobileDevice = product.slug === "wealth-management";
+
       return (
         <div className="mt-4 space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
@@ -942,100 +938,183 @@ export const App: React.FC = () => {
             Explore a preview of the {product.name} interface inside a responsive desktop-style frame. These can be replaced later with real captures from your deployment.
           </p>
 
-          <div className="screenshot-laptop-wrapper">
-            <div className="screenshot-laptop-body">
-              <div className="screenshot-laptop-bezel">
-                <div className="screenshot-laptop-notch">
-                  <div className="screenshot-laptop-notch-camera" />
-                </div>
-                <div className="screenshot-laptop-screen">
-                  <div
-                    className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-                    style={{
-                      transform: `translateX(-${activeScreenshotIndex * 100}%)`,
-                    }}
-                  >
-                    {slideLabels.map((label, index) => (
-                      <div key={index} className="min-w-full h-full">
-                        <div className="flex h-full w-full flex-col items-center justify-center bg-white px-6 text-center text-slate-900">
-                          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                            {label}
-                          </div>
-                          <div className="mt-2 text-lg font-semibold text-slate-900">
-                            {product.name}
+          <div className={"screenshot-devices " + (showMobileDevice ? "screenshot-devices--with-phone" : "")}>
+            <div className="screenshot-laptop-wrapper">
+              <div className="screenshot-laptop-body">
+                <div className="screenshot-laptop-bezel">
+                  <div className="screenshot-laptop-notch">
+                    <div className="screenshot-laptop-notch-camera" />
+                  </div>
+                  <div className="screenshot-laptop-screen">
+                    <div
+                      className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                      style={{
+                        transform: `translateX(-${(activeScreenshotIndex % desktopSlideCount) * 100}%)`,
+                      }}
+                    >
+                      {slideLabels.map((label, index) => (
+                        <div key={label + index} className="min-w-full h-full">
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-white px-6 text-center text-slate-900">
+                            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                              {label}
+                            </div>
+                            <div className="mt-2 text-lg font-semibold text-slate-900">
+                              {product.name}
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    ))}
+                      ))}
+                    </div>
                   </div>
                 </div>
+                <div className="screenshot-laptop-base" />
               </div>
-              <div className="screenshot-laptop-base" />
+
+              <button
+                type="button"
+                className="screenshot-nav-btn screenshot-nav-btn-left"
+                onClick={() =>
+                  setActiveScreenshotIndex((prev) =>
+                    prev === 0 ? desktopSlideCount - 1 : prev - 1,
+                  )
+                }
+              >
+                <span className="sr-only">Previous screenshot</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden
+                >
+                  <path d="M15 18l-6-6 6-6" />
+                </svg>
+              </button>
+
+              <button
+                type="button"
+                className="screenshot-nav-btn screenshot-nav-btn-right"
+                onClick={() =>
+                  setActiveScreenshotIndex((prev) =>
+                    prev === desktopSlideCount - 1 ? 0 : prev + 1,
+                  )
+                }
+              >
+                <span className="sr-only">Next screenshot</span>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className="h-4 w-4"
+                  aria-hidden
+                >
+                  <path d="M9 18l6-6-6-6" />
+                </svg>
+              </button>
+
+              <div className="pointer-events-none mt-4 flex justify-center gap-2">
+                {Array.from({ length: desktopSlideCount }).map((_, index) => (
+                  <span
+                    key={index}
+                    className={
+                      "h-1.5 w-3 rounded-full transition-colors " +
+                      (index === (activeScreenshotIndex % desktopSlideCount)
+                        ? "bg-primary"
+                        : "bg-slate-400/60")
+                    }
+                  />
+                ))}
+              </div>
             </div>
 
-            <button
-              type="button"
-              className="screenshot-nav-btn screenshot-nav-btn-left"
-              onClick={() =>
-                setActiveScreenshotIndex((prev) =>
-                  prev === 0 ? slideCount - 1 : prev - 1,
-                )
-              }
-            >
-              <span className="sr-only">Previous screenshot</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-                aria-hidden
-              >
-                <path d="M15 18l-6-6 6-6" />
-              </svg>
-            </button>
+            {showMobileDevice && (
+              <div className="screenshot-phone-wrapper" aria-label="Mobile screenshots preview">
+                <div className="screenshot-phone-body">
+                  <div className="screenshot-phone-notch" aria-hidden="true">
+                    <div className="screenshot-phone-notch-camera" />
+                  </div>
+                  <div className="screenshot-phone-screen">
+                    <div
+                      className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                      style={{
+                        transform: `translateX(-${(activeMobileScreenshotIndex % mobileSlideCount) * 100}%)`,
+                      }}
+                    >
+                      {slideLabels.map((label, index) => (
+                        <div key={label + index} className="min-w-full h-full">
+                          <div className="flex h-full w-full flex-col items-center justify-center bg-white px-5 text-center text-slate-900">
+                            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                              {label}
+                            </div>
+                            <div className="mt-2 text-base font-semibold text-slate-900">
+                              {product.name}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-            <button
-              type="button"
-              className="screenshot-nav-btn screenshot-nav-btn-right"
-              onClick={() =>
-                setActiveScreenshotIndex((prev) =>
-                  prev === slideCount - 1 ? 0 : prev + 1,
-                )
-              }
-            >
-              <span className="sr-only">Next screenshot</span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="h-4 w-4"
-                aria-hidden
-              >
-                <path d="M9 18l6-6-6-6" />
-              </svg>
-            </button>
+                  <button
+                    type="button"
+                    className="screenshot-phone-nav-btn screenshot-phone-nav-btn-left"
+                    onClick={() =>
+                      setActiveMobileScreenshotIndex((prev) =>
+                        prev === 0 ? mobileSlideCount - 1 : prev - 1,
+                      )
+                    }
+                  >
+                    <span className="sr-only">Previous mobile screenshot</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      aria-hidden
+                    >
+                      <path d="M15 18l-6-6 6-6" />
+                    </svg>
+                  </button>
 
-            <div className="pointer-events-none mt-4 flex justify-center gap-2">
-              {Array.from({ length: slideCount }).map((_, index) => (
-                <span
-                  key={index}
-                  className={
-                    "h-1.5 w-3 rounded-full transition-colors " +
-                    (index === activeScreenshotIndex
-                      ? "bg-primary"
-                      : "bg-slate-400/60")
-                  }
-                />
-              ))}
-            </div>
+                  <button
+                    type="button"
+                    className="screenshot-phone-nav-btn screenshot-phone-nav-btn-right"
+                    onClick={() =>
+                      setActiveMobileScreenshotIndex((prev) =>
+                        prev === mobileSlideCount - 1 ? 0 : prev + 1,
+                      )
+                    }
+                  >
+                    <span className="sr-only">Next mobile screenshot</span>
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      className="h-4 w-4"
+                      aria-hidden
+                    >
+                      <path d="M9 18l6-6-6-6" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       );

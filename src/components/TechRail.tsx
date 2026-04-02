@@ -64,17 +64,27 @@ export const TechRail: React.FC = () => {
         </AnimatedOnScroll>
       </div>
       <div ref={railRef} className="tech-rail-track">
-        {[...TECH_ITEMS, ...TECH_ITEMS].map((t, i) => (
-          <div key={`${t.id}-${i}`} className="tech-item">
-            <img
-              src={t.src}
-              alt={t.label}
-              className="tech-icon"
-              loading="lazy"
-              decoding="async"
-            />
-          </div>
-        ))}
+        {[...TECH_ITEMS, ...TECH_ITEMS].map((t, i) => {
+          let sizeClass = "";
+
+          if (t.id === "react" || t.id === "tailwind") {
+            sizeClass = "tech-icon--emphasized";
+          } else if (t.id === "next" || t.id === "flutter" || t.id === "openai") {
+            sizeClass = "tech-icon--large";
+          }
+
+          return (
+            <div key={`${t.id}-${i}`} className="tech-item">
+              <img
+                src={t.src}
+                alt={t.label}
+                className={`tech-icon ${sizeClass}`}
+                loading="lazy"
+                decoding="async"
+              />
+            </div>
+          );
+        })}
       </div>
     </section>
   );

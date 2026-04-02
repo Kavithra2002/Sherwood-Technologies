@@ -16,6 +16,7 @@ import {
 import ambeonHoldingsLogo from "../images/Ambeon_Holdings_logo.png";
 import colomboCityHoldingsLogo from "../images/colombo city holding.png";
 import productSampleScreenshot from "../images/Screenshot 2026-03-31 091132.png";
+import productSampleScreenshot2 from "../images/Screenshot_2026-03-09_163155-removebg-preview.png";
 import itmsScreenshot1 from "../images/itms1.png";
 import itmsScreenshot2 from "../images/itms2.png";
 import itmsScreenshot3 from "../images/itms3.png";
@@ -209,6 +210,11 @@ export const App: React.FC = () => {
     }
   }, [view, productSlug]);
 
+  // When switching between products, start the screenshot carousel from the first image.
+  useEffect(() => {
+    setActiveScreenshotIndex(0);
+  }, [productSlug]);
+
   useEffect(() => {
     const checkBackend = async () => {
       try {
@@ -266,14 +272,6 @@ export const App: React.FC = () => {
               <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                 <Button size="lg" onClick={() => setView("primary")}>
                   Primary action
-                </Button>
-                <Button
-                  variant="outline"
-                  size="lg"
-                  className="border-white/30 bg-white/10 text-white shadow-none backdrop-blur-sm hover:border-white/45 hover:bg-white/15 hover:text-white"
-                  onClick={() => setView("secondary")}
-                >
-                  Secondary action
                 </Button>
               </div>
             </AnimatedOnScroll>
@@ -925,17 +923,124 @@ export const App: React.FC = () => {
       ? PRODUCTS.find((p) => p.slug === productSlug)
       : null;
     if (!product) return null;
-    const screenshots =
-      product.slug === "treasury-management"
-        ? [itmsScreenshot1, itmsScreenshot2, itmsScreenshot3, itmsScreenshot4]
-        : product.slug === "wealth-management"
-        ? [mobileScreenshot1, mobileScreenshot2, mobileScreenshot3]
-        : [
-            productSampleScreenshot,
-            productSampleScreenshot,
-            productSampleScreenshot,
-            productSampleScreenshot,
-          ];
+    const slideCount = 4;
+    const slideLabels = [
+      "Screenshot 1",
+      "Screenshot 2",
+      "Screenshot 3",
+      "Screenshot 4",
+    ];
+
+    const renderScreenshotsLayout = () => {
+      // Apply the same screenshot layout to every product page (laptop mockup frame).
+      return (
+        <div className="mt-4 space-y-4">
+          <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
+            Screenshots
+          </p>
+          <p className="max-w-2xl text-sm text-slate-600 md:text-base">
+            Explore a preview of the {product.name} interface inside a responsive desktop-style frame. These can be replaced later with real captures from your deployment.
+          </p>
+
+          <div className="screenshot-laptop-wrapper">
+            <div className="screenshot-laptop-body">
+              <div className="screenshot-laptop-bezel">
+                <div className="screenshot-laptop-notch">
+                  <div className="screenshot-laptop-notch-camera" />
+                </div>
+                <div className="screenshot-laptop-screen">
+                  <div
+                    className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                    style={{
+                      transform: `translateX(-${activeScreenshotIndex * 100}%)`,
+                    }}
+                  >
+                    {slideLabels.map((label, index) => (
+                      <div key={index} className="min-w-full h-full">
+                        <div className="flex h-full w-full flex-col items-center justify-center bg-white px-6 text-center text-slate-900">
+                          <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                            {label}
+                          </div>
+                          <div className="mt-2 text-lg font-semibold text-slate-900">
+                            {product.name}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="screenshot-laptop-base" />
+            </div>
+
+            <button
+              type="button"
+              className="screenshot-nav-btn screenshot-nav-btn-left"
+              onClick={() =>
+                setActiveScreenshotIndex((prev) =>
+                  prev === 0 ? slideCount - 1 : prev - 1,
+                )
+              }
+            >
+              <span className="sr-only">Previous screenshot</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+                aria-hidden
+              >
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+
+            <button
+              type="button"
+              className="screenshot-nav-btn screenshot-nav-btn-right"
+              onClick={() =>
+                setActiveScreenshotIndex((prev) =>
+                  prev === slideCount - 1 ? 0 : prev + 1,
+                )
+              }
+            >
+              <span className="sr-only">Next screenshot</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="h-4 w-4"
+                aria-hidden
+              >
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+
+            <div className="pointer-events-none mt-4 flex justify-center gap-2">
+              {Array.from({ length: slideCount }).map((_, index) => (
+                <span
+                  key={index}
+                  className={
+                    "h-1.5 w-3 rounded-full transition-colors " +
+                    (index === activeScreenshotIndex
+                      ? "bg-primary"
+                      : "bg-slate-400/60")
+                  }
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      );
+    };
+
     return (
       <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
         <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
@@ -987,95 +1092,7 @@ export const App: React.FC = () => {
             </AnimatedOnScroll>
           </div>
 
-          <div className="mt-4 space-y-4">
-            <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-              Screenshots
-            </p>
-            <p className="max-w-2xl text-sm text-slate-600 md:text-base">
-              Swipe through a preview of the {product.name} interface. These can be
-              replaced later with real captures from your deployment.
-            </p>
-            <div className="relative mt-2 overflow-hidden rounded-2xl border border-slate-200 bg-slate-50 shadow-md slider-shell">
-              <div key={activeScreenshotIndex} className="slider-shell-bar" />
-              <div
-                className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
-                style={{ transform: `translateX(-${activeScreenshotIndex * 100}%)` }}
-              >
-                {screenshots.map((src, index) => (
-                  <div key={index} className="min-w-full h-full">
-                    <img
-                      src={src}
-                      alt={`${product.name} interface screenshot ${index + 1}`}
-                      className="h-full w-full object-contain"
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </div>
-                ))}
-              </div>
-              <button
-                type="button"
-                className="absolute left-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/80 text-white shadow-md transition hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                onClick={() =>
-                  setActiveScreenshotIndex((prev) =>
-                    prev === 0 ? screenshots.length - 1 : prev - 1
-                  )
-                }
-              >
-                <span className="sr-only">Previous screenshot</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
-                  aria-hidden
-                >
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button
-                type="button"
-                className="absolute right-3 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-slate-900/80 text-white shadow-md transition hover:bg-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
-                onClick={() =>
-                  setActiveScreenshotIndex((prev) =>
-                    prev === screenshots.length - 1 ? 0 : prev + 1
-                  )
-                }
-              >
-                <span className="sr-only">Next screenshot</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
-                  aria-hidden
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-              <div className="pointer-events-none absolute inset-x-0 bottom-3 flex justify-center gap-2">
-                {screenshots.map((_, index) => (
-                  <span
-                    key={index}
-                    className={
-                      "h-1.5 w-1.5 rounded-full transition-colors " +
-                      (index === activeScreenshotIndex
-                        ? "bg-primary"
-                        : "bg-slate-400/60")
-                    }
-                  />
-                ))}
-              </div>
-            </div>
-          </div>
+          {renderScreenshotsLayout()}
         </div>
       </section>
     );

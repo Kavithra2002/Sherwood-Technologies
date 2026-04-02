@@ -1,1 +1,1 @@
-{"version":3,"file":"TechRail.d.ts","sourceRoot":"","sources":["../../src/components/TechRail.tsx"],"names":[],"mappings":"AAAA,OAAO,KAA4B,MAAM,OAAO,CAAC;AAcjD,eAAO,MAAM,QAAQ,EAAE,KAAK,CAAC,EA0C5B,CAAC"}
+{"version":3,"file":"TechRail.d.ts","sourceRoot":"","sources":["../../src/components/TechRail.tsx"],"names":[],"mappings":"AAAA,OAAO,KAA4B,MAAM,OAAO,CAAC;AAmCjD,eAAO,MAAM,QAAQ,EAAE,KAAK,CAAC,EAuD5B,CAAC"}

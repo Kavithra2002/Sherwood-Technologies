@@ -300,7 +300,7 @@ body {
   display: flex;
   gap: 1rem;
   width: fit-content;
-  animation: techScroll 50s linear infinite;
+  animation: techScroll 25s linear infinite;
 }
 
 @keyframes techScroll {
@@ -338,12 +338,22 @@ body {
 .tech-icon {
   width: 170px;
   height: 90px;
+  object-fit: contain;
+  display: block;
 }
 
 .tech-label {
   font-size: 0.85rem;
   font-weight: 500;
   color: #4b5563;
+}
+
+.tech-icon--emphasized {
+  transform: scale(1.05);
+}
+
+.tech-icon--large {
+  transform: scale(1.2);
 }
 
 /* Product detail screenshot slider — reuses green top bar language from cards */
@@ -376,4 +386,328 @@ body {
   }
 }
 
+/* Laptop mockup frame — ITMS screenshots */
+.screenshot-laptop-wrapper {
+  position: relative;
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  /* Keep the whole device slightly smaller than the content column and centered */
+  max-width: 900px;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  /* Slightly smaller than current (about 10% reduction) */
+  transform: scale(0.97);
+  transform-origin: top center;
+}
 
+.screenshot-laptop-body {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 1.4rem;
+  /* Flatter MacBook Pro shell, closer to reference image */
+  background: linear-gradient(180deg, #f5f5f7 0%, #e5e7eb 55%, #d1d5db 100%);
+  box-shadow:
+    0 18px 40px rgba(15, 23, 42, 0.3),
+    0 4px 14px rgba(15, 23, 42, 0.2);
+  /* Slim outer silver frame */
+  padding: 0.16rem 0.24rem 0.14rem;
+}
+
+.screenshot-laptop-bezel {
+  position: relative;
+  width: 100%;
+  border-radius: 1.15rem;
+  /* Slim, dark Mac-style bezel */
+  background:
+    linear-gradient(180deg, #050816 0%, #020617 40%, #020617 100%);
+  border: 1px solid rgba(30, 41, 59, 0.9);
+  box-shadow: inset 0 0 0 1px rgba(15, 23, 42, 0.9);
+  /* Extra-thin bezel around the display */
+  padding: 0.12rem 0.32rem 0.2rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.screenshot-laptop-notch {
+  position: relative;
+  margin: 0 auto 0.42rem;
+  width: 6.4rem;
+  height: 1.15rem;
+  border-radius: 0 0 0.9rem 0.9rem;
+  background: radial-gradient(circle at 50% -40%, #020617 0%, #020617 55%, #020617 100%);
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.9),
+    0 10px 18px rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screenshot-laptop-notch-camera {
+  width: 0.44rem;
+  height: 0.44rem;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 30%, #bae6fd 0%, #0f172a 60%, #020617 100%);
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.95);
+}
+
+.screenshot-laptop-screen {
+  width: 100%;
+  /* Aspect ratio close to 14/9 used in modern MacBook Pros */
+  aspect-ratio: 14 / 9;
+  border-radius: 0.85rem;
+  background: #020617;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.95),
+    inset 0 0 14px rgba(0, 0, 0, 0.75);
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.screenshot-laptop-base {
+  position: absolute;
+  left: 50%;
+  bottom: -0.9rem;
+  transform: translateX(-50%);
+  width: calc(100% + 2.4rem);
+  height: 0.9rem;
+  border-radius: 0 0 999px 999px;
+  /* Flatter aluminum base bar with subtle reflection */
+  background:
+    linear-gradient(180deg, #e5e7eb 0%, #cbd5e1 45%, #b4becd 100%);
+  box-shadow:
+    0 12px 32px rgba(15, 23, 42, 0.5),
+    0 0 0 1px rgba(148, 163, 184, 0.7);
+}
+
+.screenshot-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-10%);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  border: none;
+  background: rgba(15, 23, 42, 0.9);
+  color: #f9fafb;
+  box-shadow:
+    0 16px 40px rgba(15, 23, 42, 0.7),
+    0 0 0 1px rgba(148, 163, 184, 0.6);
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.screenshot-nav-btn:hover {
+  background: #020617;
+  transform: translateY(-10%) scale(1.05);
+  box-shadow:
+    0 20px 50px rgba(15, 23, 42, 0.9),
+    0 0 0 1px rgba(148, 163, 184, 0.9);
+}
+
+.screenshot-nav-btn:active {
+  transform: translateY(-10%) scale(0.96);
+}
+
+.screenshot-nav-btn-left {
+  left: 1.3rem;
+}
+
+.screenshot-nav-btn-right {
+  right: 1.3rem;
+}
+
+@media (max-width: 768px) {
+  .screenshot-laptop-body {
+    padding: 0.26rem 0.24rem 0.2rem;
+  }
+
+  .screenshot-laptop-bezel {
+    padding: 0.5rem 0.45rem 0.4rem;
+  }
+
+  .screenshot-nav-btn {
+    width: 2.1rem;
+    height: 2.1rem;
+  }
+}
+
+/* Masonry gallery — EMS screenshots */
+.screenshot-masonry-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.225rem;
+}
+
+.screenshot-masonry-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.25rem;
+  background: #020617;
+  border: 1px solid rgba(148, 163, 184, 0.4);
+  box-shadow:
+    0 20px 45px rgba(15, 23, 42, 0.35),
+    0 8px 20px rgba(15, 23, 42, 0.25);
+  aspect-ratio: 4 / 3;
+  cursor: pointer;
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.screenshot-masonry-item--tall {
+  grid-row: span 2;
+  aspect-ratio: 3 / 5;
+}
+
+.screenshot-masonry-item--wide {
+  grid-column: span 2;
+  aspect-ratio: 16 / 7;
+}
+
+.screenshot-masonry-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform-origin: center;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    filter 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.screenshot-masonry-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.18), transparent 45%);
+  mix-blend-mode: screen;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.screenshot-masonry-item:hover,
+.screenshot-masonry-item:focus-visible {
+  transform: translateY(-6px);
+  border-color: rgba(16, 185, 129, 0.85);
+  box-shadow:
+    0 30px 70px rgba(15, 23, 42, 0.7),
+    0 14px 30px rgba(16, 185, 129, 0.3);
+}
+
+.screenshot-masonry-item:hover .screenshot-masonry-image,
+.screenshot-masonry-item:focus-visible .screenshot-masonry-image {
+  transform: scale(1.08);
+  filter: saturate(1.1);
+}
+
+.screenshot-masonry-item:hover::after,
+.screenshot-masonry-item:focus-visible::after {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .screenshot-masonry-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .screenshot-masonry-item--wide {
+    grid-column: span 2;
+  }
+}
+
+/* Overlapping stacked carousel — Financial Report Generating System */
+.screenshot-stack-wrapper {
+  margin-top: 1.25rem;
+}
+
+.screenshot-stack-inner {
+  position: relative;
+  height: 320px;
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.screenshot-stack-card {
+  position: absolute;
+  inset: 0;
+  border-radius: 1.75rem;
+  border: 1px solid rgba(148, 163, 184, 0.6);
+  overflow: hidden;
+  background: radial-gradient(circle at 0% 0%, rgba(16, 185, 129, 0.08), #020617);
+  box-shadow:
+    0 26px 70px rgba(15, 23, 42, 0.8),
+    0 14px 32px rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  padding: 0.4rem;
+  transition:
+    transform 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.2s ease;
+}
+
+.screenshot-stack-card--active {
+  border-color: rgba(16, 185, 129, 0.95);
+  box-shadow:
+    0 30px 80px rgba(15, 23, 42, 0.9),
+    0 18px 40px rgba(16, 185, 129, 0.35);
+}
+
+.screenshot-stack-card:hover {
+  box-shadow:
+    0 34px 86px rgba(15, 23, 42, 0.95),
+    0 18px 42px rgba(16, 185, 129, 0.38);
+}
+
+.screenshot-stack-ctrl {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 999px;
+  border: 1px solid rgba(148, 163, 184, 0.8);
+  background: #020617;
+  color: #f9fafb;
+  cursor: pointer;
+  box-shadow:
+    0 12px 35px rgba(15, 23, 42, 0.8),
+    0 0 0 1px rgba(15, 23, 42, 1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.screenshot-stack-ctrl:hover {
+  background: #020617;
+  transform: translateY(-1px) scale(1.04);
+  box-shadow:
+    0 14px 40px rgba(15, 23, 42, 0.95),
+    0 0 0 1px rgba(148, 163, 184, 0.95);
+}
+
+.screenshot-stack-ctrl:active {
+  transform: translateY(0) scale(0.97);
+}
+
+@media (max-width: 768px) {
+  .screenshot-stack-inner {
+    height: 280px;
+  }
+}

@@ -18,6 +18,17 @@ import colomboCityHoldingsLogo from "../images/colombo city holding.png";
 import wealthMobileScreenshot1 from "../images/mobile image1.png .png";
 import wealthMobileScreenshot2 from "../images/mobile img 2.png";
 
+const ServiceCardIcon: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => (
+  <div
+    className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/20 text-accent transition-[transform,background-color,color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30 group-hover:text-primary"
+    aria-hidden
+  >
+    <span className="[&>svg]:h-5 [&>svg]:w-5">{children}</span>
+  </div>
+);
+
 const CLIENT_LOGOS: Array<{ src: string; alt: string; logoClassName?: string }> = [
   { src: ambeonHoldingsLogo, alt: "Ambeon Holdings PLC" },
   {
@@ -287,32 +298,67 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
           {[
             {
               name: "Software Development",
               description:
                 "We provide custom software development services tailored to meet the specific needs of businesses and financial institutions. Our solutions focus on building secure, scalable, and high-performance applications that improve operational efficiency and support business growth.",
+              icon: (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="16 18 22 12 16 6" />
+                  <polyline points="8 6 2 12 8 18" />
+                </svg>
+              ),
             },
             {
               name: "Mobile Application Development",
               description:
                 "Our mobile development services focus on creating modern, user-friendly mobile applications for iOS and Android platforms. We design and build mobile solutions that help businesses deliver seamless digital experiences to their customers.",
+              icon: (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
+                  <line x1="12" y1="18" x2="12.01" y2="18" />
+                </svg>
+              ),
             },
             {
-              name: "Finance & Treasury Advisory",
+              name: "Web Application Development",
               description:
-                "We offer expert guidance on financial management and treasury operations to help organizations optimize cash flow, manage financial risks, and improve investment strategies. Our advisory services combine financial expertise with practical technology solutions.",
-            },
-            {
-              name: "Microsoft Package Reseller",
-              description:
-                "We provide Microsoft software solutions, including Microsoft Office and Microsoft 365 packages, to support business productivity and collaboration. Our services include licensing consultation, setup, and support to ensure organizations get the most value from their Microsoft tools.",
+                "We design and build responsive web applications—from internal dashboards and portals to customer-facing platforms—using modern stacks and solid architecture. Our focus is on performance, security, accessibility, and maintainability so your product stays fast and reliable as you scale.",
+              icon: (
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="2" y1="12" x2="22" y2="12" />
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                </svg>
+              ),
             },
           ].map((service, index) => (
             <AnimatedOnScroll key={service.name} staggerIndex={index}>
               <div className="card-interactive group cursor-default rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-                <div className="mb-4 h-10 w-10 rounded-2xl bg-primary/20 transition-[transform,background-color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30" />
+                <ServiceCardIcon>{service.icon}</ServiceCardIcon>
                 <h3 className="mb-3 text-base font-semibold text-slate-900">
                   {service.name}
                 </h3>

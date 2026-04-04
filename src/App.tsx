@@ -15,6 +15,8 @@ import {
 } from "./components/ui/dialog";
 import ambeonHoldingsLogo from "../images/Ambeon_Holdings_logo.png";
 import colomboCityHoldingsLogo from "../images/colombo city holding.png";
+import wealthMobileScreenshot1 from "../images/mobile image1.png .png";
+import wealthMobileScreenshot2 from "../images/mobile img 2.png";
 
 const CLIENT_LOGOS: Array<{ src: string; alt: string; logoClassName?: string }> = [
   { src: ambeonHoldingsLogo, alt: "Ambeon Holdings PLC" },
@@ -1050,14 +1052,24 @@ export const App: React.FC = () => {
                     >
                       {slideLabels.map((label, index) => (
                         <div key={label + index} className="min-w-full h-full">
-                          <div className="flex h-full w-full flex-col items-center justify-center bg-white px-5 text-center text-slate-900">
-                            <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                              {label}
+                          {index < 2 ? (
+                            <img
+                              src={index === 0 ? wealthMobileScreenshot1 : wealthMobileScreenshot2}
+                              alt={`${product.name} — mobile preview ${index + 1}`}
+                              className="h-full w-full object-cover object-top"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full flex-col items-center justify-center bg-white px-5 text-center text-slate-900">
+                              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
+                                {label}
+                              </div>
+                              <div className="mt-2 text-base font-semibold text-slate-900">
+                                {product.name}
+                              </div>
                             </div>
-                            <div className="mt-2 text-base font-semibold text-slate-900">
-                              {product.name}
-                            </div>
-                          </div>
+                          )}
                         </div>
                       ))}
                     </div>

@@ -15,17 +15,109 @@ import {
 } from "./components/ui/dialog";
 import ambeonHoldingsLogo from "../images/Ambeon_Holdings_logo.png";
 import colomboCityHoldingsLogo from "../images/colombo city holding.png";
+import sherwoodCapitalLogo from "../images/sherwood capital.png";
 import wealthMobileScreenshot1 from "../images/mobile image1.png .png";
 import wealthMobileScreenshot2 from "../images/mobile img 2.png";
+import wealthMobileScreenshot3 from "../images/mobile image 3 new.png";
+import wealthMobileScreenshot4 from "../images/mobile image 4 new.png";
 
-const ServiceCardIcon: React.FC<{ children: React.ReactNode }> = ({
-  children,
+const WEALTH_MOBILE_SCREENSHOTS = [
+  wealthMobileScreenshot1,
+  wealthMobileScreenshot2,
+  wealthMobileScreenshot3,
+  wealthMobileScreenshot4,
+] as const;
+import clientPortalHome from "../images/icon/Client Portal - Home.png";
+import clientPortalCreateUnits from "../images/icon/Client Portal - Create units.png";
+import clientPortalPortfolio from "../images/icon/Client Portal - Client Portfolio.png";
+import clientPortalStatements from "../images/icon/Client Portal - account statements.png";
+import equityDashboard from "../images/icon/Equity - Dashboard.png";
+import equityMarkToMarket from "../images/icon/Equity - Mark to Market.png";
+import equityPriceAnalysis from "../images/icon/Equity - Price Analysis.png";
+import equityBatchImport from "../images/icon/Equity - Batch transaction Import.png";
+import financialReportRepr1 from "../images/icon/reprtimg1.png";
+import financialReportImg2 from "../images/icon/reportimg2.png";
+import financialReportImg3 from "../images/icon/reportimg3.png";
+import financialReportImg4 from "../images/icon/reportimg4.png";
+import serviceSoftwareArt from "../images/services/service-software.svg";
+import serviceMobileArt from "../images/services/service-mobile.svg";
+import serviceWebArt from "../images/services/service-web.svg";
+
+type DesktopProductSlide = { src: string; label: string; alt: string };
+
+const WEALTH_DESKTOP_SLIDES: DesktopProductSlide[] = [
+  { src: clientPortalHome, label: "Dashboard", alt: "Wealth management — client portal dashboard" },
+  {
+    src: clientPortalCreateUnits,
+    label: "Create units",
+    alt: "Wealth management — create units",
+  },
+  {
+    src: clientPortalPortfolio,
+    label: "My portfolio",
+    alt: "Wealth management — client portfolio",
+  },
+  {
+    src: clientPortalStatements,
+    label: "Statements",
+    alt: "Wealth management — account statements",
+  },
+];
+
+const EQUITY_DESKTOP_SLIDES: DesktopProductSlide[] = [
+  { src: equityDashboard, label: "Dashboard", alt: "Equity management — dashboard" },
+  {
+    src: equityMarkToMarket,
+    label: "Mark to market",
+    alt: "Equity management — mark to market valuation",
+  },
+  {
+    src: equityPriceAnalysis,
+    label: "Price analysis",
+    alt: "Equity management — price analysis",
+  },
+  {
+    src: equityBatchImport,
+    label: "Batch import",
+    alt: "Equity management — batch transaction import",
+  },
+];
+
+const FINANCIAL_REPORT_DESKTOP_SLIDES: DesktopProductSlide[] = [
+  {
+    src: financialReportRepr1,
+    label: "Account reconciliation",
+    alt: "Financial report generating — account reconciliation",
+  },
+  {
+    src: financialReportImg2,
+    label: "Trade confirmation",
+    alt: "Financial report generating — trade confirmation",
+  },
+  {
+    src: financialReportImg3,
+    label: "Reports export",
+    alt: "Financial report generating — financial reports export",
+  },
+  {
+    src: financialReportImg4,
+    label: "Statement of financial position",
+    alt: "Financial report generating — statement of financial position",
+  },
+];
+
+const ServiceCardArt: React.FC<{ src: string; alt: string }> = ({
+  src,
+  alt,
 }) => (
-  <div
-    className="mb-4 flex h-10 w-10 items-center justify-center rounded-2xl bg-primary/20 text-accent transition-[transform,background-color,color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.08] group-hover:bg-primary/30 group-hover:text-primary"
-    aria-hidden
-  >
-    <span className="[&>svg]:h-5 [&>svg]:w-5">{children}</span>
+  <div className="mb-4 overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-100/80 shadow-sm transition-[transform,box-shadow] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] group-hover:scale-[1.02] group-hover:shadow-md">
+    <img
+      src={src}
+      alt={alt}
+      className="aspect-[10/7] w-full object-cover"
+      loading="lazy"
+      decoding="async"
+    />
   </div>
 );
 
@@ -34,7 +126,13 @@ const CLIENT_LOGOS: Array<{ src: string; alt: string; logoClassName?: string }> 
   {
     src: colomboCityHoldingsLogo,
     alt: "Colombo City Holdings PLC",
-    logoClassName: "scale-[1.4]",
+    logoClassName: "scale-[1.68]",
+  },
+  {
+    src: sherwoodCapitalLogo,
+    alt: "Sherwood Capital",
+    // Source file has heavy padding; scale up so the mark matches other logos.
+    logoClassName: "origin-center scale-[3.42] md:scale-[3.84]",
   },
 ];
 
@@ -304,65 +402,41 @@ export const App: React.FC = () => {
               name: "Software Development",
               description:
                 "We provide custom software development services tailored to meet the specific needs of businesses and financial institutions. Our solutions focus on building secure, scalable, and high-performance applications that improve operational efficiency and support business growth.",
-              icon: (
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <polyline points="16 18 22 12 16 6" />
-                  <polyline points="8 6 2 12 8 18" />
-                </svg>
-              ),
+              imageSrc: serviceSoftwareArt,
+              imageAlt:
+                "Colorful illustration of custom software development and coding",
             },
             {
               name: "Mobile Application Development",
               description:
                 "Our mobile development services focus on creating modern, user-friendly mobile applications for iOS and Android platforms. We design and build mobile solutions that help businesses deliver seamless digital experiences to their customers.",
-              icon: (
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2" />
-                  <line x1="12" y1="18" x2="12.01" y2="18" />
-                </svg>
-              ),
+              imageSrc: serviceMobileArt,
+              imageAlt:
+                "Colorful illustration of mobile app design for iOS and Android",
             },
             {
               name: "Web Application Development",
               description:
                 "We design and build responsive web applications—from internal dashboards and portals to customer-facing platforms—using modern stacks and solid architecture. Our focus is on performance, security, accessibility, and maintainability so your product stays fast and reliable as you scale.",
-              icon: (
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <line x1="2" y1="12" x2="22" y2="12" />
-                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                </svg>
-              ),
+              imageSrc: serviceWebArt,
+              imageAlt:
+                "Colorful illustration of responsive web applications and browsers",
             },
           ].map((service, index) => (
-            <AnimatedOnScroll key={service.name} staggerIndex={index}>
-              <div className="card-interactive group cursor-default rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-                <ServiceCardIcon>{service.icon}</ServiceCardIcon>
+            <AnimatedOnScroll
+              key={service.name}
+              staggerIndex={index}
+              className="h-full"
+            >
+              <div className="card-interactive group flex h-full cursor-default flex-col rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+                <ServiceCardArt
+                  src={service.imageSrc}
+                  alt={service.imageAlt}
+                />
                 <h3 className="mb-3 text-base font-semibold text-slate-900">
                   {service.name}
                 </h3>
-                <p className="text-sm text-slate-600">
+                <p className="flex-1 text-sm leading-relaxed text-slate-600">
                   {service.description}
                 </p>
               </div>
@@ -433,15 +507,15 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3">
           {CLIENT_LOGOS.map((logo, index) => (
             <AnimatedOnScroll key={index} staggerIndex={index}>
-              <div className="flex h-28 items-center justify-center rounded-2xl bg-slate-50/80 px-4 py-6 shadow-sm md:h-32">
+              <div className="flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-slate-50/80 px-4 py-6 shadow-sm md:h-32">
                 <img
                   src={logo.src}
                   alt={logo.alt}
                   className={
-                    "max-h-12 w-full max-w-[220px] object-contain md:max-h-14 " +
+                    "max-h-[3.6rem] w-full max-w-[264px] object-contain object-center md:max-h-[4.2rem] " +
                     (logo.logoClassName ?? "")
                   }
                   loading="lazy"
@@ -966,15 +1040,45 @@ export const App: React.FC = () => {
     if (!product) return null;
 
     const renderScreenshotsLayout = () => {
-      const slideLabels = [
+      const placeholderLabels = [
         "Screenshot 1",
         "Screenshot 2",
         "Screenshot 3",
         "Screenshot 4",
       ];
 
-      const desktopSlideCount = slideLabels.length;
-      const mobileSlideCount = slideLabels.length;
+      const desktopSlides: Array<
+        | { kind: "image"; src: string; label: string; alt: string }
+        | { kind: "placeholder"; label: string }
+      > =
+        product.slug === "wealth-management"
+          ? WEALTH_DESKTOP_SLIDES.map((s) => ({
+              kind: "image" as const,
+              src: s.src,
+              label: s.label,
+              alt: s.alt,
+            }))
+          : product.slug === "equity-management"
+            ? EQUITY_DESKTOP_SLIDES.map((s) => ({
+                kind: "image" as const,
+                src: s.src,
+                label: s.label,
+                alt: s.alt,
+              }))
+            : product.slug === "mobile-app"
+              ? FINANCIAL_REPORT_DESKTOP_SLIDES.map((s) => ({
+                  kind: "image" as const,
+                  src: s.src,
+                  label: s.label,
+                  alt: s.alt,
+                }))
+              : placeholderLabels.map((label) => ({
+                  kind: "placeholder" as const,
+                  label,
+                }));
+
+      const desktopSlideCount = desktopSlides.length;
+      const mobileSlideCount = WEALTH_MOBILE_SCREENSHOTS.length;
       const showMobileDevice = product.slug === "wealth-management";
 
       return (
@@ -983,7 +1087,11 @@ export const App: React.FC = () => {
             Screenshots
           </p>
           <p className="max-w-2xl text-sm text-slate-600 md:text-base">
-            Explore a preview of the {product.name} interface inside a responsive desktop-style frame. These can be replaced later with real captures from your deployment.
+            {product.slug === "wealth-management" ||
+            product.slug === "equity-management" ||
+            product.slug === "mobile-app"
+              ? `Explore a preview of the ${product.name} interface inside a responsive desktop-style frame.`
+              : `Explore a preview of the ${product.name} interface inside a responsive desktop-style frame. These can be replaced later with real captures from your deployment.`}
           </p>
 
           <div className={"screenshot-devices " + (showMobileDevice ? "screenshot-devices--with-phone" : "")}>
@@ -1000,16 +1108,26 @@ export const App: React.FC = () => {
                         transform: `translateX(-${(activeScreenshotIndex % desktopSlideCount) * 100}%)`,
                       }}
                     >
-                      {slideLabels.map((label, index) => (
-                        <div key={label + index} className="min-w-full h-full">
-                          <div className="flex h-full w-full flex-col items-center justify-center bg-white px-6 text-center text-slate-900">
-                            <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
-                              {label}
+                      {desktopSlides.map((slide, index) => (
+                        <div key={slide.label + index} className="min-w-full h-full">
+                          {slide.kind === "image" ? (
+                            <img
+                              src={slide.src}
+                              alt={slide.alt}
+                              className="h-full w-full object-contain object-center"
+                              loading="lazy"
+                              decoding="async"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full flex-col items-center justify-center bg-white px-6 text-center text-slate-900">
+                              <div className="text-xs font-semibold uppercase tracking-[0.22em] text-slate-500">
+                                {slide.label}
+                              </div>
+                              <div className="mt-2 text-lg font-semibold text-slate-900">
+                                {product.name}
+                              </div>
                             </div>
-                            <div className="mt-2 text-lg font-semibold text-slate-900">
-                              {product.name}
-                            </div>
-                          </div>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -1096,26 +1214,15 @@ export const App: React.FC = () => {
                         transform: `translateX(-${(activeMobileScreenshotIndex % mobileSlideCount) * 100}%)`,
                       }}
                     >
-                      {slideLabels.map((label, index) => (
-                        <div key={label + index} className="min-w-full h-full">
-                          {index < 2 ? (
-                            <img
-                              src={index === 0 ? wealthMobileScreenshot1 : wealthMobileScreenshot2}
-                              alt={`${product.name} — mobile preview ${index + 1}`}
-                              className="h-full w-full object-cover object-top"
-                              loading="lazy"
-                              decoding="async"
-                            />
-                          ) : (
-                            <div className="flex h-full w-full flex-col items-center justify-center bg-white px-5 text-center text-slate-900">
-                              <div className="text-[11px] font-semibold uppercase tracking-[0.22em] text-slate-500">
-                                {label}
-                              </div>
-                              <div className="mt-2 text-base font-semibold text-slate-900">
-                                {product.name}
-                              </div>
-                            </div>
-                          )}
+                      {WEALTH_MOBILE_SCREENSHOTS.map((src, index) => (
+                        <div key={index} className="min-w-full h-full">
+                          <img
+                            src={src}
+                            alt={`${product.name} — mobile preview ${index + 1}`}
+                            className="h-full w-full object-cover object-top"
+                            loading="lazy"
+                            decoding="async"
+                          />
                         </div>
                       ))}
                     </div>

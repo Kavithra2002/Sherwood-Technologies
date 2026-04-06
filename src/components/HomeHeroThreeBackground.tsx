@@ -1,8 +1,14 @@
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
+export type GreenHeroSceneOptions = {
+  /** When false, camera Z stays fixed (e.g. small embedded previews). Default true. */
+  scrollDrivenCamera?: boolean;
+  particleCount?: number;
+};
+
 /** Live Three.js hero background (same idea as a pre-rendered loop “video”, but runs in WebGL). */
-class GreenHeroScene {
+export class GreenHeroScene {
   container: HTMLDivElement;
   scene!: THREE.Scene;
   camera!: THREE.PerspectiveCamera;
@@ -17,10 +23,14 @@ class GreenHeroScene {
   animationId: number | null = null;
   resizeObserver: ResizeObserver | null = null;
   baseZ = 50;
+  scrollDrivenCamera: boolean;
+  particleCount: number;
   onResize: () => void;
 
-  constructor(container: HTMLDivElement) {
+  constructor(container: HTMLDivElement, options: GreenHeroSceneOptions = {}) {
     this.container = container;
+    this.scrollDrivenCamera = options.scrollDrivenCamera ?? true;
+    this.particleCount = options.particleCount ?? 380;
     this.onResize = () => this.syncSize();
     this.init();
   }
@@ -100,7 +110,7 @@ class GreenHeroScene {
 
   createParticles() {
     const geo = new THREE.BufferGeometry();
-    const count = 380;
+    const count = this.particleCount;
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count * 3; i += 3) {
       pos[i] = (Math.random() - 0.5) * 220;
@@ -182,8 +192,10 @@ class GreenHeroScene {
     if (!this.renderer) return;
     this.animationId = requestAnimationFrame(() => this.animate());
 
-    const scrollRatio = Math.min(window.scrollY / window.innerHeight, 1);
-    this.camera.position.z = this.baseZ - scrollRatio * 18;
+    if (this.scrollDrivenCamera) {
+      const scrollRatio = Math.min(window.scrollY / window.innerHeight, 1);
+      this.camera.position.z = this.baseZ - scrollRatio * 18;
+    }
 
     if (this.particles) {
       this.particles.rotation.x += 0.00008;

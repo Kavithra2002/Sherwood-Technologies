@@ -39,6 +39,11 @@ import financialReportRepr1 from "../images/icon/reprtimg1.png";
 import financialReportImg2 from "../images/icon/reportimg2.png";
 import financialReportImg3 from "../images/icon/reportimg3.png";
 import financialReportImg4 from "../images/icon/reportimg4.png";
+import itmsTreasury1 from "../images/icon/ITMS1.png";
+import itmsTreasury2 from "../images/icon/ITMS2.png";
+import itmsTreasury3 from "../images/icon/ITMS3.png";
+import itmsTreasury4 from "../images/icon/ITMS4.png";
+import aboutSectionBackground from "../images/icon/background image 1.png";
 import serviceSoftwareArt from "../images/services/service-software.svg";
 import serviceMobileArt from "../images/services/service-mobile.svg";
 import serviceWebArt from "../images/services/service-web.svg";
@@ -106,6 +111,29 @@ const FINANCIAL_REPORT_DESKTOP_SLIDES: DesktopProductSlide[] = [
   },
 ];
 
+const TREASURY_DESKTOP_SLIDES: DesktopProductSlide[] = [
+  {
+    src: itmsTreasury1,
+    label: "Money market deal",
+    alt: "Integrated Treasury Management System — money market deal",
+  },
+  {
+    src: itmsTreasury2,
+    label: "Treasury workspace",
+    alt: "Integrated Treasury Management System — treasury workspace",
+  },
+  {
+    src: itmsTreasury3,
+    label: "Operations",
+    alt: "Integrated Treasury Management System — operations",
+  },
+  {
+    src: itmsTreasury4,
+    label: "Analytics",
+    alt: "Integrated Treasury Management System — analytics",
+  },
+];
+
 const ServiceCardArt: React.FC<{ src: string; alt: string }> = ({
   src,
   alt,
@@ -164,19 +192,23 @@ const Section: React.FC<{
     >
       {backgroundImageSrc && (
         <>
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-[#f4fafb]"
+          />
           <img
             src={backgroundImageSrc}
             alt=""
             aria-hidden="true"
-            className="absolute inset-0 h-full w-full object-cover opacity-30"
+            className="absolute bottom-0 right-0 h-auto w-3/5 max-w-[520px] select-none object-contain opacity-[0.62] saturate-[1.05] sm:w-[46%] md:w-[42%]"
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0"
-            style={{
-              background:
-                "linear-gradient(to bottom, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.08))",
-            }}
+            className="absolute inset-0 bg-gradient-to-br from-white from-[8%] via-white/75 via-[42%] to-teal-900/12"
+          />
+          <div
+            aria-hidden="true"
+            className="absolute inset-0 bg-gradient-to-t from-teal-950/[0.07] via-transparent to-white/50"
           />
         </>
       )}
@@ -532,6 +564,7 @@ export const App: React.FC = () => {
         label="About us"
         kicker="Who are we"
         variant="white"
+        backgroundImageSrc={aboutSectionBackground}
         description={
           <p className="text-base text-muted-foreground md:text-lg">
             At Sherwood Technologies, our people are the heart of everything we
@@ -543,25 +576,25 @@ export const App: React.FC = () => {
           </p>
         }
       >
-        <div className="grid gap-6 md:grid-cols-3">
-          <AnimatedOnScroll staggerIndex={0}>
-            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
+        <div className="grid gap-6 md:grid-cols-2 md:items-stretch">
+          <AnimatedOnScroll staggerIndex={0} className="h-full">
+            <div className="group relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
               <div
                 aria-hidden="true"
                 className="absolute -right-14 -top-14 h-44 w-44 rounded-full bg-emerald-400/25 blur-2xl transition-opacity group-hover:opacity-80"
               />    
-              <div className="relative">
+              <div className="relative z-10 flex flex-1 flex-col">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
                   <h3 className="text-base font-semibold text-emerald-950">
                     Contact us
                   </h3>
                 </div>
-                <p className="text-sm text-emerald-950/80">
+                <p className="flex-1 text-sm text-emerald-950/80">
                   Reach out for consultations, project inquiries, or product
                   demos. We’ll connect you with the right team quickly.
                 </p>
-                <div className="mt-5 rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3">
+                <div className="rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3">
                   <Button
                     size="sm"
                     className="w-full"
@@ -574,66 +607,28 @@ export const App: React.FC = () => {
             </div>
           </AnimatedOnScroll>
 
-          <AnimatedOnScroll staggerIndex={1}>
-            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
+          <AnimatedOnScroll staggerIndex={1} className="h-full">
+            <div className="group relative flex h-full min-h-[280px] flex-col overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
               <div
                 aria-hidden="true"
                 className="absolute -left-16 -bottom-16 h-48 w-48 rounded-full bg-emerald-500/20 blur-2xl transition-opacity group-hover:opacity-80"
               />
-              <div className="relative">
+              <div className="relative z-10 flex flex-1 flex-col">
                 <div className="mb-4 flex items-center gap-3">
                   <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
                   <h3 className="text-base font-semibold text-emerald-950">
-                    Location
+                    You can find us
                   </h3>
                 </div>
-                <p className="text-sm text-emerald-950/80">
+                <p className="flex-1 text-sm text-emerald-950/80">
                   Visit our office or schedule a meeting. We also support remote
                   engagements across regions.
                 </p>
-                <div className="mt-5 rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3 text-sm text-emerald-950/80">
+                <div className="rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3 text-sm text-emerald-950/80">
                   <p className="font-medium text-emerald-950">Head office</p>
                   <p className="mt-1">
-                    Add your address here (street, city, country)
+                    No 100/1, Elvitigala Mawatha, Colombo 08.
                   </p>
-                </div>
-              </div>
-            </div>
-          </AnimatedOnScroll>
-
-          <AnimatedOnScroll staggerIndex={2}>
-            <div className="group relative overflow-hidden rounded-3xl border border-emerald-200/70 bg-emerald-50/80 p-7 shadow-md backdrop-blur-sm">
-              <div
-                aria-hidden="true"
-                className="absolute -right-20 -bottom-20 h-56 w-56 rounded-full bg-emerald-300/25 blur-2xl transition-opacity group-hover:opacity-80"
-              />
-              <div className="relative">
-                <div className="mb-4 flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-emerald-600/20 ring-1 ring-emerald-600/25" />
-                  <h3 className="text-base font-semibold text-emerald-950">
-                    Team members
-                  </h3>
-                </div>
-                <p className="text-sm text-emerald-950/80">
-                  A cross-functional group of engineers and finance specialists
-                  building secure, scalable digital products.
-                </p>
-                <div className="mt-5 grid gap-3">
-                  {[
-                    { name: "Lead Partner", role: "Executive Director" },
-                    { name: "Engineering", role: "Platform & Mobile" },
-                    { name: "Advisory", role: "Finance & Treasury" },
-                  ].map((person) => (
-                    <div
-                      key={person.name}
-                      className="flex items-center justify-between rounded-2xl border border-emerald-200/70 bg-white/60 px-4 py-3 text-sm"
-                    >
-                      <span className="font-medium text-emerald-950">
-                        {person.name}
-                      </span>
-                      <span className="text-emerald-950/70">{person.role}</span>
-                    </div>
-                  ))}
                 </div>
               </div>
             </div>
@@ -1072,10 +1067,17 @@ export const App: React.FC = () => {
                   label: s.label,
                   alt: s.alt,
                 }))
-              : placeholderLabels.map((label) => ({
-                  kind: "placeholder" as const,
-                  label,
-                }));
+              : product.slug === "treasury-management"
+                ? TREASURY_DESKTOP_SLIDES.map((s) => ({
+                    kind: "image" as const,
+                    src: s.src,
+                    label: s.label,
+                    alt: s.alt,
+                  }))
+                : placeholderLabels.map((label) => ({
+                    kind: "placeholder" as const,
+                    label,
+                  }));
 
       const desktopSlideCount = desktopSlides.length;
       const mobileSlideCount = WEALTH_MOBILE_SCREENSHOTS.length;
@@ -1089,7 +1091,8 @@ export const App: React.FC = () => {
           <p className="max-w-2xl text-sm text-slate-600 md:text-base">
             {product.slug === "wealth-management" ||
             product.slug === "equity-management" ||
-            product.slug === "mobile-app"
+            product.slug === "mobile-app" ||
+            product.slug === "treasury-management"
               ? `Explore a preview of the ${product.name} interface inside a responsive desktop-style frame.`
               : `Explore a preview of the ${product.name} interface inside a responsive desktop-style frame. These can be replaced later with real captures from your deployment.`}
           </p>

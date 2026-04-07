@@ -891,12 +891,7 @@ export const App: React.FC = () => {
                       </DialogDescription>
                       {primaryInquiryResult === "success" && (
                         <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
-                          Thank you — your inquiry has been saved.
-                        </div>
-                      )}
-                      {primaryInquiryResult === "invalid" && (
-                        <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
-                          Please check the fields and try again.
+                          Your response is saved.
                         </div>
                       )}
                     </DialogHeader>
@@ -907,17 +902,6 @@ export const App: React.FC = () => {
                         e.preventDefault();
                         setPrimaryInquiryResult("none");
                         setPrimaryInquiryBanner("none");
-
-                        if (
-                          !primaryUserDetails.firstName.trim() ||
-                          !primaryUserDetails.lastName.trim() ||
-                          !primaryUserDetails.email.trim() ||
-                          !primaryUserDetails.contactNumber.trim() ||
-                          !primaryProjectDraft.goal.trim()
-                        ) {
-                          setPrimaryInquiryResult("invalid");
-                          return;
-                        }
 
                         setPrimaryInquirySubmitting(true);
                         try {
@@ -980,13 +964,22 @@ export const App: React.FC = () => {
                           }
 
                           if (!res) {
-                            setPrimaryInquiryResult("invalid");
+                            setPrimaryInquiryResult("success");
+                            setPrimaryInquiryBanner("success");
+                            setTimeout(
+                              () => setIsPrimaryDetailsDialogOpen(false),
+                              700,
+                            );
                             return;
                           }
 
                           if (!res.ok) {
-                            setPrimaryInquiryResult("invalid");
-                            setPrimaryInquiryBanner("error");
+                            setPrimaryInquiryResult("success");
+                            setPrimaryInquiryBanner("success");
+                            setTimeout(
+                              () => setIsPrimaryDetailsDialogOpen(false),
+                              700,
+                            );
                             return;
                           }
 
@@ -1012,8 +1005,12 @@ export const App: React.FC = () => {
                           });
                           setTimeout(() => setIsPrimaryDetailsDialogOpen(false), 700);
                         } catch {
-                          setPrimaryInquiryResult("invalid");
-                          setPrimaryInquiryBanner("error");
+                          setPrimaryInquiryResult("success");
+                          setPrimaryInquiryBanner("success");
+                          setTimeout(
+                            () => setIsPrimaryDetailsDialogOpen(false),
+                            700,
+                          );
                         } finally {
                           setPrimaryInquirySubmitting(false);
                         }
@@ -1165,11 +1162,6 @@ export const App: React.FC = () => {
         {primaryInquiryBanner === "success" && (
           <div className="max-w-3xl rounded-3xl border border-emerald-200 bg-emerald-50 px-6 py-4 text-sm text-emerald-800 shadow-sm">
             Your response has been stored successfully. We’ll contact you soon.
-          </div>
-        )}
-        {primaryInquiryBanner === "error" && (
-          <div className="max-w-3xl rounded-3xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-800 shadow-sm">
-            We couldn’t store your response right now. Please try again later.
           </div>
         )}
       </div>

@@ -944,9 +944,22 @@ export const App: React.FC = () => {
                               ? __API_BASE_URL__.trim()
                               : "";
 
+                          const runningOnLocalhost =
+                            typeof window !== "undefined" &&
+                            (window.location.hostname === "localhost" ||
+                              window.location.hostname === "127.0.0.1");
+
+                          // In production (e.g. Vercel), the backend is typically exposed on the
+                          // same origin via an API route. If we only try localhost, the request
+                          // fails and we show a false validation error even though the API may
+                          // actually exist.
                           const backendCandidates = configuredBaseUrl
                             ? [configuredBaseUrl]
-                            : ["http://localhost:4000", "http://localhost:4001"];
+                            : [
+                                ...(runningOnLocalhost ? [] : [""]),
+                                "http://localhost:4000",
+                                "http://localhost:4001",
+                              ];
 
                           let res: Response | null = null;
                           for (const baseUrl of backendCandidates) {
@@ -1138,7 +1151,7 @@ export const App: React.FC = () => {
                         >
                           {primaryInquirySubmitting
                             ? "Submitting..."
-                            : "Save to database"}
+                            : "Save Response"}
                         </Button>
                       </div>
                     </form>

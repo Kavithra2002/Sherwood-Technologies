@@ -11,31 +11,62 @@ body {
   overflow: hidden;
 }
 
-/* Dark immersive overlay — aligned with reffer code marketing-hero.css .hero-overlay */
-.home-hero::after {
+/* Hero overlays:
+   - ::before lifts overall background brightness (keeps it “light”)
+   - ::after adds a very subtle dark falloff for depth (keeps edges calm) */
+.home-hero::before {
   content: "";
   position: absolute;
   inset: 0;
   background:
     radial-gradient(
-      ellipse 120% 80% at 50% 20%,
-      rgba(15, 23, 42, 0.25) 0%,
-      transparent 55%
+      circle 120% 95% at 55% 22%,
+      rgba(255, 255, 255, 0.18) 0%,
+      rgba(255, 255, 255, 0.06) 40%,
+      transparent 72%
     ),
     linear-gradient(
       180deg,
-      rgba(15, 23, 42, 0.15) 0%,
-      rgba(15, 23, 42, 0.1) 40%,
-      rgba(15, 23, 42, 0.55) 72%,
-      #0f172a 100%
+      rgba(255, 255, 255, 0.12) 0%,
+      rgba(255, 255, 255, 0.02) 55%,
+      transparent 100%
     );
   z-index: 1;
   pointer-events: none;
 }
 
+.home-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    /* Slight local contrast behind the content (no “box”, just a soft scrim). */
+    radial-gradient(
+      circle 78% 58% at 32% 44%,
+      rgba(2, 6, 23, 0.26) 0%,
+      rgba(2, 6, 23, 0.16) 34%,
+      rgba(2, 6, 23, 0.05) 62%,
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 120% 85% at 50% 18%,
+      rgba(15, 23, 42, 0.01) 0%,
+      transparent 60%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(15, 23, 42, 0.02) 0%,
+      rgba(15, 23, 42, 0.02) 46%,
+      rgba(15, 23, 42, 0.10) 80%,
+      rgba(15, 23, 42, 0.12) 100%
+    );
+  z-index: 2;
+  pointer-events: none;
+}
+
 .home-hero__content {
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 
 .about-bg__content {

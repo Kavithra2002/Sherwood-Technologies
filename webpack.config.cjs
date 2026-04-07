@@ -1,5 +1,6 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const webpack = require("webpack");
 
 /** @type {import('webpack').Configuration} */
 module.exports = {
@@ -45,6 +46,9 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: "./src/index.html",
+    }),
+    new webpack.DefinePlugin({
+      __API_BASE_URL__: JSON.stringify(process.env.API_BASE_URL || ""),
     }),
   ],
 };

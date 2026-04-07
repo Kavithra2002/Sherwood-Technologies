@@ -40,7 +40,8 @@ export class GreenHeroScene {
     const h = this.container.clientHeight || window.innerHeight;
 
     this.scene = new THREE.Scene();
-    const bg = 0x06180c;
+    // Slightly lighter green-teal so the hero feels brighter (text contrast is handled by a local scrim panel).
+    const bg = 0x103326;
     this.scene.background = new THREE.Color(bg);
 
     this.camera = new THREE.PerspectiveCamera(75, w / h, 0.1, 1000);
@@ -73,17 +74,17 @@ export class GreenHeroScene {
     this.renderer.domElement.className = "pointer-events-none block h-full w-full";
     this.container.appendChild(this.renderer.domElement);
 
-    this.scene.add(new THREE.AmbientLight(0xffffff, 0.35));
+    this.scene.add(new THREE.AmbientLight(0xffffff, 0.52));
 
-    const l1 = new THREE.PointLight(0x79c72c, 1.2);
+    const l1 = new THREE.PointLight(0x79c72c, 1.15);
     l1.position.set(100, 80, 60);
     this.scene.add(l1);
 
-    const l2 = new THREE.PointLight(0x4ade80, 0.65);
+    const l2 = new THREE.PointLight(0x4ade80, 0.68);
     l2.position.set(-90, -70, 50);
     this.scene.add(l2);
 
-    const l3 = new THREE.PointLight(0x22c55e, 0.4);
+    const l3 = new THREE.PointLight(0x22c55e, 0.45);
     l3.position.set(0, 40, -60);
     this.scene.add(l3);
 
@@ -124,7 +125,7 @@ export class GreenHeroScene {
       color: 0x79c72c,
       sizeAttenuation: true,
       transparent: true,
-      opacity: 0.55,
+      opacity: 0.62,
     });
     this.particles = new THREE.Points(geo, mat);
     this.scene.add(this.particles);
@@ -136,7 +137,7 @@ export class GreenHeroScene {
       color: 0x4c9141,
       emissive: 0x14532d,
       transparent: true,
-      opacity: 0.28,
+      opacity: 0.32,
       wireframe: true,
     });
 
@@ -157,7 +158,7 @@ export class GreenHeroScene {
       color: 0x86efac,
       emissive: 0x14532d,
       transparent: true,
-      opacity: 0.18,
+      opacity: 0.22,
       wireframe: true,
     });
 
@@ -178,7 +179,7 @@ export class GreenHeroScene {
       color: 0x4ade80,
       emissive: 0x166534,
       transparent: true,
-      opacity: 0.22,
+      opacity: 0.26,
       wireframe: true,
     });
 

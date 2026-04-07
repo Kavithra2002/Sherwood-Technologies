@@ -21,6 +21,8 @@ import wealthMobileScreenshot2 from "../images/mobile img 2.png";
 import wealthMobileScreenshot3 from "../images/mobile image 3 new.png";
 import wealthMobileScreenshot4 from "../images/mobile image 4 new.png";
 
+declare const __API_BASE_URL__: string;
+
 const WEALTH_MOBILE_SCREENSHOTS = [
   wealthMobileScreenshot1,
   wealthMobileScreenshot2,
@@ -310,6 +312,31 @@ export const App: React.FC = () => {
     "none" | "success" | "invalid" | "duplicate"
   >("none");
 
+  const [primaryProjectDraft, setPrimaryProjectDraft] = useState({
+    projectName: "",
+    goal: "",
+    audience: "",
+    timeline: "",
+  });
+
+  const [isPrimaryDetailsDialogOpen, setIsPrimaryDetailsDialogOpen] =
+    useState(false);
+  const [primaryUserDetails, setPrimaryUserDetails] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    contactNumber: "",
+    company: "",
+  });
+  const [primaryInquirySubmitting, setPrimaryInquirySubmitting] =
+    useState(false);
+  const [primaryInquiryResult, setPrimaryInquiryResult] = useState<
+    "none" | "success" | "invalid"
+  >("none");
+  const [primaryInquiryBanner, setPrimaryInquiryBanner] = useState<
+    "none" | "success" | "error"
+  >("none");
+
   const [activeScreenshotIndex, setActiveScreenshotIndex] = useState(0);
   const [activeMobileScreenshotIndex, setActiveMobileScreenshotIndex] = useState(0);
 
@@ -377,6 +404,36 @@ export const App: React.FC = () => {
     checkBackend();
   }, []);
 
+  useEffect(() => {
+    const resetPrimaryAction = () => {
+      setPrimaryProjectDraft({
+        projectName: "",
+        goal: "",
+        audience: "",
+        timeline: "",
+      });
+      setPrimaryUserDetails({
+        firstName: "",
+        lastName: "",
+        email: "",
+        contactNumber: "",
+        company: "",
+      });
+      setPrimaryInquiryResult("none");
+      setPrimaryInquiryBanner("none");
+      setPrimaryInquirySubmitting(false);
+      setIsPrimaryDetailsDialogOpen(false);
+      try {
+        window.localStorage.removeItem("primaryProjectDraft");
+      } catch {
+        // ignore
+      }
+    };
+
+    // Ensure the Primary action page always starts empty.
+    resetPrimaryAction();
+  }, [view]);
+
   const renderHome = () => (
     <>
       <section
@@ -387,20 +444,20 @@ export const App: React.FC = () => {
         <div className="home-hero__content mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-10 px-6 py-16 md:flex-row md:items-center md:py-20">
           <div className="flex-1 space-y-7 text-center md:text-left">
             <AnimatedOnScroll staggerIndex={0}>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-300/95">
+              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-200 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
                 Digital experience
               </p>
             </AnimatedOnScroll>
             <AnimatedOnScroll staggerIndex={1}>
-              <h1 className="text-4xl font-semibold tracking-tight text-white drop-shadow-sm md:text-6xl md:leading-[1.08]">
+              <h1 className="text-4xl font-semibold tracking-tight text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55),0_1px_3px_rgba(0,0,0,0.45)] md:text-6xl md:leading-[1.08]">
                 Building Smart Software for a{" "}
-                <span className="bg-gradient-to-r from-emerald-200 via-primary to-lime-200 bg-clip-text text-transparent">
+                <span className="bg-gradient-to-r from-emerald-200 via-primary to-lime-200 bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)]">
                   Digital Future
                 </span>
               </h1>
             </AnimatedOnScroll>
             <AnimatedOnScroll staggerIndex={2}>
-              <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-300/95 md:mx-0 md:text-lg">
+              <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-100 [text-shadow:0_1px_14px_rgba(0,0,0,0.5)] md:mx-0 md:text-lg">
                 Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.
               </p>
             </AnimatedOnScroll>
@@ -664,32 +721,444 @@ export const App: React.FC = () => {
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2">
-          <AnimatedOnScroll staggerIndex={0}>
-            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-              <h3 className="mb-3 text-base font-semibold text-slate-900">
-                How we can engage
-              </h3>
-              <p className="text-sm text-slate-600">
-                Add more structured content here – for example, steps in your
-                onboarding process, what information you need from clients, or
-                a breakdown of your core value proposition.
-              </p>
+        <AnimatedOnScroll staggerIndex={0}>
+          <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
+            <div className="flex flex-col gap-2 md:flex-row md:items-start md:justify-between">
+              <div>
+                <h2 className="text-lg font-semibold text-slate-900">
+                  Describe your new project idea
+                </h2>
+                <p className="mt-1 max-w-2xl text-sm text-slate-600">
+                  Tell us what you want to build and what success looks like.
+                  When you submit your idea, we’ll ask for your contact details
+                  and store everything in the database.
+                </p>
+              </div>
             </div>
-          </AnimatedOnScroll>
-          <AnimatedOnScroll staggerIndex={1}>
-            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-              <h3 className="mb-3 text-base font-semibold text-slate-900">
-                Next steps
-              </h3>
-              <p className="text-sm text-slate-600">
-                You can also surface links, documents, or forms here—anything
-                that helps visitors complete the primary action you want them to
-                take.
-              </p>
+
+            <div className="mt-6 grid gap-4 md:grid-cols-2">
+              <div className="space-y-1">
+                <label
+                  htmlFor="primary-project-name"
+                  className="text-sm font-medium text-slate-800"
+                >
+                  Project name (optional)
+                </label>
+                <input
+                  id="primary-project-name"
+                  type="text"
+                  value={primaryProjectDraft.projectName}
+                  onChange={(e) => {
+                    setPrimaryProjectDraft((prev) => ({
+                      ...prev,
+                      projectName: e.target.value,
+                    }));
+                  }}
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  placeholder="e.g. Investment onboarding portal"
+                />
+              </div>
+              <div className="space-y-1">
+                <label
+                  htmlFor="primary-project-timeline"
+                  className="text-sm font-medium text-slate-800"
+                >
+                  Desired timeline (optional)
+                </label>
+                <input
+                  id="primary-project-timeline"
+                  type="text"
+                  value={primaryProjectDraft.timeline}
+                  onChange={(e) => {
+                    setPrimaryProjectDraft((prev) => ({
+                      ...prev,
+                      timeline: e.target.value,
+                    }));
+                  }}
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  placeholder="e.g. 6–8 weeks for MVP"
+                />
+              </div>
+              <div className="space-y-1 md:col-span-2">
+                <label
+                  htmlFor="primary-project-audience"
+                  className="text-sm font-medium text-slate-800"
+                >
+                  Who is it for? (optional)
+                </label>
+                <input
+                  id="primary-project-audience"
+                  type="text"
+                  value={primaryProjectDraft.audience}
+                  onChange={(e) => {
+                    setPrimaryProjectDraft((prev) => ({
+                      ...prev,
+                      audience: e.target.value,
+                    }));
+                  }}
+                  className="w-full rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  placeholder="e.g. Retail investors, relationship managers, back office"
+                />
+              </div>
+              <div className="space-y-1 md:col-span-2">
+                <label
+                  htmlFor="primary-project-goal"
+                  className="text-sm font-medium text-slate-800"
+                >
+                  Your idea (what problem are you solving?)
+                </label>
+                <textarea
+                  id="primary-project-goal"
+                  value={primaryProjectDraft.goal}
+                  onChange={(e) => {
+                    setPrimaryProjectDraft((prev) => ({
+                      ...prev,
+                      goal: e.target.value,
+                    }));
+                  }}
+                  className="min-h-[140px] w-full resize-y rounded-2xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  placeholder="Describe the project in a few sentences. Include key features, any integrations, and what a successful first release should achieve."
+                />
+              </div>
             </div>
-          </AnimatedOnScroll>
-        </div>
+
+            <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-xs text-slate-600">
+                Submit your idea to add your details and save the inquiry to the
+                database.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setPrimaryProjectDraft({
+                      projectName: "",
+                      goal: "",
+                      audience: "",
+                      timeline: "",
+                    });
+                    setPrimaryInquiryResult("none");
+                    setPrimaryInquiryBanner("none");
+                    try {
+                      window.localStorage.removeItem("primaryProjectDraft");
+                    } catch {
+                      // ignore
+                    }
+                  }}
+                >
+                  Clear
+                </Button>
+
+                <Dialog
+                  open={isPrimaryDetailsDialogOpen}
+                  onOpenChange={(open) => {
+                    setIsPrimaryDetailsDialogOpen(open);
+                    if (!open) {
+                      setPrimaryInquiryResult("none");
+                      setPrimaryInquirySubmitting(false);
+                    }
+                  }}
+                >
+                  <Button
+                    type="button"
+                    size="sm"
+                    onClick={() => {
+                      if (!primaryProjectDraft.goal.trim()) return;
+                      setPrimaryInquiryBanner("none");
+                      try {
+                        window.localStorage.setItem(
+                          "primaryProjectDraft",
+                          JSON.stringify(primaryProjectDraft),
+                        );
+                      } catch {
+                        // ignore
+                      }
+                      setPrimaryInquiryResult("none");
+                      setIsPrimaryDetailsDialogOpen(true);
+                    }}
+                    disabled={!primaryProjectDraft.goal.trim()}
+                  >
+                    Submit idea
+                  </Button>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Your details</DialogTitle>
+                      <DialogDescription>
+                        Add your contact details so we can save this inquiry in
+                        the database and follow up.
+                      </DialogDescription>
+                      {primaryInquiryResult === "success" && (
+                        <div className="mt-3 rounded-xl border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-700">
+                          Thank you — your inquiry has been saved.
+                        </div>
+                      )}
+                      {primaryInquiryResult === "invalid" && (
+                        <div className="mt-3 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-sm text-red-700">
+                          Please check the fields and try again.
+                        </div>
+                      )}
+                    </DialogHeader>
+
+                    <form
+                      className="mt-4 space-y-4"
+                      onSubmit={async (e) => {
+                        e.preventDefault();
+                        setPrimaryInquiryResult("none");
+                        setPrimaryInquiryBanner("none");
+
+                        if (
+                          !primaryUserDetails.firstName.trim() ||
+                          !primaryUserDetails.lastName.trim() ||
+                          !primaryUserDetails.email.trim() ||
+                          !primaryUserDetails.contactNumber.trim() ||
+                          !primaryProjectDraft.goal.trim()
+                        ) {
+                          setPrimaryInquiryResult("invalid");
+                          return;
+                        }
+
+                        setPrimaryInquirySubmitting(true);
+                        try {
+                          const body = JSON.stringify({
+                            user: {
+                              firstName: primaryUserDetails.firstName.trim(),
+                              lastName: primaryUserDetails.lastName.trim(),
+                              email: primaryUserDetails.email.trim(),
+                              contactNumber: primaryUserDetails.contactNumber.trim(),
+                              company: primaryUserDetails.company.trim() || null,
+                            },
+                            idea: {
+                              projectName:
+                                primaryProjectDraft.projectName.trim() || null,
+                              audience: primaryProjectDraft.audience.trim() || null,
+                              timeline: primaryProjectDraft.timeline.trim() || null,
+                              goal: primaryProjectDraft.goal.trim(),
+                            },
+                            source: "primary-action",
+                          });
+
+                          const configuredBaseUrl =
+                            typeof __API_BASE_URL__ === "string"
+                              ? __API_BASE_URL__.trim()
+                              : "";
+
+                          const backendCandidates = configuredBaseUrl
+                            ? [configuredBaseUrl]
+                            : ["http://localhost:4000", "http://localhost:4001"];
+
+                          let res: Response | null = null;
+                          for (const baseUrl of backendCandidates) {
+                            try {
+                              const attempt = await fetch(
+                                `${baseUrl}/api/project-inquiries`,
+                                {
+                                  method: "POST",
+                                  headers: { "Content-Type": "application/json" },
+                                  body,
+                                },
+                              );
+                              res = attempt;
+                              break;
+                            } catch {
+                              // try next
+                            }
+                          }
+
+                          if (!res) {
+                            setPrimaryInquiryResult("invalid");
+                            return;
+                          }
+
+                          if (!res.ok) {
+                            setPrimaryInquiryResult("invalid");
+                            setPrimaryInquiryBanner("error");
+                            return;
+                          }
+
+                          setPrimaryInquiryResult("success");
+                          setPrimaryInquiryBanner("success");
+                          try {
+                            window.localStorage.removeItem("primaryProjectDraft");
+                          } catch {
+                            // ignore
+                          }
+                          setPrimaryProjectDraft({
+                            projectName: "",
+                            goal: "",
+                            audience: "",
+                            timeline: "",
+                          });
+                          setPrimaryUserDetails({
+                            firstName: "",
+                            lastName: "",
+                            email: "",
+                            contactNumber: "",
+                            company: "",
+                          });
+                          setTimeout(() => setIsPrimaryDetailsDialogOpen(false), 700);
+                        } catch {
+                          setPrimaryInquiryResult("invalid");
+                          setPrimaryInquiryBanner("error");
+                        } finally {
+                          setPrimaryInquirySubmitting(false);
+                        }
+                      }}
+                    >
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="primary-inquiry-first-name"
+                            className="text-sm font-medium text-slate-800"
+                          >
+                            First name
+                          </label>
+                          <input
+                            id="primary-inquiry-first-name"
+                            type="text"
+                            value={primaryUserDetails.firstName}
+                            onChange={(e) => {
+                              setPrimaryInquiryResult("none");
+                              setPrimaryUserDetails((p) => ({
+                                ...p,
+                                firstName: e.target.value,
+                              }));
+                            }}
+                            className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                            placeholder="Enter your first name"
+                          />
+                        </div>
+                        <div className="space-y-1">
+                          <label
+                            htmlFor="primary-inquiry-last-name"
+                            className="text-sm font-medium text-slate-800"
+                          >
+                            Last name
+                          </label>
+                          <input
+                            id="primary-inquiry-last-name"
+                            type="text"
+                            value={primaryUserDetails.lastName}
+                            onChange={(e) => {
+                              setPrimaryInquiryResult("none");
+                              setPrimaryUserDetails((p) => ({
+                                ...p,
+                                lastName: e.target.value,
+                              }));
+                            }}
+                            className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                            placeholder="Enter your last name"
+                          />
+                        </div>
+                      </div>
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="primary-inquiry-email"
+                          className="text-sm font-medium text-slate-800"
+                        >
+                          Email address
+                        </label>
+                        <input
+                          id="primary-inquiry-email"
+                          type="email"
+                          value={primaryUserDetails.email}
+                          onChange={(e) => {
+                            setPrimaryInquiryResult("none");
+                            setPrimaryUserDetails((p) => ({
+                              ...p,
+                              email: e.target.value,
+                            }));
+                          }}
+                          className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                          placeholder="name@example.com"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="primary-inquiry-contact-number"
+                          className="text-sm font-medium text-slate-800"
+                        >
+                          Contact number
+                        </label>
+                        <input
+                          id="primary-inquiry-contact-number"
+                          type="tel"
+                          value={primaryUserDetails.contactNumber}
+                          onChange={(e) => {
+                            setPrimaryInquiryResult("none");
+                            setPrimaryUserDetails((p) => ({
+                              ...p,
+                              contactNumber: e.target.value,
+                            }));
+                          }}
+                          className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                          placeholder="Include country code if applicable"
+                        />
+                      </div>
+                      <div className="space-y-1">
+                        <label
+                          htmlFor="primary-inquiry-company"
+                          className="text-sm font-medium text-slate-800"
+                        >
+                          Company (optional)
+                        </label>
+                        <input
+                          id="primary-inquiry-company"
+                          type="text"
+                          value={primaryUserDetails.company}
+                          onChange={(e) => {
+                            setPrimaryInquiryResult("none");
+                            setPrimaryUserDetails((p) => ({
+                              ...p,
+                              company: e.target.value,
+                            }));
+                          }}
+                          className="w-full rounded-2xl border border-slate-200 px-3 py-2 text-sm text-slate-900 outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                          placeholder="Your company / organization"
+                        />
+                      </div>
+
+                      <div className="mt-2 flex justify-end gap-3">
+                        <Button
+                          type="button"
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            setIsPrimaryDetailsDialogOpen(false);
+                            setPrimaryInquiryResult("none");
+                          }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button
+                          type="submit"
+                          size="sm"
+                          disabled={primaryInquirySubmitting}
+                        >
+                          {primaryInquirySubmitting
+                            ? "Submitting..."
+                            : "Save to database"}
+                        </Button>
+                      </div>
+                    </form>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            </div>
+          </div>
+        </AnimatedOnScroll>
+
+        {primaryInquiryBanner === "success" && (
+          <div className="max-w-3xl rounded-3xl border border-emerald-200 bg-emerald-50 px-6 py-4 text-sm text-emerald-800 shadow-sm">
+            Your response has been stored successfully. We’ll contact you soon.
+          </div>
+        )}
+        {primaryInquiryBanner === "error" && (
+          <div className="max-w-3xl rounded-3xl border border-red-200 bg-red-50 px-6 py-4 text-sm text-red-800 shadow-sm">
+            We couldn’t store your response right now. Please try again later.
+          </div>
+        )}
       </div>
     </section>
   );
@@ -1036,10 +1505,10 @@ export const App: React.FC = () => {
 
     const renderScreenshotsLayout = () => {
       const placeholderLabels = [
-        "Screenshot 1",
-        "Screenshot 2",
-        "Screenshot 3",
-        "Screenshot 4",
+        "Preview 1",
+        "Preview 2",
+        "Preview 3",
+        "Preview 4",
       ];
 
       const desktopSlides: Array<
@@ -1086,7 +1555,7 @@ export const App: React.FC = () => {
       return (
         <div className="mt-4 space-y-4">
           <p className="text-sm font-semibold uppercase tracking-[0.22em] text-primary">
-            Screenshots
+            At a Glance
           </p>
           <p className="max-w-2xl text-sm text-slate-600 md:text-base">
             {product.slug === "wealth-management" ||
@@ -1148,7 +1617,7 @@ export const App: React.FC = () => {
                   )
                 }
               >
-                <span className="sr-only">Previous screenshot</span>
+                <span className="sr-only">Previous preview</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -1173,7 +1642,7 @@ export const App: React.FC = () => {
                   )
                 }
               >
-                <span className="sr-only">Next screenshot</span>
+                <span className="sr-only">Next preview</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 24 24"
@@ -1205,7 +1674,7 @@ export const App: React.FC = () => {
             </div>
 
             {showMobileDevice && (
-              <div className="screenshot-phone-wrapper" aria-label="Mobile screenshots preview">
+              <div className="screenshot-phone-wrapper" aria-label="Mobile preview">
                 <div className="screenshot-phone-body">
                   <div className="screenshot-phone-notch" aria-hidden="true">
                     <div className="screenshot-phone-notch-camera" />
@@ -1240,7 +1709,7 @@ export const App: React.FC = () => {
                       )
                     }
                   >
-                    <span className="sr-only">Previous mobile screenshot</span>
+                    <span className="sr-only">Previous mobile preview</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -1265,7 +1734,7 @@ export const App: React.FC = () => {
                       )
                     }
                   >
-                    <span className="sr-only">Next mobile screenshot</span>
+                    <span className="sr-only">Next mobile preview</span>
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"

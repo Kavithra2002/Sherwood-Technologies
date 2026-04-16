@@ -45,7 +45,8 @@ import itmsTreasury1 from "../images/icon/ITMS1.png";
 import itmsTreasury2 from "../images/icon/ITMS2.png";
 import itmsTreasury3 from "../images/icon/ITMS3.png";
 import itmsTreasury4 from "../images/icon/ITMS4.png";
-import aboutSectionBackground from "../images/icon/background image 1.png";
+import aboutSectionBackground from "../images/icon/logo arrow.png";
+import aiProductsVideo from "../images/icon/AI2.mp4";
 import serviceSoftwareArt from "../images/services/service-software.svg";
 import serviceMobileArt from "../images/services/service-mobile.svg";
 import serviceWebArt from "../images/services/service-web.svg";
@@ -196,25 +197,36 @@ const Section: React.FC<{
         <>
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-[#f4fafb]"
-          />
-          <img
-            src={backgroundImageSrc}
-            alt=""
-            aria-hidden="true"
-            className="absolute bottom-0 right-0 h-auto w-3/5 max-w-[520px] select-none object-contain opacity-[0.62] saturate-[1.05] sm:w-[46%] md:w-[42%]"
+            className="absolute inset-0 z-0 bg-[#f4fafb]"
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-br from-white from-[8%] via-white/75 via-[42%] to-teal-900/12"
+            className="absolute inset-0 z-0 bg-gradient-to-br from-white from-[8%] via-white/80 via-[40%] to-emerald-900/[0.08]"
           />
           <div
             aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-teal-950/[0.07] via-transparent to-white/50"
+            className="absolute inset-0 z-0 bg-gradient-to-t from-emerald-950/[0.05] via-transparent to-white/55"
           />
+          {/* Full-opacity logo above scrims; bottom-left of section = image bottom-left */}
+          <div
+            aria-hidden="true"
+            className="pointer-events-none absolute inset-0 z-[1] flex items-end justify-start pl-0 pb-0 pt-24 md:pt-32"
+          >
+            <img
+              src={backgroundImageSrc}
+              alt=""
+              aria-hidden="true"
+              className="h-[min(53.2vh,448px)] w-auto max-w-[min(67.2vw,392px)] select-none object-contain object-left-bottom opacity-100 mix-blend-multiply sm:h-[min(58.8vh,504px)] sm:max-w-[min(61.6vw,420px)]"
+            />
+          </div>
         </>
       )}
-      <div className="mx-auto relative z-[1] flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32">
+      <div
+        className={
+          "mx-auto relative flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32 " +
+          (backgroundImageSrc ? "z-[2]" : "z-[1]")
+        }
+      >
         <div className="max-w-2xl space-y-3">
           {kicker && (
             <AnimatedOnScroll staggerIndex={0}>
@@ -552,6 +564,17 @@ export const App: React.FC = () => {
           </>
         }
       >
+        <div className="products-ai-video" aria-hidden="true">
+          <video
+            className="products-ai-video__media"
+            src={aiProductsVideo}
+            autoPlay
+            muted
+            loop
+            playsInline
+            preload="auto"
+          />
+        </div>
         <div className="grid gap-6 md:grid-cols-2">
           {PRODUCTS.map((product, index) => (
             <AnimatedOnScroll key={product.slug} staggerIndex={index}>

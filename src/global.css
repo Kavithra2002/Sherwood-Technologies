@@ -889,3 +889,33 @@ body {
     height: 280px;
   }
 }
+
+/* Products page — decorative top-right video (does not affect layout flow) */
+.products-ai-video {
+  position: absolute;
+  top: 4.25rem;
+  right: 0;
+  width: min(440px, 38%);
+  aspect-ratio: 16 / 9;
+  border-radius: 1.5rem;
+  overflow: hidden;
+  background: #ffffff;
+  box-shadow:
+    0 18px 50px rgba(15, 23, 42, 0.10),
+    0 8px 18px rgba(15, 23, 42, 0.06);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.products-ai-video__media {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .products-ai-video {
+    display: none;
+  }
+}

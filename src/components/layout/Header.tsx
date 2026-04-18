@@ -1,11 +1,12 @@
 import React from "react";
 import logoImg from "../../../images/logo.png";
+import { showClientsSection } from "../../featureFlags";
 
 const sections = [
   { id: "home", label: "Home" },
   { id: "services", label: "Services" },
   { id: "products", label: "Products" },
-  { id: "clients", label: "Clients" },
+  ...(showClientsSection ? [{ id: "clients" as const, label: "Clients" }] : []),
   { id: "about", label: "About us" },
 ];
 

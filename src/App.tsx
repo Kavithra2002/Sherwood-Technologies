@@ -50,6 +50,7 @@ import aiProductsVideo from "../images/icon/AI2.mp4";
 import serviceSoftwareArt from "../images/services/service-software.svg";
 import serviceMobileArt from "../images/services/service-mobile.svg";
 import serviceWebArt from "../images/services/service-web.svg";
+import { showClientsSection } from "./featureFlags";
 
 type DesktopProductSlide = { src: string; label: string; alt: string };
 
@@ -308,9 +309,6 @@ export const App: React.FC = () => {
     "home" | "primary" | "secondary" | "contact" | "product-detail"
   >("home");
   const [productSlug, setProductSlug] = useState<ProductSlug | null>(null);
-  const [backendStatus, setBackendStatus] = useState<
-    "unknown" | "connected" | "not_connected"
-  >("unknown");
   const [isConsultationDialogOpen, setIsConsultationDialogOpen] =
     useState(false);
   const [consultationForm, setConsultationForm] = useState({
@@ -389,32 +387,6 @@ export const App: React.FC = () => {
     setActiveScreenshotIndex(0);
     setActiveMobileScreenshotIndex(0);
   }, [productSlug]);
-
-  useEffect(() => {
-    const checkBackend = async () => {
-      try {
-        const res = await fetch("http://localhost:4000/api/health");
-        if (!res.ok) {
-          console.log("The backend is not connected");
-          setBackendStatus("not_connected");
-          return;
-        }
-        const data = await res.json();
-        if (data && data.status === "ok") {
-          console.log("The backend is connected");
-          setBackendStatus("connected");
-        } else {
-          console.log("The backend is not connected");
-          setBackendStatus("not_connected");
-        }
-      } catch (error) {
-        console.log("The backend is not connected");
-        setBackendStatus("not_connected");
-      }
-    };
-
-    checkBackend();
-  }, []);
 
   useEffect(() => {
     const resetPrimaryAction = () => {
@@ -607,37 +579,39 @@ export const App: React.FC = () => {
 
       <TechRail />
 
-      <Section
-        id="clients"
-        label="Clients"
-        kicker="Who we work with"
-        description={
-          <p className="text-base text-muted-foreground md:text-lg">
-            We partner with businesses and financial organizations to create
-            powerful digital solutions that improve efficiency, security, and
-            performance.
-          </p>
-        }
-      >
-        <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3">
-          {CLIENT_LOGOS.map((logo, index) => (
-            <AnimatedOnScroll key={index} staggerIndex={index}>
-              <div className="flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-slate-50/80 px-4 py-6 shadow-sm md:h-32">
-                <img
-                  src={logo.src}
-                  alt={logo.alt}
-                  className={
-                    "max-h-[3.6rem] w-full max-w-[264px] object-contain object-center md:max-h-[4.2rem] " +
-                    (logo.logoClassName ?? "")
-                  }
-                  loading="lazy"
-                  decoding="async"
-                />
-              </div>
-            </AnimatedOnScroll>
-          ))}
-        </div>
-      </Section>
+      {showClientsSection && (
+        <Section
+          id="clients"
+          label="Clients"
+          kicker="Who we work with"
+          description={
+            <p className="text-base text-muted-foreground md:text-lg">
+              We partner with businesses and financial organizations to create
+              powerful digital solutions that improve efficiency, security, and
+              performance.
+            </p>
+          }
+        >
+          <div className="grid grid-cols-2 gap-6 sm:gap-8 md:grid-cols-3">
+            {CLIENT_LOGOS.map((logo, index) => (
+              <AnimatedOnScroll key={index} staggerIndex={index}>
+                <div className="flex h-28 items-center justify-center overflow-hidden rounded-2xl bg-slate-50/80 px-4 py-6 shadow-sm md:h-32">
+                  <img
+                    src={logo.src}
+                    alt={logo.alt}
+                    className={
+                      "max-h-[3.6rem] w-full max-w-[264px] object-contain object-center md:max-h-[4.2rem] " +
+                      (logo.logoClassName ?? "")
+                    }
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </div>
+              </AnimatedOnScroll>
+            ))}
+          </div>
+        </Section>
+      )}
 
       <Section
         id="about"
@@ -1875,13 +1849,8 @@ export const App: React.FC = () => {
         {view === "product-detail" && renderProductDetailPage()}
       </main>
       <footer className="border-t border-border/60 bg-background/95">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6 text-xs text-muted-foreground">
+        <div className="mx-auto flex max-w-6xl items-center px-6 py-6 text-xs text-muted-foreground">
           <span>© {new Date().getFullYear()} Sherwood Technologies</span>
-          <span>
-            {backendStatus === "connected" && "The backend is connected"}
-            {backendStatus === "not_connected" && "The backend is not connected"}
-            {backendStatus === "unknown" && ""}
-          </span>
         </div>
       </footer>
 

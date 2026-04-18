@@ -448,7 +448,7 @@ export const App: React.FC = () => {
             <AnimatedOnScroll staggerIndex={3}>
               <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                 <Button size="lg" onClick={() => setView("primary")}>
-                  Primary action
+                  Book a Demo
                 </Button>
               </div>
             </AnimatedOnScroll>
@@ -708,13 +708,16 @@ export const App: React.FC = () => {
             Primary Action
           </p>
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Primary action details
+            Drive Smarter Financial Decisions with Integrated Treasury
+            Intelligence
           </h1>
-          <p className="max-w-2xl text-base text-slate-700 md:text-lg">
-            This page can be used to describe the main call to action from
-            your hero section—such as getting in touch, starting a project, or
-            exploring a flagship service. You can replace this copy with
-            whatever best fits your workflow.
+          <p className="text-base text-slate-700 md:text-lg">
+            Our platforms are designed to centralize treasury operations,
+            strengthen controls, and deliver real-time insights across your
+            organization. Engage with our team to explore how we can implement
+            a scalable, secure, and analytics-driven solution tailored to your
+            requirements. Begin your transformation with a guided demonstration
+            of our capabilities.
           </p>
         </div>
 
@@ -1302,21 +1305,32 @@ export const App: React.FC = () => {
             Get in touch
           </p>
           <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
-            Let’s talk about your next project
+            Let’s Discuss Your Next Initiative
           </h1>
-          <p className="max-w-2xl text-base text-slate-700 md:text-lg">
-            Use this page to collect inquiries, discuss engagement details, or
-            provide direct contact information for Sherwood Technologies. You
-            can replace this content later with a full contact form or
-            integrated CRM workflow.
-          </p>
-          <div className="mt-6 max-w-2xl space-y-3 rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-5">
+          <div className="w-full max-w-6xl space-y-3 text-base text-slate-700 md:text-lg">
+            <p>
+              Engage with Sherwood Technologies to explore how our treasury,
+              investment, and financial intelligence solutions can support your
+              organization.
+            </p>
+            <p>
+              Whether you are looking to implement a new system, enhance
+              existing processes, or evaluate advanced analytics capabilities,
+              our team is ready to assist.
+            </p>
+          </div>
+          <div className="mt-6 w-full max-w-6xl space-y-3 rounded-3xl border border-dashed border-slate-200 bg-slate-50 p-5">
             <p className="text-base font-semibold text-slate-900">
-              To book a free consultation session
+              Book a Consultation
             </p>
             <p className="text-sm text-slate-700">
-              Share a few basic details so we can prepare for our discussion and
-              connect you with the right team member.
+              Schedule a complimentary consultation session with our specialists
+              to discuss your requirements and explore the most suitable approach
+              for your organization.
+            </p>
+            <p className="text-sm text-slate-700">
+              Share a few key details so we can prepare effectively and connect
+              you with the right team member.
             </p>
             <Dialog
               open={isConsultationDialogOpen}
@@ -1462,27 +1476,68 @@ export const App: React.FC = () => {
 
         <div className="grid gap-8 md:grid-cols-2">
           <AnimatedOnScroll staggerIndex={0}>
-            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-              <h3 className="mb-3 text-base font-semibold text-slate-900">
-                Contact details
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h3 className="text-base font-semibold text-slate-900">
+                Contact Details
               </h3>
-              <p className="text-sm text-slate-600">
-                Add your preferred contact channels here – such as email
-                addresses, phone numbers, or office locations – so potential
-                clients can reach the right team quickly.
+              <p className="mt-3 text-sm leading-relaxed text-slate-800">
+                You may reach us through the following channels:
               </p>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-800">
+                <li>
+                  <span className="font-semibold text-slate-900">Email:</span>{" "}
+                  <a
+                    href="mailto:info@sherwoodtechnologies.lk"
+                    className="text-blue-600 underline decoration-blue-600/40 underline-offset-2 hover:text-blue-700"
+                  >
+                    info@sherwoodtechnologies.lk
+                  </a>
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Phone:</span>{" "}
+                  +94 77 739 3437
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Office:</span>{" "}
+                  No. 100/1, Elvitigala Mawatha, Colombo
+                </li>
+              </ul>
+              <p className="mt-4 text-sm leading-relaxed text-slate-800">
+                Our team will respond promptly to ensure your inquiry is handled
+                with priority.
+              </p>
+              <hr className="mt-6 border-0 border-t border-slate-200" />
             </div>
           </AnimatedOnScroll>
           <AnimatedOnScroll staggerIndex={1}>
-            <div className="card-interactive rounded-3xl border border-slate-200 bg-slate-50 p-7 shadow-md">
-              <h3 className="mb-3 text-base font-semibold text-slate-900">
-                Project information
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h3 className="text-base font-semibold text-slate-900">
+                Project Information
               </h3>
-              <p className="text-sm text-slate-600">
-                Outline the information you typically need to evaluate a new
-                engagement, such as project scope, timelines, budget ranges, and
-                any existing systems or tools.
+              <p className="mt-3 text-sm leading-relaxed text-slate-800">
+                To help us better understand your requirements, you may provide
+                the following details:
               </p>
+              <ul className="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-800">
+                <li>
+                  Nature of the project (e.g., Treasury Management, Equity,
+                  Wealth Management, Reconciliation)
+                </li>
+                <li>Current systems or tools in use</li>
+                <li>Key challenges or objectives</li>
+                <li>Expected timelines</li>
+                <li>
+                  Approximate scale of operations (entities, users,
+                  transactions)
+                </li>
+              </ul>
+              <p className="mt-4 text-sm leading-relaxed text-slate-800">
+                This information enables us to tailor our discussion and propose a
+                solution aligned with your business needs. We look forward to
+                working with you to build a robust, scalable, and intelligent
+                financial platform.
+              </p>
+              <hr className="mt-6 border-0 border-t border-slate-200" />
             </div>
           </AnimatedOnScroll>
         </div>

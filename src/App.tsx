@@ -47,9 +47,9 @@ import itmsTreasury3 from "../images/icon/ITMS3.png";
 import itmsTreasury4 from "../images/icon/ITMS4.png";
 import aboutSectionBackground from "../images/icon/logo arrow.png";
 import aiProductsVideo from "../images/icon/AI2.mp4";
-import serviceSoftwareArt from "../images/services/service-software.svg";
-import serviceMobileArt from "../images/services/service-mobile.svg";
-import serviceWebArt from "../images/services/service-web.svg";
+import serviceSoftwareArt from "../images/icon/software.png";
+import serviceMobileArt from "../images/icon/mobile.png";
+import serviceWebArt from "../images/icon/web.png";
 import { showClientsSection } from "./featureFlags";
 
 type DesktopProductSlide = { src: string; label: string; alt: string };
@@ -175,6 +175,8 @@ const Section: React.FC<{
   description?: React.ReactNode;
   variant?: "default" | "white";
   backgroundImageSrc?: string;
+  /** Same WebGL motion as the home hero, tuned for a white backdrop (no green fill). */
+  threeBackground?: "light";
   children?: React.ReactNode;
 }> = ({
   id,
@@ -183,41 +185,70 @@ const Section: React.FC<{
   description,
   variant = "default",
   backgroundImageSrc,
+  threeBackground,
   children,
 }) => {
+  const layeredBackground = Boolean(backgroundImageSrc || threeBackground);
+  const threeUnderImage =
+    threeBackground === "light" && Boolean(backgroundImageSrc);
+  const layeredSurfaceClass = layeredBackground
+    ? threeBackground && !backgroundImageSrc
+      ? " relative overflow-hidden bg-white"
+      : " relative overflow-hidden bg-transparent"
+    : " bg-white";
   return (
     <section
       id={id}
-      className={
-        "scroll-mt-32 border-b border-border/40" +
-        (backgroundImageSrc ? " relative overflow-hidden bg-transparent" : " bg-white") +
-        (variant === "white" ? "" : "")
-      }
+      className={"scroll-mt-32 border-b border-border/40" + layeredSurfaceClass + (variant === "white" ? "" : "")}
     >
+      {threeBackground === "light" && (
+        <div className="absolute inset-0 z-0" aria-hidden="true">
+          <HomeHeroThreeBackground appearance="light" />
+        </div>
+      )}
       {backgroundImageSrc && (
         <>
+          {threeUnderImage ? (
+            <>
+              {/* Lighter wash so the WebGL layer stays visible around / through the logo */}
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-[1] bg-gradient-to-br from-white/90 from-[6%] via-white/55 via-[38%] to-emerald-900/[0.06]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-[1] bg-gradient-to-t from-emerald-950/[0.04] via-transparent to-white/45"
+              />
+            </>
+          ) : (
+            <>
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-0 bg-[#f4fafb]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-0 bg-gradient-to-br from-white from-[8%] via-white/80 via-[40%] to-emerald-900/[0.08]"
+              />
+              <div
+                aria-hidden="true"
+                className="absolute inset-0 z-0 bg-gradient-to-t from-emerald-950/[0.05] via-transparent to-white/55"
+              />
+            </>
+          )}
+          {/* Logo sits above the live background; mix-blend-multiply lets motion read through white areas */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 z-0 bg-[#f4fafb]"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-0 bg-gradient-to-br from-white from-[8%] via-white/80 via-[40%] to-emerald-900/[0.08]"
-          />
-          <div
-            aria-hidden="true"
-            className="absolute inset-0 z-0 bg-gradient-to-t from-emerald-950/[0.05] via-transparent to-white/55"
-          />
-          {/* Full-opacity logo above scrims; bottom-left of section = image bottom-left */}
-          <div
-            aria-hidden="true"
-            className="pointer-events-none absolute inset-0 z-[1] flex items-end justify-start pl-0 pb-0 pt-24 md:pt-32"
+            className="pointer-events-none absolute inset-0 z-[2] flex items-end justify-start pl-0 pb-0 pt-24 md:pt-32"
           >
             <img
               src={backgroundImageSrc}
               alt=""
               aria-hidden="true"
-              className="h-[min(53.2vh,448px)] w-auto max-w-[min(67.2vw,392px)] select-none object-contain object-left-bottom opacity-100 mix-blend-multiply sm:h-[min(58.8vh,504px)] sm:max-w-[min(61.6vw,420px)]"
+              className={
+                "h-[min(53.2vh,448px)] w-auto max-w-[min(67.2vw,392px)] select-none object-contain object-left-bottom opacity-100 mix-blend-multiply sm:h-[min(58.8vh,504px)] sm:max-w-[min(61.6vw,420px)]" +
+                (threeUnderImage ? " brightness-[0.88] contrast-[1.12]" : "")
+              }
             />
           </div>
         </>
@@ -225,7 +256,7 @@ const Section: React.FC<{
       <div
         className={
           "mx-auto relative flex max-w-6xl flex-col gap-10 px-6 py-24 text-slate-800 md:py-32 " +
-          (backgroundImageSrc ? "z-[2]" : "z-[1]")
+          (layeredBackground ? "z-[5]" : "z-[1]")
         }
       >
         <div className="max-w-2xl space-y-3">
@@ -274,10 +305,10 @@ const PRODUCTS: Array<{
   description: string;
 }> = [
   {
-    slug: "wealth-management",
-    name: "Wealth Management System and Mobile App",
+    slug: "treasury-management",
+    name: "Integrated Treasury Management System",
     description:
-      "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. It provides real-time insights, portfolio tracking, and reporting tools, while the integrated mobile app enables secure access to portfolio updates and investment information anytime, anywhere.",
+      "An advanced system designed to help organizations manage internal treasury operations, including cash flow monitoring, liquidity management, and financial risk analysis. It provides centralized visibility into financial resources and supports effective treasury decision-making.",
   },
   {
     slug: "equity-management",
@@ -286,10 +317,10 @@ const PRODUCTS: Array<{
       "A powerful solution for managing equity portfolios, tracking stock market transactions, and monitoring investment performance. It enables investment firms and financial professionals to analyze market data, manage trading activities, and maintain detailed records of equity investments.",
   },
   {
-    slug: "treasury-management",
-    name: "Integrated Treasury Management System",
+    slug: "wealth-management",
+    name: "Wealth Management System and Mobile App",
     description:
-      "An advanced system designed to help organizations manage internal treasury operations, including cash flow monitoring, liquidity management, and financial risk analysis. It provides centralized visibility into financial resources and supports effective treasury decision-making.",
+      "A comprehensive platform designed to help financial institutions and advisors manage client investments, portfolios, and financial planning activities efficiently. It provides real-time insights, portfolio tracking, and reporting tools, while the integrated mobile app enables secure access to portfolio updates and investment information anytime, anywhere.",
   },
   {
     slug: "mobile-app",
@@ -299,6 +330,24 @@ const PRODUCTS: Array<{
       "A reporting solution that automates financial report generation, including profit and loss statements and other key financial reports. It helps organizations produce accurate reports faster, improve visibility into performance, and support better financial decision-making.",
   },
 ];
+
+// Slower, more “premium” auto-advance for product screenshots.
+const PRODUCT_DETAIL_SLIDE_INTERVAL_MS = 5000;
+
+const PRODUCT_DETAIL_SLIDE_TRANSITION_MS = 2200;
+
+function desktopSlideCountForProduct(slug: ProductSlug): number {
+  switch (slug) {
+    case "wealth-management":
+      return WEALTH_DESKTOP_SLIDES.length;
+    case "equity-management":
+      return EQUITY_DESKTOP_SLIDES.length;
+    case "mobile-app":
+      return FINANCIAL_REPORT_DESKTOP_SLIDES.length;
+    case "treasury-management":
+      return TREASURY_DESKTOP_SLIDES.length;
+  }
+}
 
 /** Green gradient back nav — matches Book Consultation CTA on light subpages */
 const backNavGreenButtonClassName =
@@ -389,6 +438,27 @@ export const App: React.FC = () => {
   }, [productSlug]);
 
   useEffect(() => {
+    if (view !== "product-detail" || !productSlug) return;
+
+    const desktopCount = desktopSlideCountForProduct(productSlug);
+    const mobileCount = WEALTH_MOBILE_SCREENSHOTS.length;
+    const advanceMobile = productSlug === "wealth-management";
+
+    const id = window.setInterval(() => {
+      setActiveScreenshotIndex((prev) =>
+        prev === desktopCount - 1 ? 0 : prev + 1,
+      );
+      if (advanceMobile) {
+        setActiveMobileScreenshotIndex((prev) =>
+          prev === mobileCount - 1 ? 0 : prev + 1,
+        );
+      }
+    }, PRODUCT_DETAIL_SLIDE_INTERVAL_MS);
+
+    return () => window.clearInterval(id);
+  }, [view, productSlug]);
+
+  useEffect(() => {
     const resetPrimaryAction = () => {
       setPrimaryProjectDraft({
         projectName: "",
@@ -458,8 +528,7 @@ export const App: React.FC = () => {
 
       <Section
         id="services"
-        label="Services"
-        kicker="What we offer"
+        label="What We Offer"
         description={
           <p className="text-base text-muted-foreground md:text-lg">
             We provide a range of
@@ -520,8 +589,7 @@ export const App: React.FC = () => {
 
       <Section
         id="products"
-        label="Products"
-        kicker="What we build"
+        label="Our Platform"
         variant="white"
         description={
           <>
@@ -615,18 +683,17 @@ export const App: React.FC = () => {
 
       <Section
         id="about"
-        label="About us"
-        kicker="Who are we"
+        label="Who Are We"
         variant="white"
+        threeBackground="light"
         backgroundImageSrc={aboutSectionBackground}
         description={
           <p className="text-base text-muted-foreground md:text-lg">
-            At Sherwood Technologies, our people are the heart of everything we
-            create. Led by experienced visionaries like our Lead Partner and
-            Executive Director, we&apos;re a team of passionate innovators
-            dedicated to transforming bold ideas into powerful digital realities.
-            Together, we don&apos;t just build websites — we build lasting
-            partnerships, one breakthrough at a time.
+            At Sherwood Technologies, everything we create is driven by a
+            passionate team of innovators, thinkers, and builders committed to
+            transforming bold ideas into powerful digital realities. As a unified
+            force, we don&apos;t just deliver solutions — we build lasting
+            partnerships and drive meaningful impact.
           </p>
         }
       >
@@ -693,8 +760,11 @@ export const App: React.FC = () => {
   );
 
   const renderPrimaryPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
+    <section className="scroll-mt-32 relative overflow-hidden border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <HomeHeroThreeBackground appearance="light" />
+      </div>
+      <div className="relative z-[5] mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
             variant="default"
@@ -1290,8 +1360,11 @@ export const App: React.FC = () => {
   };
 
   const renderContactPage = () => (
-    <section className="scroll-mt-32 border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
-      <div className="mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
+    <section className="scroll-mt-32 relative overflow-hidden border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <HomeHeroThreeBackground appearance="light" />
+      </div>
+      <div className="relative z-[5] mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
         <div className="space-y-4">
           <Button
             variant="default"
@@ -1632,9 +1705,10 @@ export const App: React.FC = () => {
                   </div>
                   <div className="screenshot-laptop-screen">
                     <div
-                      className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                      className="flex h-full"
                       style={{
                         transform: `translateX(-${(activeScreenshotIndex % desktopSlideCount) * 100}%)`,
+                        transition: `transform ${PRODUCT_DETAIL_SLIDE_TRANSITION_MS}ms cubic-bezier(0.4,0,0.2,1)`,
                       }}
                     >
                       {desktopSlides.map((slide, index) => (
@@ -1665,56 +1739,6 @@ export const App: React.FC = () => {
                 <div className="screenshot-laptop-base" />
               </div>
 
-              <button
-                type="button"
-                className="screenshot-nav-btn screenshot-nav-btn-left"
-                onClick={() =>
-                  setActiveScreenshotIndex((prev) =>
-                    prev === 0 ? desktopSlideCount - 1 : prev - 1,
-                  )
-                }
-              >
-                <span className="sr-only">Previous preview</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
-                  aria-hidden
-                >
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-
-              <button
-                type="button"
-                className="screenshot-nav-btn screenshot-nav-btn-right"
-                onClick={() =>
-                  setActiveScreenshotIndex((prev) =>
-                    prev === desktopSlideCount - 1 ? 0 : prev + 1,
-                  )
-                }
-              >
-                <span className="sr-only">Next preview</span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="h-4 w-4"
-                  aria-hidden
-                >
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-
               <div className="pointer-events-none mt-4 flex justify-center gap-2">
                 {Array.from({ length: desktopSlideCount }).map((_, index) => (
                   <span
@@ -1738,9 +1762,10 @@ export const App: React.FC = () => {
                   </div>
                   <div className="screenshot-phone-screen">
                     <div
-                      className="flex h-full transition-transform duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]"
+                      className="flex h-full"
                       style={{
                         transform: `translateX(-${(activeMobileScreenshotIndex % mobileSlideCount) * 100}%)`,
+                        transition: `transform ${PRODUCT_DETAIL_SLIDE_TRANSITION_MS}ms cubic-bezier(0.4,0,0.2,1)`,
                       }}
                     >
                       {WEALTH_MOBILE_SCREENSHOTS.map((src, index) => (
@@ -1756,56 +1781,6 @@ export const App: React.FC = () => {
                       ))}
                     </div>
                   </div>
-
-                  <button
-                    type="button"
-                    className="screenshot-phone-nav-btn screenshot-phone-nav-btn-left"
-                    onClick={() =>
-                      setActiveMobileScreenshotIndex((prev) =>
-                        prev === 0 ? mobileSlideCount - 1 : prev - 1,
-                      )
-                    }
-                  >
-                    <span className="sr-only">Previous mobile preview</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                      aria-hidden
-                    >
-                      <path d="M15 18l-6-6 6-6" />
-                    </svg>
-                  </button>
-
-                  <button
-                    type="button"
-                    className="screenshot-phone-nav-btn screenshot-phone-nav-btn-right"
-                    onClick={() =>
-                      setActiveMobileScreenshotIndex((prev) =>
-                        prev === mobileSlideCount - 1 ? 0 : prev + 1,
-                      )
-                    }
-                  >
-                    <span className="sr-only">Next mobile preview</span>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      className="h-4 w-4"
-                      aria-hidden
-                    >
-                      <path d="M9 18l6-6-6-6" />
-                    </svg>
-                  </button>
                 </div>
               </div>
             )}

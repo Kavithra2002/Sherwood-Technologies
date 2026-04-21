@@ -44,7 +44,6 @@ import financialReportImg4 from "../images/icon/reportimg4.png";
 import itmsTreasury1 from "../images/icon/ITMS1.png";
 import itmsTreasury2 from "../images/icon/ITMS2.png";
 import itmsTreasury3 from "../images/icon/ITMS3.png";
-import itmsTreasury4 from "../images/icon/ITMS4.png";
 import aboutSectionBackground from "../images/icon/logo arrow.png";
 import aiProductsVideo from "../images/icon/AI2.mp4";
 import serviceSoftwareArt from "../images/icon/software.png";
@@ -118,23 +117,18 @@ const FINANCIAL_REPORT_DESKTOP_SLIDES: DesktopProductSlide[] = [
 const TREASURY_DESKTOP_SLIDES: DesktopProductSlide[] = [
   {
     src: itmsTreasury1,
-    label: "Money market deal",
-    alt: "Integrated Treasury Management System — money market deal",
+    label: "Fund centre",
+    alt: "Integrated Treasury Management System — fund centre management",
   },
   {
     src: itmsTreasury2,
-    label: "Treasury workspace",
-    alt: "Integrated Treasury Management System — treasury workspace",
+    label: "Mark-to-market",
+    alt: "Integrated Treasury Management System — mark-to-market management",
   },
   {
     src: itmsTreasury3,
-    label: "Operations",
-    alt: "Integrated Treasury Management System — operations",
-  },
-  {
-    src: itmsTreasury4,
-    label: "Analytics",
-    alt: "Integrated Treasury Management System — analytics",
+    label: "ISIN master",
+    alt: "Integrated Treasury Management System — ISIN master",
   },
 ];
 
@@ -497,19 +491,24 @@ export const App: React.FC = () => {
         <HomeHeroThreeBackground />
         <div className="home-hero__content mx-auto flex w-full max-w-6xl flex-1 flex-col justify-center gap-10 px-6 py-16 md:flex-row md:items-center md:py-20">
           <div className="flex-1 space-y-7 text-center md:text-left">
-            <AnimatedOnScroll staggerIndex={0}>
-              <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-200 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
-                Digital experience
-              </p>
-            </AnimatedOnScroll>
-            <AnimatedOnScroll staggerIndex={1}>
-              <h1 className="text-4xl font-semibold tracking-tight text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55),0_1px_3px_rgba(0,0,0,0.45)] md:text-6xl md:leading-[1.08]">
-                Building Smart Software for a{" "}
-                <span className="bg-gradient-to-r from-emerald-200 via-primary to-lime-200 bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)]">
-                  Digital Future
-                </span>
-              </h1>
-            </AnimatedOnScroll>
+            <div className="relative">
+              <AnimatedOnScroll
+                staggerIndex={0}
+                className="absolute bottom-[calc(100%+1.75rem+1.5rem)] left-0 right-0 text-center md:bottom-[calc(100%+1.75rem+2.75rem)] md:left-0 md:right-auto md:text-left xl:bottom-[calc(100%+1.75rem+3.5rem)]"
+              >
+                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-200 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
+                  YOUR DIGITAL EXPERIENCE
+                </p>
+              </AnimatedOnScroll>
+              <AnimatedOnScroll staggerIndex={1}>
+                <h1 className="text-4xl font-semibold tracking-tight text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55),0_1px_3px_rgba(0,0,0,0.45)] md:text-6xl md:leading-[1.08]">
+                  Building Smart Software for a{" "}
+                  <span className="bg-gradient-to-r from-emerald-200 via-primary to-lime-200 bg-clip-text text-transparent [text-shadow:none] drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)]">
+                    Digital Future
+                  </span>
+                </h1>
+              </AnimatedOnScroll>
+            </div>
             <AnimatedOnScroll staggerIndex={2}>
               <p className="mx-auto max-w-xl text-base leading-relaxed text-slate-100 [text-shadow:0_1px_14px_rgba(0,0,0,0.5)] md:mx-0 md:text-lg">
                 Sherwood Technologies builds innovative software solutions for financial institutions and businesses. Our expertise in fintech platforms, mobile applications, and enterprise systems helps organizations manage investments, optimize treasury operations, and deliver modern digital services.

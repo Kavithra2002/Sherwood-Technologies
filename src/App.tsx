@@ -1566,8 +1566,16 @@ export const App: React.FC = () => {
                   </a>
                 </li>
                 <li>
-                  <span className="font-semibold text-slate-900">Phone:</span>{" "}
-                  +94 77 739 3437
+                  <div className="flex gap-2">
+                    <span className="shrink-0 font-semibold text-slate-900">
+                      Phone:
+                    </span>
+                    <span>
+                      +94 77 739 3437
+                      <br />
+                      +94 11 532 8100
+                    </span>
+                  </div>
                 </li>
                 <li>
                   <span className="font-semibold text-slate-900">Office:</span>{" "}

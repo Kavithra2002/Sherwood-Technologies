@@ -107,6 +107,13 @@ body {
   transform: translateY(0);
 }
 
+/* Privacy page: 30% faster reveal (0.75s -> 0.525s). */
+.animate-in-scroll.privacy-reveal-fast {
+  transition:
+    opacity 0.525s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.525s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
 /*
  * Interactive cards — aligned with reffer code/src/styles/marketing-features.css
  * (.feature-card, lines 18–44): overflow hidden, 3px top bar, scaleX slide,

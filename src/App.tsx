@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { Header } from "./components/layout/Header";
+import { Footer } from "./components/layout/Footer";
 import "./global.css";
 import { Button } from "./components/ui/button";
 import { AnimatedOnScroll } from "./components/ui/AnimatedOnScroll";
@@ -348,6 +350,8 @@ const backNavGreenButtonClassName =
   "mb-4 border-0 bg-gradient-to-r from-[#79C72C] to-[#4c9141] text-white shadow-[0_3px_14px_rgba(121,199,44,0.35)] transition-[filter,transform,box-shadow] hover:brightness-105 hover:bg-gradient-to-r hover:from-[#79C72C] hover:to-[#4c9141] hover:shadow-[0_6px_20px_rgba(121,199,44,0.4)] focus-visible:ring-primary/50 active:scale-[0.98] md:h-9";
 
 export const App: React.FC = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const [view, setView] = useState<
     "home" | "primary" | "secondary" | "contact" | "product-detail"
   >("home");
@@ -419,11 +423,22 @@ export const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const scrollToTopViews = ["product-detail", "contact", "primary", "secondary"];
+    const scrollToTopViews = [
+      "product-detail",
+      "contact",
+      "primary",
+      "secondary",
+    ];
     if (scrollToTopViews.includes(view)) {
       window.scrollTo(0, 0);
     }
   }, [view, productSlug]);
+
+  useEffect(() => {
+    if (location.pathname === "/privacy") {
+      window.scrollTo(0, 0);
+    }
+  }, [location.pathname]);
 
   // When switching between products, start the screenshot carousel from the first image.
   useEffect(() => {
@@ -1625,6 +1640,443 @@ export const App: React.FC = () => {
     </section>
   );
 
+  const renderPrivacyPolicyPage = () => (
+    <section className="scroll-mt-32 relative overflow-hidden border-b border-border/40 bg-white text-slate-900 min-h-[200vh] pt-[calc(1.2rem+3.5rem+env(safe-area-inset-top,0px))]">
+      <div className="absolute inset-0 z-0" aria-hidden="true">
+        <HomeHeroThreeBackground appearance="light" />
+      </div>
+      <div className="relative z-[5] mx-auto flex max-w-6xl flex-col gap-10 px-6 py-24 md:py-28">
+        <div className="space-y-4">
+          <Button
+            variant="default"
+            size="sm"
+            className={backNavGreenButtonClassName}
+            onClick={() => {
+              navigate(-1);
+            }}
+          >
+            ← Go back
+          </Button>
+          <h1 className="text-3xl font-semibold tracking-tight md:text-4xl">
+            Privacy Policy
+          </h1>
+          <p className="text-base font-semibold text-slate-900 md:text-lg">
+            Sherwood Technologies (Pvt) Ltd
+          </p>
+          <p className="text-base text-slate-700">Effective date: April 21, 2026</p>
+        </div>
+
+        <div className="grid gap-8">
+          <AnimatedOnScroll staggerIndex={0} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">Overview</h2>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                <p>
+                  This Privacy Policy explains how Sherwood Technologies (Pvt) Ltd
+                  (&ldquo;Sherwood&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;)
+                  collects, uses, shares, and protects information when you use our
+                  websites, applications, and services (collectively, the
+                  &ldquo;Services&rdquo;).
+                </p>
+                <p>
+                  We do not provide financial advice through our applications or
+                  Services. Our applications and Services are intended for
+                  information and portfolio tracking purposes only.
+                </p>
+                <p>
+                  For certain services (including wealth/equity management
+                  services), user accounts are created by authorized wealth
+                  managers and not through the mobile application.
+                </p>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={1} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                Information we collect
+              </h2>
+
+              <div className="mt-4 space-y-5 text-sm leading-relaxed text-slate-700 md:text-base">
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Information you provide
+                  </p>
+                  <ul className="mt-2 list-disc space-y-2 pl-5">
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Account information:
+                      </span>{" "}
+                      email address, first name, last name, and related account
+                      fields used to identify and manage your account. For certain
+                      services, account creation is handled outside the mobile
+                      application (for example, through an authorized wealth
+                      manager/admin portal).
+                    </li>
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Authentication information:
+                      </span>{" "}
+                      password (stored on the server as a cryptographic hash, not
+                      in plain text), password reset verification codes (stored
+                      hashed and time-limited).
+                    </li>
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Financial and portfolio data you enter or manage:
+                      </span>{" "}
+                      portfolios, holdings, buy/sell transactions, settlement
+                      details, and related accounting information.
+                    </li>
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Banking / settlement details (if you enter them):
+                      </span>{" "}
+                      account name, account number, bank name, branch name, IBAN,
+                      SWIFT code, and similar settlement fields used in
+                      transaction and reporting workflows.
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Information collected automatically
+                  </p>
+                  <ul className="mt-2 list-disc space-y-2 pl-5">
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Push notification identifiers:
+                      </span>{" "}
+                      some of our applications use push notifications (for
+                      example, via Firebase Cloud Messaging used only for
+                      delivering notifications and not for analytics or
+                      advertising) and may collect a registration token to deliver
+                      notifications.
+                    </li>
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Log and device information:
+                      </span>{" "}
+                      server logs may include IP address, request timestamps, and
+                      diagnostic data needed to operate and secure the service.
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <p className="font-semibold text-slate-900">
+                    Information stored on your device
+                  </p>
+                  <ul className="mt-2 list-disc space-y-2 pl-5">
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Security tokens:
+                      </span>{" "}
+                      some applications may store authentication tokens locally
+                      (using secure storage on supported devices) to keep you
+                      signed in.
+                    </li>
+                    <li>
+                      <span className="font-semibold text-slate-900">
+                        Preferences:
+                      </span>{" "}
+                      non-sensitive preferences may be stored locally.
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={2} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                How we use information
+              </h2>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 md:text-base">
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Provide and operate the Services:
+                  </span>{" "}
+                  provide core functionality (such as sign-in, dashboards,
+                  portfolios, transactions, and reporting). For certain services,
+                  account creation is managed outside the mobile application (for
+                  example, by an authorized wealth manager/admin portal).
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Security:</span>{" "}
+                  authenticate requests, detect abuse, and protect the Services and
+                  users.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Communications:
+                  </span>{" "}
+                  send password reset verification codes (by email when
+                  configured) and deliver notifications.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Maintenance:</span>{" "}
+                  debug issues, monitor reliability, and improve performance.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    No advertising use:
+                  </span>{" "}
+                  we do not use your data for advertising purposes.
+                </li>
+              </ul>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={3} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                How we share information
+              </h2>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                <p>We do not sell your personal information.</p>
+                <p>
+                  We may share information in the following limited circumstances:
+                </p>
+                <ul className="list-disc space-y-2 pl-5">
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Service providers:
+                    </span>
+                    <ul className="mt-2 list-disc space-y-2 pl-5">
+                      <li>
+                        Firebase Cloud Messaging (Google) for push notifications
+                        (FCM token and delivery metadata).
+                      </li>
+                      <li>
+                        Email delivery providers (via SMTP) to send password reset
+                        verification codes, if email sending is enabled on the
+                        server.
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Legal and safety:
+                    </span>{" "}
+                    if required by law, or to protect the rights, safety, and
+                    security of users and the service.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Business operations:
+                    </span>{" "}
+                    in connection with a merger, acquisition, or asset sale,
+                    subject to appropriate safeguards.
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={4} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">Data retention</h2>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 md:text-base">
+                <li>
+                  Account and portfolio data is retained while your account is
+                  active and as needed to provide the service.
+                </li>
+                <li>Password reset codes are time-limited and expire automatically.</li>
+                <li>
+                  Logs may be retained for a limited period for security and debugging.
+                </li>
+              </ul>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={5} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                Your choices and rights
+              </h2>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 md:text-base">
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Access / correction:
+                  </span>{" "}
+                  you can update certain account information in our Services or by
+                  contacting us.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Delete your account / data:
+                  </span>{" "}
+                  you can request account deletion and data removal by contacting
+                  us at the email below. We may need to verify your identity
+                  before processing the request.
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Opt out of notifications:
+                  </span>{" "}
+                  you can disable push notifications from your device settings.
+                </li>
+              </ul>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={6} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">Security</h2>
+              <div className="mt-3 space-y-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                <p>
+                  We use reasonable administrative, technical, and physical
+                  safeguards designed to protect information. No method of
+                  transmission or storage is 100% secure, so we cannot guarantee
+                  absolute security.
+                </p>
+                <p>
+                  All data transmitted between our applications and servers is
+                  protected using secure protocols (such as HTTPS).
+                </p>
+                <ul className="mt-3 list-disc space-y-2 pl-5">
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Database level security
+                    </span>{" "}
+                    — measures designed to prevent unauthorized users from
+                    accessing or modifying the data at the database level.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      System level security
+                    </span>{" "}
+                    — measures designed to prevent unauthorized access to the
+                    systems that the database runs on, and to all systems that can
+                    access the database.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Network level security
+                    </span>{" "}
+                    — the database is designed to be inaccessible to the public
+                    internet. No machine that can directly access the database can
+                    be directly accessed from the internet.
+                  </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">
+                      Physical security
+                    </span>{" "}
+                    — measures designed to ensure that the machines that can access
+                    the database are physically secured so that only the
+                    operations team can access them.
+                  </li>
+                </ul>
+                <p>
+                  We also prohibit our employees from accessing your personally
+                  identifiable information except on a need to know basis, and even
+                  then, only under confidentiality agreements. Our engineers review
+                  the security measures on a regular basis to update and strengthen
+                  these protective measures. No security measures are completely
+                  fail-safe or impervious to circumvention. We are not responsible
+                  for events beyond our control, including without limitation, the
+                  malicious acts or willful misconduct of hackers or any other
+                  person.
+                </p>
+              </div>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={7} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                Children’s privacy
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                Our Services are not directed to children under 13, and we do not
+                knowingly collect personal information from children under 13. If
+                you believe a child has provided personal information, contact us
+                to request deletion.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={8} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                International data transfers
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                If you use our Services, your information may be processed in
+                countries other than your own (for example, where service providers
+                operate).
+              </p>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={9} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">
+                Changes to this policy
+              </h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                We may update this Privacy Policy from time to time. We will update
+                the effective date above when changes are made.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+
+          <AnimatedOnScroll staggerIndex={10} className="privacy-reveal-fast">
+            <div className="card-interactive rounded-3xl border border-slate-200 bg-white p-7 font-sans text-left shadow-md">
+              <h2 className="text-base font-semibold text-slate-900">Contact us</h2>
+              <p className="mt-3 text-sm leading-relaxed text-slate-700 md:text-base">
+                If you have questions or requests about this Privacy Policy
+                (including data deletion requests), you may reach us through the
+                following channels:
+              </p>
+              <ul className="mt-4 list-disc space-y-2 pl-5 text-sm leading-relaxed text-slate-700 md:text-base">
+                <li>
+                  <span className="font-semibold text-slate-900">
+                    Developer/Company:
+                  </span>{" "}
+                  Sherwood Technologies (Pvt) Ltd
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Email:</span>{" "}
+                  <a
+                    href="mailto:info@sherwoodtechnologies.lk"
+                    className="text-blue-600 underline decoration-blue-600/40 underline-offset-2 hover:text-blue-700"
+                  >
+                    info@sherwoodtechnologies.lk
+                  </a>
+                </li>
+                <li>
+                  <div className="flex gap-2">
+                    <span className="shrink-0 font-semibold text-slate-900">
+                      Phone:
+                    </span>
+                    <span>
+                      +94 77 739 3437
+                      <br />
+                      +94 11 532 8100
+                    </span>
+                  </div>
+                </li>
+                <li>
+                  <span className="font-semibold text-slate-900">Office:</span>{" "}
+                  No. 100/1, Elvitigala Mawatha, Colombo
+                </li>
+              </ul>
+              <p className="mt-4 text-sm leading-relaxed text-slate-700 md:text-base">
+                Our team will respond promptly to ensure your inquiry is handled
+                with priority.
+              </p>
+            </div>
+          </AnimatedOnScroll>
+        </div>
+      </div>
+    </section>
+  );
+
   const handleBackToProducts = () => {
     setView("home");
     setProductSlug(null);
@@ -1879,17 +2331,34 @@ export const App: React.FC = () => {
         onNavigateSection={handleNavigateSection}
       />
       <main className="relative">
-        {view === "home" && renderHome()}
-        {view === "primary" && renderPrimaryPage()}
-        {view === "secondary" && renderSecondaryPage()}
-        {view === "contact" && renderContactPage()}
-        {view === "product-detail" && renderProductDetailPage()}
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                {view === "home" && renderHome()}
+                {view === "primary" && renderPrimaryPage()}
+                {view === "secondary" && renderSecondaryPage()}
+                {view === "contact" && renderContactPage()}
+                {view === "product-detail" && renderProductDetailPage()}
+              </>
+            }
+          />
+          <Route path="/privacy" element={renderPrivacyPolicyPage()} />
+        </Routes>
       </main>
-      <footer className="border-t border-border/60 bg-background/95">
-        <div className="mx-auto flex max-w-6xl items-center px-6 py-6 text-xs text-muted-foreground">
-          <span>© {new Date().getFullYear()} Sherwood Technologies</span>
-        </div>
-      </footer>
+      {location.pathname !== "/privacy" && (
+        <Footer
+          onNavigateSection={handleNavigateSection}
+          onNavigateContact={() => setView("contact")}
+          onNavigatePrimary={() => setView("primary")}
+          onNavigatePrivacy={() => navigate("/privacy")}
+          onSelectProduct={(slug) => {
+            setProductSlug(slug);
+            setView("product-detail");
+          }}
+        />
+      )}
 
       <div
         className={

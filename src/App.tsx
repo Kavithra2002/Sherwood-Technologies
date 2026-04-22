@@ -509,10 +509,11 @@ export const App: React.FC = () => {
             <div className="relative">
               <AnimatedOnScroll
                 staggerIndex={0}
-                className="absolute bottom-[calc(100%+1.75rem+1.5rem)] left-0 right-0 text-center md:bottom-[calc(100%+1.75rem+2.75rem)] md:left-0 md:right-auto md:text-left xl:bottom-[calc(100%+1.75rem+3.5rem)]"
+                className="absolute bottom-[calc(100%+1.75rem+1.5rem)] left-0 right-0 text-right md:bottom-[calc(100%+1.75rem+2.75rem)] md:left-auto md:right-0 md:text-right xl:bottom-[calc(100%+1.75rem+3.5rem)]"
               >
-                <p className="text-sm font-semibold uppercase tracking-[0.28em] text-emerald-200 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
-                  YOUR DIGITAL EXPERIENCE
+                <p className="text-sm font-semibold tracking-[0.28em] [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">
+                  <span className="text-emerald-200">Your Digital Experience </span>
+                  <span className="text-white">Beyond Ambition</span>
                 </p>
               </AnimatedOnScroll>
               <AnimatedOnScroll staggerIndex={1}>

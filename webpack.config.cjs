@@ -44,6 +44,7 @@ module.exports = {
       directory: path.join(__dirname, "dist"),
     },
     historyApiFallback: true,
+    allowedHosts: "all",
     port: 5174,
     open: true,
   },

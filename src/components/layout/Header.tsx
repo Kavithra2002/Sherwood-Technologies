@@ -1,6 +1,5 @@
 import React from "react";
 import logoImg from "../../../images/logo.png";
-import groupCompanyImg from "../../../images/icon/group compnay.png";
 import { showClientsSection } from "../../featureFlags";
 
 const sections = [
@@ -85,22 +84,8 @@ export const Header: React.FC<{
       : "border border-white/[0.15] bg-slate-950/60 shadow-[0_8px_32px_rgba(0,0,0,0.3)] backdrop-blur-[16px]",
   ].join(" ");
 
-  const groupCompanyImgTopClass = lightBar
-    ? "top-[max(calc(0.8rem+0.25rem),calc(env(safe-area-inset-top)+0.25rem))]"
-    : "top-[max(calc(1.2rem+0.25rem),calc(env(safe-area-inset-top)+0.25rem))]";
-
   return (
     <header className="pointer-events-none fixed left-0 right-0 top-0 z-40">
-      <img
-        src={groupCompanyImg}
-        alt="AMBEON Group Company"
-        className={[
-          "pointer-events-auto fixed right-[max(0.75rem,env(safe-area-inset-right))] z-40 h-[4.8125rem] w-auto max-w-[341px] object-contain object-right transition-[top] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)] md:right-6 md:h-[5.5rem] md:max-w-[363px]",
-          groupCompanyImgTopClass,
-        ].join(" ")}
-        decoding="async"
-      />
-
       <div
         className={[
           "pointer-events-none transition-[padding] duration-500 ease-[cubic-bezier(0.4,0,0.2,1)]",

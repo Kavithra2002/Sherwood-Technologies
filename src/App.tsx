@@ -2333,17 +2333,6 @@ export const App: React.FC = () => {
         onNavigateSection={handleNavigateSection}
       />
       <main className="relative">
-        <img
-          src={groupCompanyImg}
-          alt="AMBEON Group Company"
-          className={[
-            "pointer-events-none absolute right-[max(0.75rem,env(safe-area-inset-right))] z-30 h-[4.8125rem] w-auto max-w-[341px] object-contain object-right md:right-6 md:h-[5.5rem] md:max-w-[363px]",
-            view === "home" && location.pathname !== "/privacy"
-              ? "top-[max(calc(1.2rem+0.25rem),calc(env(safe-area-inset-top)+0.25rem))]"
-              : "top-[max(calc(0.8rem+0.25rem),calc(env(safe-area-inset-top)+0.25rem))]",
-          ].join(" ")}
-          decoding="async"
-        />
         <Routes>
           <Route
             path="/"
